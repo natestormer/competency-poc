@@ -5,7 +5,7 @@ import { text, select, relationship, timestamp } from "@keystone-6/core/fields"
 // many assigned User(s)
 const Track = list({
   fields: {
-    name: text({ validation: { isRequired: true } }),
+    name: text({ validation: { isRequired: true }, isIndexed: "unique" }),
     description: text({ ui: { displayMode: "textarea" } }),
     author: relationship({ ref: "User", many: false }),
     asignees: relationship({ ref: "User", many: true }),

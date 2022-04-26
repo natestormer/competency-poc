@@ -9,6 +9,7 @@ const Skill = list({
     description: text({ ui: { displayMode: "textarea" } }),
     author: relationship({ ref: "User", many: false }),
     tiers: relationship({ ref: "Tier", many: true }),
+    tracks: relationship({ ref: "Track", many: true }),
     created: timestamp({
       defaultValue: { kind: "now" },
     }),

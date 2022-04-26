@@ -5,7 +5,12 @@ import { list } from "@keystone-6/core"
 
 // We're using some common fields in the starter. Check out https://keystonejs.com/docs/apis/fields#fields-api
 // for the full list of fields.
-import { text, password, relationship } from "@keystone-6/core/fields"
+import {
+  text,
+  password,
+  relationship,
+  timestamp,
+} from "@keystone-6/core/fields"
 
 const User = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -26,7 +31,13 @@ const User = list({
     }),
     // The password field takes care of hiding details and hashing values
     password: password({ validation: { isRequired: true } }),
-    tracks: relationship({ ref: "Track", many: true }),
+    registered: timestamp({
+      defaultValue: { kind: "now" },
+    }),
+    assignedTracks: relationship({ ref: "Track", many: true }),
+    createdTracks: relationship({ ref: "Track", many: true }),
+    progressions: relationship({ ref: "Progression", many: true }),
+    // @Todo: add roles
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {
