@@ -1,0 +1,21 @@
+fragment publicUserFields on User {
+  id
+  firstName
+  lastName
+  email
+}
+
+fragment currentUserFields on Query {
+  authenticatedItem {
+    ... on User {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+}
+
+fragment requiredAppDataQueryFields on Query {
+  ...currentUserFields
+}

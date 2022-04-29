@@ -1,0 +1,11 @@
+# Returns a list of all users
+
+query users {
+  users {
+    id
+    firstName
+    lastName
+    email
+    registered
+  }
+}

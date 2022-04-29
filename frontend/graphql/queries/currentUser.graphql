@@ -1,0 +1,12 @@
+# Returns currently authenticated user
+
+query currentUser {
+  authenticatedItem {
+    ... on User {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+}

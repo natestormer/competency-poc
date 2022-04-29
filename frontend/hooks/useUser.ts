@@ -1,9 +1,8 @@
 import { ApolloError, useQuery } from "@apollo/client"
-
-import { CURRENT_USER_QUERY } from "../graphql/queries/currentUser"
+import { CurrentUserDocument, CurrentUserQuery } from "../graphql/generated"
 
 type useUserPayload = {
-  user?: any
+  user?: CurrentUserQuery["authenticatedItem"]
   loading: boolean
   error?: ApolloError
 }
@@ -15,9 +14,13 @@ type useUserPayload = {
  * @returns useUserPayload
  */
 const useUser = (): useUserPayload => {
-  const { data: user, loading, error } = useQuery(CURRENT_USER_QUERY)
+  const {
+    data: user,
+    loading,
+    error,
+  } = useQuery<CurrentUserQuery>(CurrentUserDocument)
 
-  return { user: user.authenticatedItem, loading, error }
+  return { user: user?.authenticatedItem, loading, error }
 }
 
 export { useUser }

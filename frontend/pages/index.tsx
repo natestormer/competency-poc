@@ -1,17 +1,8 @@
 import type { NextPage, GetServerSideProps } from "next"
-import { gql } from "@apollo/client"
 
 import { addApolloState, initializeApollo } from "../lib/apolloClient"
-import { REQUIRED_APP_DATA_QUERY_FIELDS } from "../graphql/fragments"
 import { useUser } from "../hooks"
-
-export const HOME_PAGE_QUERY = gql`
-  ${REQUIRED_APP_DATA_QUERY_FIELDS}
-
-  query HOME_PAGE_QUERY {
-    ...requiredAppDataQueryFields
-  }
-`
+import { HomePageDocument } from "../graphql/generated"
 
 const HomePage: NextPage = () => {
   const { user } = useUser()
@@ -29,7 +20,7 @@ export default HomePage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo({ headers: context.req.headers })
 
-  await apolloClient.query({ query: HOME_PAGE_QUERY })
+  await apolloClient.query({ query: HomePageDocument })
 
   return addApolloState(apolloClient, {
     props: {},
