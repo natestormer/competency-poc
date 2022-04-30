@@ -1,0 +1,5 @@
+# Data needed for signUpPage SSR
+
+query signUpPage {
+  ...requiredAppDataQueryFields
+}

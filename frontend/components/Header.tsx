@@ -7,8 +7,17 @@ const Header = () => {
 
   return (
     <header role="banner">
-      <h1>Competency</h1>
-      {!user ? <Link href="/login">Login</Link> : <Logout />}
+      <h1>
+        <Link href="/">Competency</Link>
+      </h1>
+      {!user ? (
+        <>
+          <Link href="/login">Login</Link>
+          <Link href="/signup">Sign Up</Link>
+        </>
+      ) : (
+        <Logout />
+      )}
     </header>
   )
 }
