@@ -2,13 +2,13 @@ import type { NextPage, GetServerSideProps } from "next"
 
 import { addApolloState, initializeApollo } from "../lib/apolloClient"
 import { LoginPageDocument } from "../graphql/generated"
-import { FormsLogin } from "../components/Forms/Login"
+import { FormLogin } from "../components/Form/Login"
 
 const LoginPage: NextPage = () => {
   return (
     <main role="main">
       <h1>Login Page</h1>
-      <FormsLogin />
+      <FormLogin />
     </main>
   )
 }

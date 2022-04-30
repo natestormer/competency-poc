@@ -1,16 +1,14 @@
 import Link from "next/link"
 import { useUser } from "../hooks"
+import { Logout } from "./Logout"
 
 const Header = () => {
   const { user } = useUser()
-  console.log(user)
+
   return (
     <header role="banner">
-      {!user ? (
-        <Link href="/login">Login</Link>
-      ) : (
-        <button type="button">Log Out</button>
-      )}
+      <h1>Competency</h1>
+      {!user ? <Link href="/login">Login</Link> : <Logout />}
     </header>
   )
 }
