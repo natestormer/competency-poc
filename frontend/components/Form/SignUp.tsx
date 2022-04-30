@@ -1,5 +1,6 @@
 import { ApolloError, useMutation } from "@apollo/client"
 import { ErrorMessage, Field, Form, Formik } from "formik"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import * as Yup from "yup"
 import { SignUpDocument, SignUpMutation } from "../../graphql/generated"
@@ -72,7 +73,11 @@ const FormSignUp = () => {
         <Form method="POST">
           <h2>Create an Account</h2>
           {globalError && <div>{globalError.message}</div>}
-          {success && <p>Success! Please log in.</p>}
+          {success && (
+            <p>
+              Success! Please <Link href="/login?next=/">log in</Link>.
+            </p>
+          )}
           <div>
             <label htmlFor="email">
               Email
