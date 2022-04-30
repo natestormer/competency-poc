@@ -7,6 +7,7 @@ import {
   LoginMutation,
 } from "../../graphql/generated"
 import * as Yup from "yup"
+import { useRouter } from "next/router"
 
 interface FormLoginValues {
   email: string
@@ -19,6 +20,7 @@ const FormLoginSchema = Yup.object().shape({
 })
 
 const FormLogin = () => {
+  const { push, query } = useRouter()
   const [globalError, setGlobalError] = useState<ApolloError | Error | null>()
   const [login, { error }] = useMutation<LoginMutation>(LoginDocument)
 
@@ -68,6 +70,18 @@ const FormLogin = () => {
               password: "",
             },
           })
+
+          // redirect user to previous route on login success
+          if (
+            query.next &&
+            typeof query.next === "string" &&
+            query.next !== "/login"
+          ) {
+            push(query.next)
+          } else {
+            // if invalid next value, redirect to homepage
+            push("/")
+          }
         }
       }}
     >
