@@ -11,6 +11,7 @@ import { createAuth } from "@keystone-6/auth"
 
 // See https://keystonejs.com/docs/apis/session#session-api for the session docs
 import { statelessSessions } from "@keystone-6/core/session"
+import { sendPasswordResetEmail } from "./lib/mail"
 
 let sessionSecret = process.env.SESSION_SECRET
 
@@ -41,7 +42,8 @@ const { withAuth } = createAuth({
   },
   passwordResetLink: {
     sendToken: async ({ itemId, identity, token }) => {
-      console.log({ itemId, identity, token })
+      // console.log({ itemId, identity, token })
+      await sendPasswordResetEmail(token, identity)
     },
     tokensValidForMins: 60,
   },
