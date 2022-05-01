@@ -1,0 +1,5 @@
+# Data needed for user page SSR
+
+query userPage {
+  ...requiredAppDataQueryFields
+}

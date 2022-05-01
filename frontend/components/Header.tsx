@@ -15,10 +15,15 @@ const Header = () => {
       {!user ? (
         <>
           <Link href={`/login?next=${pathname}`}>Login</Link>
+          {" / "}
           <Link href="/signup">Sign Up</Link>
         </>
       ) : (
-        <Logout />
+        <>
+          <Link href={`/user/${user.id}`}>Dashboard</Link>
+          {" / "}
+          <Logout />
+        </>
       )}
     </header>
   )
