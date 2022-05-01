@@ -21,6 +21,9 @@ model User {
   assignedTracks          Track[]       @relation("User_assignedTracks")
   createdTracks           Track[]       @relation("User_createdTracks")
   progressions            Progression[] @relation("User_progressions")
+  passwordResetToken      String?
+  passwordResetIssuedAt   DateTime?
+  passwordResetRedeemedAt DateTime?
   from_Track_author       Track[]       @relation("Track_author")
   from_Track_asignees     Track[]       @relation("Track_asignees")
   from_Skill_author       Skill[]       @relation("Skill_author")

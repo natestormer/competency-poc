@@ -172,6 +172,8 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
+  redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
+  sendUserPasswordResetLink: Scalars['Boolean'];
   updateProgression?: Maybe<Progression>;
   updateProgressions?: Maybe<Array<Maybe<Progression>>>;
   updateSkill?: Maybe<Skill>;
@@ -296,6 +298,18 @@ export type MutationDeleteUsersArgs = {
 };
 
 
+export type MutationRedeemUserPasswordResetTokenArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  token: Scalars['String'];
+};
+
+
+export type MutationSendUserPasswordResetLinkArgs = {
+  email: Scalars['String'];
+};
+
+
 export type MutationUpdateProgressionArgs = {
   data: ProgressionUpdateInput;
   where: ProgressionWhereUniqueInput;
@@ -381,6 +395,16 @@ export type NestedStringNullableFilter = {
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc'
+}
+
+export type PasswordFilter = {
+  isSet: Scalars['Boolean'];
+};
+
+export enum PasswordResetRedemptionErrorCode {
+  Failure = 'FAILURE',
+  TokenExpired = 'TOKEN_EXPIRED',
+  TokenRedeemed = 'TOKEN_REDEEMED'
 }
 
 export type PasswordState = {
@@ -483,6 +507,7 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']>;
+  validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
 };
 
 
@@ -575,10 +600,22 @@ export type QueryUsersCountArgs = {
   where?: UserWhereInput;
 };
 
+
+export type QueryValidateUserPasswordResetTokenArgs = {
+  email: Scalars['String'];
+  token: Scalars['String'];
+};
+
 export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive'
 }
+
+export type RedeemUserPasswordResetTokenResult = {
+  __typename?: 'RedeemUserPasswordResetTokenResult';
+  code: PasswordResetRedemptionErrorCode;
+  message: Scalars['String'];
+};
 
 export type Skill = {
   __typename?: 'Skill';
@@ -944,6 +981,9 @@ export type User = {
   id: Scalars['ID'];
   lastName?: Maybe<Scalars['String']>;
   password?: Maybe<PasswordState>;
+  passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
+  passwordResetToken?: Maybe<PasswordState>;
   progressions?: Maybe<Array<Progression>>;
   progressionsCount?: Maybe<Scalars['Int']>;
   registered?: Maybe<Scalars['DateTime']>;
@@ -1008,6 +1048,9 @@ export type UserCreateInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+  passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
+  passwordResetToken?: InputMaybe<Scalars['String']>;
   progressions?: InputMaybe<ProgressionRelateToManyForCreateInput>;
   registered?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1023,6 +1066,8 @@ export type UserOrderByInput = {
   firstName?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   lastName?: InputMaybe<OrderDirection>;
+  passwordResetIssuedAt?: InputMaybe<OrderDirection>;
+  passwordResetRedeemedAt?: InputMaybe<OrderDirection>;
   registered?: InputMaybe<OrderDirection>;
 };
 
@@ -1061,6 +1106,9 @@ export type UserUpdateInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+  passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
+  passwordResetToken?: InputMaybe<Scalars['String']>;
   progressions?: InputMaybe<ProgressionRelateToManyForUpdateInput>;
   registered?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1075,6 +1123,9 @@ export type UserWhereInput = {
   firstName?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
   lastName?: InputMaybe<StringFilter>;
+  passwordResetIssuedAt?: InputMaybe<DateTimeNullableFilter>;
+  passwordResetRedeemedAt?: InputMaybe<DateTimeNullableFilter>;
+  passwordResetToken?: InputMaybe<PasswordFilter>;
   progressions?: InputMaybe<ProgressionManyRelationFilter>;
   registered?: InputMaybe<DateTimeNullableFilter>;
 };
@@ -1082,6 +1133,12 @@ export type UserWhereInput = {
 export type UserWhereUniqueInput = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type ValidateUserPasswordResetTokenResult = {
+  __typename?: 'ValidateUserPasswordResetTokenResult';
+  code: PasswordResetRedemptionErrorCode;
+  message: Scalars['String'];
 };
 
 export type PublicUserFieldsFragment = { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null };
@@ -1102,6 +1159,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', endSession: boolean };
+
+export type SendUserPasswordResetLinkMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type SendUserPasswordResetLinkMutation = { __typename?: 'Mutation', sendUserPasswordResetLink: boolean };
 
 export type SignUpMutationVariables = Exact<{
   firstName: Scalars['String'];
@@ -1128,6 +1192,11 @@ export type LoginPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type LoginPageQuery = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null };
 
+export type ResetPasswordRequestPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ResetPasswordRequestPageQuery = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null };
+
 export type SignUpPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1143,9 +1212,11 @@ export const CurrentUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"
 export const RequiredAppDataQueryFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"requiredAppDataQueryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Query"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"currentUserFields"}}]}},...CurrentUserFieldsFragmentDoc.definitions]} as unknown as DocumentNode<RequiredAppDataQueryFieldsFragment, unknown>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticateUserWithPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserAuthenticationWithPasswordSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserAuthenticationWithPasswordFailure"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"logout"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endSession"}}]}}]} as unknown as DocumentNode<LogoutMutation, LogoutMutationVariables>;
+export const SendUserPasswordResetLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"sendUserPasswordResetLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendUserPasswordResetLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}]}}]} as unknown as DocumentNode<SendUserPasswordResetLinkMutation, SendUserPasswordResetLinkMutationVariables>;
 export const SignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"signUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
 export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticatedItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
 export const HomePageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"homePage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<HomePageQuery, HomePageQueryVariables>;
 export const LoginPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"loginPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<LoginPageQuery, LoginPageQueryVariables>;
+export const ResetPasswordRequestPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"resetPasswordRequestPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<ResetPasswordRequestPageQuery, ResetPasswordRequestPageQueryVariables>;
 export const SignUpPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"signUpPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<SignUpPageQuery, SignUpPageQueryVariables>;
 export const UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"registered"}}]}}]}}]} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;

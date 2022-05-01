@@ -31,7 +31,7 @@ export default withAuth(
       //   // do some stuff here
       // },
       // Enable logging from the Prisma client.
-      enableLogging: true,
+      enableLogging: false,
       // Determines whether to use migrations or automatically force-update the database with the latest schema and potentially lose data.
       useMigrations: false,
       idField: { kind: "uuid" },

@@ -3,12 +3,17 @@ import type { NextPage, GetServerSideProps } from "next"
 import { addApolloState, initializeApollo } from "../lib/apolloClient"
 import { LoginPageDocument } from "../graphql/generated"
 import { FormLogin } from "../components/Form/Login"
+import Link from "next/link"
 
 const LoginPage: NextPage = () => {
   return (
     <main role="main">
       <h1>Login Page</h1>
       <FormLogin />
+      <p>
+        Forgot your password?{" "}
+        <Link href="/reset-password/request">Reset it here!</Link>
+      </p>
     </main>
   )
 }

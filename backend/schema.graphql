@@ -29,6 +29,9 @@ type User {
     skip: Int! = 0
   ): [Progression!]
   progressionsCount(where: ProgressionWhereInput! = {}): Int
+  passwordResetToken: PasswordState
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
 }
 
 type PasswordState {
@@ -55,6 +58,9 @@ input UserWhereInput {
   assignedTracks: TrackManyRelationFilter
   createdTracks: TrackManyRelationFilter
   progressions: ProgressionManyRelationFilter
+  passwordResetToken: PasswordFilter
+  passwordResetIssuedAt: DateTimeNullableFilter
+  passwordResetRedeemedAt: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -125,12 +131,18 @@ input ProgressionManyRelationFilter {
   none: ProgressionWhereInput
 }
 
+input PasswordFilter {
+  isSet: Boolean!
+}
+
 input UserOrderByInput {
   id: OrderDirection
   firstName: OrderDirection
   lastName: OrderDirection
   email: OrderDirection
   registered: OrderDirection
+  passwordResetIssuedAt: OrderDirection
+  passwordResetRedeemedAt: OrderDirection
 }
 
 enum OrderDirection {
@@ -147,6 +159,9 @@ input UserUpdateInput {
   assignedTracks: TrackRelateToManyForUpdateInput
   createdTracks: TrackRelateToManyForUpdateInput
   progressions: ProgressionRelateToManyForUpdateInput
+  passwordResetToken: String
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
 }
 
 input TrackRelateToManyForUpdateInput {
@@ -177,6 +192,9 @@ input UserCreateInput {
   assignedTracks: TrackRelateToManyForCreateInput
   createdTracks: TrackRelateToManyForCreateInput
   progressions: ProgressionRelateToManyForCreateInput
+  passwordResetToken: String
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
 }
 
 input TrackRelateToManyForCreateInput {
@@ -624,6 +642,12 @@ type Mutation {
   createInitialUser(
     data: CreateInitialUserInput!
   ): UserAuthenticationWithPasswordSuccess!
+  sendUserPasswordResetLink(email: String!): Boolean!
+  redeemUserPasswordResetToken(
+    email: String!
+    token: String!
+    password: String!
+  ): RedeemUserPasswordResetTokenResult
 }
 
 union UserAuthenticationWithPasswordResult =
@@ -644,6 +668,17 @@ input CreateInitialUserInput {
   lastName: String
   email: String
   password: String
+}
+
+type RedeemUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
+
+enum PasswordResetRedemptionErrorCode {
+  FAILURE
+  TOKEN_EXPIRED
+  TOKEN_REDEEMED
 }
 
 type Query {
@@ -689,9 +724,18 @@ type Query {
   progressionsCount(where: ProgressionWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
+  validateUserPasswordResetToken(
+    email: String!
+    token: String!
+  ): ValidateUserPasswordResetTokenResult
 }
 
 union AuthenticatedItem = User
+
+type ValidateUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
 
 type KeystoneMeta {
   adminMeta: KeystoneAdminMeta!
