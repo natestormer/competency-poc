@@ -1,7 +1,7 @@
 // Like the `config` function we use in keystone.ts, we use functions
 // for putting in our config so we get useful errors. With typescript,
 // we get these even before code runs.
-import { list } from "@keystone-6/core"
+import { graphql, list } from "@keystone-6/core"
 
 // We're using some common fields in the starter. Check out https://keystonejs.com/docs/apis/fields#fields-api
 // for the full list of fields.
@@ -10,11 +10,23 @@ import {
   password,
   relationship,
   timestamp,
+  virtual,
 } from "@keystone-6/core/fields"
+import { isSignedIn, permissions } from "../access"
 
 const User = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
   // a name so we can refer to them, and a way to connect users to posts.
+  access: {
+    operation: {
+      query: isSignedIn,
+      // @Todo more granular permissions based on
+      // isAdmin, isManager and can manage team return filters
+      create: permissions.canManageUsers,
+      update: permissions.canManageUsers,
+      delete: permissions.canManageUsers,
+    },
+  },
   fields: {
     firstName: text({
       validation: { isRequired: true },
@@ -23,6 +35,15 @@ const User = list({
     lastName: text({
       validation: { isRequired: true },
       db: { map: "last_name" },
+    }),
+    fullName: virtual({
+      field: graphql.field({
+        type: graphql.String,
+        resolve: (item, args, context, info) => {
+          const parent: any = item
+          return `${parent.firstName} ${parent.lastName}`
+        },
+      }),
     }),
     email: text({
       validation: { isRequired: true },
@@ -37,10 +58,11 @@ const User = list({
     assignedTracks: relationship({ ref: "Track", many: true }),
     createdTracks: relationship({ ref: "Track", many: true }),
     progressions: relationship({ ref: "Progression", many: true }),
-    // @Todo: add roles
+    role: relationship({ ref: "Role.asignees" }),
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {
+    labelField: "fullName",
     listView: {
       initialColumns: ["lastName", "firstName", "email"],
     },

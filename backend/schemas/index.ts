@@ -24,6 +24,7 @@ import { Track } from "./Track"
 import { Skill } from "./Skill"
 import { Tier } from "./Tier"
 import { Progression } from "./Progression"
+import { Role } from "./Role"
 
 // We have a users list, a blogs list, and tags for blog posts, so they can be filtered.
 // Each property on the exported object will become the name of a list (a.k.a. the `listKey`),
@@ -34,4 +35,5 @@ export const schemas: Lists = {
   Skill,
   Tier,
   Progression,
+  Role,
 }

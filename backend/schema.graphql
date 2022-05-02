@@ -5,6 +5,7 @@ type User {
   id: ID!
   firstName: String
   lastName: String
+  fullName: String
   email: String
   password: PasswordState
   registered: DateTime
@@ -29,6 +30,7 @@ type User {
     skip: Int! = 0
   ): [Progression!]
   progressionsCount(where: ProgressionWhereInput! = {}): Int
+  role: Role
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -58,6 +60,7 @@ input UserWhereInput {
   assignedTracks: TrackManyRelationFilter
   createdTracks: TrackManyRelationFilter
   progressions: ProgressionManyRelationFilter
+  role: RoleWhereInput
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -159,6 +162,7 @@ input UserUpdateInput {
   assignedTracks: TrackRelateToManyForUpdateInput
   createdTracks: TrackRelateToManyForUpdateInput
   progressions: ProgressionRelateToManyForUpdateInput
+  role: RoleRelateToOneForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -178,6 +182,12 @@ input ProgressionRelateToManyForUpdateInput {
   connect: [ProgressionWhereUniqueInput!]
 }
 
+input RoleRelateToOneForUpdateInput {
+  create: RoleCreateInput
+  connect: RoleWhereUniqueInput
+  disconnect: Boolean
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -192,6 +202,7 @@ input UserCreateInput {
   assignedTracks: TrackRelateToManyForCreateInput
   createdTracks: TrackRelateToManyForCreateInput
   progressions: ProgressionRelateToManyForCreateInput
+  role: RoleRelateToOneForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -205,6 +216,11 @@ input TrackRelateToManyForCreateInput {
 input ProgressionRelateToManyForCreateInput {
   create: [ProgressionCreateInput!]
   connect: [ProgressionWhereUniqueInput!]
+}
+
+input RoleRelateToOneForCreateInput {
+  create: RoleCreateInput
+  connect: RoleWhereUniqueInput
 }
 
 type Track {
@@ -592,6 +608,71 @@ input TrackRelateToOneForCreateInput {
   connect: TrackWhereUniqueInput
 }
 
+type Role {
+  id: ID!
+  name: String
+  canSeeOtherUsers: Boolean
+  canManageUsers: Boolean
+  canManageRoles: Boolean
+  asignees(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  asigneesCount(where: UserWhereInput! = {}): Int
+}
+
+input RoleWhereUniqueInput {
+  id: ID
+}
+
+input RoleWhereInput {
+  AND: [RoleWhereInput!]
+  OR: [RoleWhereInput!]
+  NOT: [RoleWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  canSeeOtherUsers: BooleanFilter
+  canManageUsers: BooleanFilter
+  canManageRoles: BooleanFilter
+  asignees: UserManyRelationFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input RoleOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  canSeeOtherUsers: OrderDirection
+  canManageUsers: OrderDirection
+  canManageRoles: OrderDirection
+}
+
+input RoleUpdateInput {
+  name: String
+  canSeeOtherUsers: Boolean
+  canManageUsers: Boolean
+  canManageRoles: Boolean
+  asignees: UserRelateToManyForUpdateInput
+}
+
+input RoleUpdateArgs {
+  where: RoleWhereUniqueInput!
+  data: RoleUpdateInput!
+}
+
+input RoleCreateInput {
+  name: String
+  canSeeOtherUsers: Boolean
+  canManageUsers: Boolean
+  canManageRoles: Boolean
+  asignees: UserRelateToManyForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -634,6 +715,12 @@ type Mutation {
   updateProgressions(data: [ProgressionUpdateArgs!]!): [Progression]
   deleteProgression(where: ProgressionWhereUniqueInput!): Progression
   deleteProgressions(where: [ProgressionWhereUniqueInput!]!): [Progression]
+  createRole(data: RoleCreateInput!): Role
+  createRoles(data: [RoleCreateInput!]!): [Role]
+  updateRole(where: RoleWhereUniqueInput!, data: RoleUpdateInput!): Role
+  updateRoles(data: [RoleUpdateArgs!]!): [Role]
+  deleteRole(where: RoleWhereUniqueInput!): Role
+  deleteRoles(where: [RoleWhereUniqueInput!]!): [Role]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -722,6 +809,14 @@ type Query {
   ): [Progression!]
   progression(where: ProgressionWhereUniqueInput!): Progression
   progressionsCount(where: ProgressionWhereInput! = {}): Int
+  roles(
+    where: RoleWhereInput! = {}
+    orderBy: [RoleOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Role!]
+  role(where: RoleWhereUniqueInput!): Role
+  rolesCount(where: RoleWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(

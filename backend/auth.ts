@@ -12,6 +12,7 @@ import { createAuth } from "@keystone-6/auth"
 // See https://keystonejs.com/docs/apis/session#session-api for the session docs
 import { statelessSessions } from "@keystone-6/core/session"
 import { sendPasswordResetEmail } from "./lib/mail"
+import { permissionsList } from "./schemas/fields"
 
 let sessionSecret = process.env.SESSION_SECRET
 
@@ -33,7 +34,14 @@ if (!sessionSecret) {
 const { withAuth } = createAuth({
   listKey: "User",
   identityField: "email",
-  sessionData: "firstName",
+  sessionData: `
+    id 
+    firstName 
+    lastName 
+    email 
+    role { 
+      ${permissionsList.join(" ")} 
+    }`,
   secretField: "password",
   initFirstItem: {
     // If there are no items in the database, keystone will ask you to create

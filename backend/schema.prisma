@@ -21,6 +21,8 @@ model User {
   assignedTracks          Track[]       @relation("User_assignedTracks")
   createdTracks           Track[]       @relation("User_createdTracks")
   progressions            Progression[] @relation("User_progressions")
+  role                    Role?         @relation("User_role", fields: [roleId], references: [id])
+  roleId                  String?       @map("role") @postgresql.Uuid
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -29,6 +31,8 @@ model User {
   from_Skill_author       Skill[]       @relation("Skill_author")
   from_Tier_author        Tier[]        @relation("Tier_author")
   from_Progression_author Progression[] @relation("Progression_author")
+
+  @@index([roleId])
 }
 
 model Track {
@@ -99,4 +103,13 @@ model Progression {
   @@index([authorId])
   @@index([trackId])
   @@index([skillId])
+}
+
+model Role {
+  id               String  @id @default(uuid()) @postgresql.Uuid
+  name             String  @default("")
+  canSeeOtherUsers Boolean @default(false)
+  canManageUsers   Boolean @default(false)
+  canManageRoles   Boolean @default(false)
+  asignees         User[]  @relation("User_role")
 }
