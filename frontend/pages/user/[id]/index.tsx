@@ -1,9 +1,9 @@
 import type { NextPage, GetServerSideProps } from "next"
 
-import { addApolloState, initializeApollo } from "../../lib/apolloClient"
-import { useUser } from "../../hooks"
-import { UserPageDocument } from "../../graphql/generated"
-import { unAuthRedirect } from "../../config"
+import { addApolloState, initializeApollo } from "../../../lib/apolloClient"
+import { useUser } from "../../../hooks"
+import { UserPageDocument } from "../../../graphql/generated"
+import { unAuthRedirect } from "../../../config"
 
 const HomePage: NextPage = () => {
   const { user } = useUser()

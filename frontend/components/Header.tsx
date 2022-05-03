@@ -22,6 +22,8 @@ const Header = () => {
         <>
           <Link href={`/user/${user.id}`}>Dashboard</Link>
           {" / "}
+          <Link href={`/user/${user.id}/invitations`}>Invitations</Link>
+          {" / "}
           <Logout />
         </>
       )}

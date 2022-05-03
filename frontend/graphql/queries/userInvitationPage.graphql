@@ -1,0 +1,6 @@
+# Data needed for user page invitation SSR
+
+query userInvitationPage {
+  ...requiredAppDataQueryFields
+  ...currentUserInvitationsFields
+}

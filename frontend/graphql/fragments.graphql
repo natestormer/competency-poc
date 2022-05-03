@@ -2,22 +2,8 @@ fragment publicUserFields on User {
   id
   firstName
   lastName
+  fullName
   email
-}
-
-fragment currentUserFields on Query {
-  authenticatedItem {
-    ... on User {
-      id
-      firstName
-      lastName
-      email
-    }
-  }
-}
-
-fragment requiredAppDataQueryFields on Query {
-  ...currentUserFields
 }
 
 fragment invitationFields on Invitation {
@@ -25,5 +11,35 @@ fragment invitationFields on Invitation {
   email
   created
   expires
+  expired
   accepted
+}
+
+fragment currentUserBasicFields on Query {
+  authenticatedItem {
+    ... on User {
+      id
+      firstName
+      lastName
+      fullName
+      email
+      role {
+        name
+      }
+    }
+  }
+}
+
+fragment currentUserInvitationsFields on Query {
+  authenticatedItem {
+    ... on User {
+      createdInvitations {
+        ...invitationFields
+      }
+    }
+  }
+}
+
+fragment requiredAppDataQueryFields on Query {
+  ...currentUserBasicFields
 }

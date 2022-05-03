@@ -17,6 +17,22 @@ const Invitation = list({
     }),
     expires: timestamp({ validation: { isRequired: true } }),
     accepted: timestamp(),
+    expired: virtual({
+      field: graphql.field({
+        type: graphql.Boolean,
+        resolve: async (parent) => {
+          const item = parent as any
+
+          if (!item || typeof item !== "object" || !item.expires) {
+            return null
+          }
+
+          const now = new Date()
+          const expiryDate = new Date(item.expires)
+          return now.getTime() > expiryDate.getTime()
+        },
+      }),
+    }),
     // token: virtual({
     //   field: graphql.field({
     //     type: graphql.String,

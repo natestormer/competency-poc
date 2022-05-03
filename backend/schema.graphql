@@ -290,6 +290,7 @@ type Invitation {
   created: DateTime
   expires: DateTime
   accepted: DateTime
+  expired: Boolean
 }
 
 input InvitationWhereUniqueInput {
