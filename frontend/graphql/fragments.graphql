@@ -19,3 +19,11 @@ fragment currentUserFields on Query {
 fragment requiredAppDataQueryFields on Query {
   ...currentUserFields
 }
+
+fragment invitationFields on Invitation {
+  id
+  email
+  created
+  expires
+  accepted
+}

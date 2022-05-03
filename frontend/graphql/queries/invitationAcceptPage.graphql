@@ -1,0 +1,8 @@
+# Data needed for invitation accept page SSR
+
+query invitationAcceptPage($email: String!) {
+  ...requiredAppDataQueryFields
+  invitation(where: { email: $email }) {
+    ...invitationFields
+  }
+}

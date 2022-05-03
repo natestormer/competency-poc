@@ -1,0 +1,27 @@
+# mutation performed when a user accepts and invitation
+# and creates an account
+# we update the Invitation's accepted field
+# and then create the User
+
+mutation acceptInvitationAndCreateUser(
+  $email: String!
+  $accepted: DateTime!
+  $firstName: String!
+  $lastName: String!
+  $password: String!
+) {
+  updateInvitation(where: { email: $email }, data: { accepted: $accepted }) {
+    accepted
+  }
+  createUser(
+    data: {
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      password: $password
+      invitation: { connect: { email: $email } }
+    }
+  ) {
+    id
+  }
+}

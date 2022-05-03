@@ -1,0 +1,5 @@
+query invitation($email: String!) {
+  invitation(where: { email: $email }) {
+    ...invitationFields
+  }
+}
