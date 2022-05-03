@@ -12,97 +12,23 @@ generator client {
 }
 
 model User {
-  id                      String        @id @default(uuid()) @postgresql.Uuid
-  firstName               String        @default("") @map("first_name")
-  lastName                String        @default("") @map("last_name")
-  email                   String        @unique @default("")
+  id                      String       @id @default(uuid()) @postgresql.Uuid
+  firstName               String       @default("") @map("first_name")
+  lastName                String       @default("") @map("last_name")
+  email                   String       @unique @default("")
   password                String
-  registered              DateTime?     @default(now())
-  assignedTracks          Track[]       @relation("User_assignedTracks")
-  createdTracks           Track[]       @relation("User_createdTracks")
-  progressions            Progression[] @relation("User_progressions")
-  role                    Role?         @relation("User_role", fields: [roleId], references: [id])
-  roleId                  String?       @map("role") @postgresql.Uuid
+  registered              DateTime?    @default(now())
+  role                    Role?        @relation("User_role", fields: [roleId], references: [id])
+  roleId                  String?      @map("role") @postgresql.Uuid
+  invitation              Invitation?  @relation("User_invitation", fields: [invitationId], references: [id])
+  invitationId            String?      @map("invitation") @postgresql.Uuid
+  createdInvitations      Invitation[] @relation("Invitation_createdBy")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
-  from_Track_author       Track[]       @relation("Track_author")
-  from_Track_asignees     Track[]       @relation("Track_asignees")
-  from_Skill_author       Skill[]       @relation("Skill_author")
-  from_Tier_author        Tier[]        @relation("Tier_author")
-  from_Progression_author Progression[] @relation("Progression_author")
 
   @@index([roleId])
-}
-
-model Track {
-  id                       String        @id @default(uuid()) @postgresql.Uuid
-  name                     String        @unique @default("")
-  description              String        @default("")
-  author                   User?         @relation("Track_author", fields: [authorId], references: [id])
-  authorId                 String?       @map("author") @postgresql.Uuid
-  asignees                 User[]        @relation("Track_asignees")
-  skills                   Skill[]       @relation("Track_skills")
-  status                   String?       @default("draft")
-  created                  DateTime?     @default(now())
-  updated                  DateTime?     @updatedAt
-  from_User_assignedTracks User[]        @relation("User_assignedTracks")
-  from_User_createdTracks  User[]        @relation("User_createdTracks")
-  from_Skill_tracks        Skill[]       @relation("Skill_tracks")
-  from_Progression_track   Progression[] @relation("Progression_track")
-
-  @@index([authorId])
-}
-
-model Skill {
-  id                     String        @id @default(uuid()) @postgresql.Uuid
-  name                   String        @default("")
-  description            String        @default("")
-  author                 User?         @relation("Skill_author", fields: [authorId], references: [id])
-  authorId               String?       @map("author") @postgresql.Uuid
-  tiers                  Tier[]        @relation("Skill_tiers")
-  tracks                 Track[]       @relation("Skill_tracks")
-  created                DateTime?     @default(now())
-  updated                DateTime?     @updatedAt
-  from_Track_skills      Track[]       @relation("Track_skills")
-  from_Tier_skill        Tier[]        @relation("Tier_skill")
-  from_Progression_skill Progression[] @relation("Progression_skill")
-
-  @@index([authorId])
-}
-
-model Tier {
-  id               String    @id @default(uuid()) @postgresql.Uuid
-  name             String    @default("")
-  description      String    @default("")
-  author           User?     @relation("Tier_author", fields: [authorId], references: [id])
-  authorId         String?   @map("author") @postgresql.Uuid
-  skill            Skill?    @relation("Tier_skill", fields: [skillId], references: [id])
-  skillId          String?   @map("skill") @postgresql.Uuid
-  created          DateTime? @default(now())
-  updated          DateTime? @updatedAt
-  from_Skill_tiers Skill[]   @relation("Skill_tiers")
-
-  @@index([authorId])
-  @@index([skillId])
-}
-
-model Progression {
-  id                     String    @id @default(uuid()) @postgresql.Uuid
-  author                 User?     @relation("Progression_author", fields: [authorId], references: [id])
-  authorId               String?   @map("author") @postgresql.Uuid
-  comment                String    @default("")
-  track                  Track?    @relation("Progression_track", fields: [trackId], references: [id])
-  trackId                String?   @map("track") @postgresql.Uuid
-  skill                  Skill?    @relation("Progression_skill", fields: [skillId], references: [id])
-  skillId                String?   @map("skill") @postgresql.Uuid
-  created                DateTime? @default(now())
-  updated                DateTime? @updatedAt
-  from_User_progressions User[]    @relation("User_progressions")
-
-  @@index([authorId])
-  @@index([trackId])
-  @@index([skillId])
+  @@index([invitationId])
 }
 
 model Role {
@@ -112,4 +38,17 @@ model Role {
   canManageUsers   Boolean @default(false)
   canManageRoles   Boolean @default(false)
   asignees         User[]  @relation("User_role")
+}
+
+model Invitation {
+  id                   String    @id @default(uuid()) @postgresql.Uuid
+  email                String    @unique @default("")
+  createdBy            User?     @relation("Invitation_createdBy", fields: [createdById], references: [id])
+  createdById          String?   @map("createdBy") @postgresql.Uuid
+  created              DateTime? @default(now())
+  expires              DateTime
+  accepted             DateTime?
+  from_User_invitation User[]    @relation("User_invitation")
+
+  @@index([createdById])
 }

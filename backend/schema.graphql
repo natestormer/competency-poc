@@ -9,28 +9,15 @@ type User {
   email: String
   password: PasswordState
   registered: DateTime
-  assignedTracks(
-    where: TrackWhereInput! = {}
-    orderBy: [TrackOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Track!]
-  assignedTracksCount(where: TrackWhereInput! = {}): Int
-  createdTracks(
-    where: TrackWhereInput! = {}
-    orderBy: [TrackOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Track!]
-  createdTracksCount(where: TrackWhereInput! = {}): Int
-  progressions(
-    where: ProgressionWhereInput! = {}
-    orderBy: [ProgressionOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Progression!]
-  progressionsCount(where: ProgressionWhereInput! = {}): Int
   role: Role
+  invitation: Invitation
+  createdInvitations(
+    where: InvitationWhereInput! = {}
+    orderBy: [InvitationOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invitation!]
+  createdInvitationsCount(where: InvitationWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -57,10 +44,9 @@ input UserWhereInput {
   lastName: StringFilter
   email: StringFilter
   registered: DateTimeNullableFilter
-  assignedTracks: TrackManyRelationFilter
-  createdTracks: TrackManyRelationFilter
-  progressions: ProgressionManyRelationFilter
   role: RoleWhereInput
+  invitation: InvitationWhereInput
+  createdInvitations: InvitationManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -122,16 +108,10 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
-input TrackManyRelationFilter {
-  every: TrackWhereInput
-  some: TrackWhereInput
-  none: TrackWhereInput
-}
-
-input ProgressionManyRelationFilter {
-  every: ProgressionWhereInput
-  some: ProgressionWhereInput
-  none: ProgressionWhereInput
+input InvitationManyRelationFilter {
+  every: InvitationWhereInput
+  some: InvitationWhereInput
+  none: InvitationWhereInput
 }
 
 input PasswordFilter {
@@ -159,33 +139,31 @@ input UserUpdateInput {
   email: String
   password: String
   registered: DateTime
-  assignedTracks: TrackRelateToManyForUpdateInput
-  createdTracks: TrackRelateToManyForUpdateInput
-  progressions: ProgressionRelateToManyForUpdateInput
   role: RoleRelateToOneForUpdateInput
+  invitation: InvitationRelateToOneForUpdateInput
+  createdInvitations: InvitationRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
-}
-
-input TrackRelateToManyForUpdateInput {
-  disconnect: [TrackWhereUniqueInput!]
-  set: [TrackWhereUniqueInput!]
-  create: [TrackCreateInput!]
-  connect: [TrackWhereUniqueInput!]
-}
-
-input ProgressionRelateToManyForUpdateInput {
-  disconnect: [ProgressionWhereUniqueInput!]
-  set: [ProgressionWhereUniqueInput!]
-  create: [ProgressionCreateInput!]
-  connect: [ProgressionWhereUniqueInput!]
 }
 
 input RoleRelateToOneForUpdateInput {
   create: RoleCreateInput
   connect: RoleWhereUniqueInput
   disconnect: Boolean
+}
+
+input InvitationRelateToOneForUpdateInput {
+  create: InvitationCreateInput
+  connect: InvitationWhereUniqueInput
+  disconnect: Boolean
+}
+
+input InvitationRelateToManyForUpdateInput {
+  disconnect: [InvitationWhereUniqueInput!]
+  set: [InvitationWhereUniqueInput!]
+  create: [InvitationCreateInput!]
+  connect: [InvitationWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -199,23 +177,12 @@ input UserCreateInput {
   email: String
   password: String
   registered: DateTime
-  assignedTracks: TrackRelateToManyForCreateInput
-  createdTracks: TrackRelateToManyForCreateInput
-  progressions: ProgressionRelateToManyForCreateInput
   role: RoleRelateToOneForCreateInput
+  invitation: InvitationRelateToOneForCreateInput
+  createdInvitations: InvitationRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
-}
-
-input TrackRelateToManyForCreateInput {
-  create: [TrackCreateInput!]
-  connect: [TrackWhereUniqueInput!]
-}
-
-input ProgressionRelateToManyForCreateInput {
-  create: [ProgressionCreateInput!]
-  connect: [ProgressionWhereUniqueInput!]
 }
 
 input RoleRelateToOneForCreateInput {
@@ -223,389 +190,14 @@ input RoleRelateToOneForCreateInput {
   connect: RoleWhereUniqueInput
 }
 
-type Track {
-  id: ID!
-  name: String
-  description: String
-  author: User
-  asignees(
-    where: UserWhereInput! = {}
-    orderBy: [UserOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [User!]
-  asigneesCount(where: UserWhereInput! = {}): Int
-  skills(
-    where: SkillWhereInput! = {}
-    orderBy: [SkillOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Skill!]
-  skillsCount(where: SkillWhereInput! = {}): Int
-  status: String
-  created: DateTime
-  updated: DateTime
+input InvitationRelateToOneForCreateInput {
+  create: InvitationCreateInput
+  connect: InvitationWhereUniqueInput
 }
 
-input TrackWhereUniqueInput {
-  id: ID
-  name: String
-}
-
-input TrackWhereInput {
-  AND: [TrackWhereInput!]
-  OR: [TrackWhereInput!]
-  NOT: [TrackWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  description: StringFilter
-  author: UserWhereInput
-  asignees: UserManyRelationFilter
-  skills: SkillManyRelationFilter
-  status: StringNullableFilter
-  created: DateTimeNullableFilter
-  updated: DateTimeNullableFilter
-}
-
-input UserManyRelationFilter {
-  every: UserWhereInput
-  some: UserWhereInput
-  none: UserWhereInput
-}
-
-input SkillManyRelationFilter {
-  every: SkillWhereInput
-  some: SkillWhereInput
-  none: SkillWhereInput
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
-input TrackOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  description: OrderDirection
-  status: OrderDirection
-  created: OrderDirection
-  updated: OrderDirection
-}
-
-input TrackUpdateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForUpdateInput
-  asignees: UserRelateToManyForUpdateInput
-  skills: SkillRelateToManyForUpdateInput
-  status: String
-  created: DateTime
-  updated: DateTime
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input UserRelateToManyForUpdateInput {
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input SkillRelateToManyForUpdateInput {
-  disconnect: [SkillWhereUniqueInput!]
-  set: [SkillWhereUniqueInput!]
-  create: [SkillCreateInput!]
-  connect: [SkillWhereUniqueInput!]
-}
-
-input TrackUpdateArgs {
-  where: TrackWhereUniqueInput!
-  data: TrackUpdateInput!
-}
-
-input TrackCreateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForCreateInput
-  asignees: UserRelateToManyForCreateInput
-  skills: SkillRelateToManyForCreateInput
-  status: String
-  created: DateTime
-  updated: DateTime
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input UserRelateToManyForCreateInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input SkillRelateToManyForCreateInput {
-  create: [SkillCreateInput!]
-  connect: [SkillWhereUniqueInput!]
-}
-
-type Skill {
-  id: ID!
-  name: String
-  description: String
-  author: User
-  tiers(
-    where: TierWhereInput! = {}
-    orderBy: [TierOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Tier!]
-  tiersCount(where: TierWhereInput! = {}): Int
-  tracks(
-    where: TrackWhereInput! = {}
-    orderBy: [TrackOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Track!]
-  tracksCount(where: TrackWhereInput! = {}): Int
-  created: DateTime
-  updated: DateTime
-}
-
-input SkillWhereUniqueInput {
-  id: ID
-}
-
-input SkillWhereInput {
-  AND: [SkillWhereInput!]
-  OR: [SkillWhereInput!]
-  NOT: [SkillWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  description: StringFilter
-  author: UserWhereInput
-  tiers: TierManyRelationFilter
-  tracks: TrackManyRelationFilter
-  created: DateTimeNullableFilter
-  updated: DateTimeNullableFilter
-}
-
-input TierManyRelationFilter {
-  every: TierWhereInput
-  some: TierWhereInput
-  none: TierWhereInput
-}
-
-input SkillOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  description: OrderDirection
-  created: OrderDirection
-  updated: OrderDirection
-}
-
-input SkillUpdateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForUpdateInput
-  tiers: TierRelateToManyForUpdateInput
-  tracks: TrackRelateToManyForUpdateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input TierRelateToManyForUpdateInput {
-  disconnect: [TierWhereUniqueInput!]
-  set: [TierWhereUniqueInput!]
-  create: [TierCreateInput!]
-  connect: [TierWhereUniqueInput!]
-}
-
-input SkillUpdateArgs {
-  where: SkillWhereUniqueInput!
-  data: SkillUpdateInput!
-}
-
-input SkillCreateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForCreateInput
-  tiers: TierRelateToManyForCreateInput
-  tracks: TrackRelateToManyForCreateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input TierRelateToManyForCreateInput {
-  create: [TierCreateInput!]
-  connect: [TierWhereUniqueInput!]
-}
-
-type Tier {
-  id: ID!
-  name: String
-  description: String
-  author: User
-  skill: Skill
-  created: DateTime
-  updated: DateTime
-}
-
-input TierWhereUniqueInput {
-  id: ID
-}
-
-input TierWhereInput {
-  AND: [TierWhereInput!]
-  OR: [TierWhereInput!]
-  NOT: [TierWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  description: StringFilter
-  author: UserWhereInput
-  skill: SkillWhereInput
-  created: DateTimeNullableFilter
-  updated: DateTimeNullableFilter
-}
-
-input TierOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  description: OrderDirection
-  created: OrderDirection
-  updated: OrderDirection
-}
-
-input TierUpdateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForUpdateInput
-  skill: SkillRelateToOneForUpdateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input SkillRelateToOneForUpdateInput {
-  create: SkillCreateInput
-  connect: SkillWhereUniqueInput
-  disconnect: Boolean
-}
-
-input TierUpdateArgs {
-  where: TierWhereUniqueInput!
-  data: TierUpdateInput!
-}
-
-input TierCreateInput {
-  name: String
-  description: String
-  author: UserRelateToOneForCreateInput
-  skill: SkillRelateToOneForCreateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input SkillRelateToOneForCreateInput {
-  create: SkillCreateInput
-  connect: SkillWhereUniqueInput
-}
-
-type Progression {
-  id: ID!
-  author: User
-  comment: String
-  track: Track
-  skill: Skill
-  created: DateTime
-  updated: DateTime
-}
-
-input ProgressionWhereUniqueInput {
-  id: ID
-}
-
-input ProgressionWhereInput {
-  AND: [ProgressionWhereInput!]
-  OR: [ProgressionWhereInput!]
-  NOT: [ProgressionWhereInput!]
-  id: IDFilter
-  author: UserWhereInput
-  comment: StringFilter
-  track: TrackWhereInput
-  skill: SkillWhereInput
-  created: DateTimeNullableFilter
-  updated: DateTimeNullableFilter
-}
-
-input ProgressionOrderByInput {
-  id: OrderDirection
-  comment: OrderDirection
-  created: OrderDirection
-  updated: OrderDirection
-}
-
-input ProgressionUpdateInput {
-  author: UserRelateToOneForUpdateInput
-  comment: String
-  track: TrackRelateToOneForUpdateInput
-  skill: SkillRelateToOneForUpdateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input TrackRelateToOneForUpdateInput {
-  create: TrackCreateInput
-  connect: TrackWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ProgressionUpdateArgs {
-  where: ProgressionWhereUniqueInput!
-  data: ProgressionUpdateInput!
-}
-
-input ProgressionCreateInput {
-  author: UserRelateToOneForCreateInput
-  comment: String
-  track: TrackRelateToOneForCreateInput
-  skill: SkillRelateToOneForCreateInput
-  created: DateTime
-  updated: DateTime
-}
-
-input TrackRelateToOneForCreateInput {
-  create: TrackCreateInput
-  connect: TrackWhereUniqueInput
+input InvitationRelateToManyForCreateInput {
+  create: [InvitationCreateInput!]
+  connect: [InvitationWhereUniqueInput!]
 }
 
 type Role {
@@ -644,6 +236,12 @@ input BooleanFilter {
   not: BooleanFilter
 }
 
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
 input RoleOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -660,6 +258,13 @@ input RoleUpdateInput {
   asignees: UserRelateToManyForUpdateInput
 }
 
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
 input RoleUpdateArgs {
   where: RoleWhereUniqueInput!
   data: RoleUpdateInput!
@@ -671,6 +276,88 @@ input RoleCreateInput {
   canManageUsers: Boolean
   canManageRoles: Boolean
   asignees: UserRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+type Invitation {
+  id: ID!
+  email: String
+  createdBy: User
+  created: DateTime
+  expires: DateTime
+  accepted: DateTime
+}
+
+input InvitationWhereUniqueInput {
+  id: ID
+  email: String
+}
+
+input InvitationWhereInput {
+  AND: [InvitationWhereInput!]
+  OR: [InvitationWhereInput!]
+  NOT: [InvitationWhereInput!]
+  id: IDFilter
+  email: StringFilter
+  createdBy: UserWhereInput
+  created: DateTimeNullableFilter
+  expires: DateTimeFilter
+  accepted: DateTimeNullableFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeFilter
+}
+
+input InvitationOrderByInput {
+  id: OrderDirection
+  email: OrderDirection
+  created: OrderDirection
+  expires: OrderDirection
+  accepted: OrderDirection
+}
+
+input InvitationUpdateInput {
+  email: String
+  createdBy: UserRelateToOneForUpdateInput
+  created: DateTime
+  expires: DateTime
+  accepted: DateTime
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input InvitationUpdateArgs {
+  where: InvitationWhereUniqueInput!
+  data: InvitationUpdateInput!
+}
+
+input InvitationCreateInput {
+  email: String
+  createdBy: UserRelateToOneForCreateInput
+  created: DateTime
+  expires: DateTime
+  accepted: DateTime
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 """
@@ -688,39 +375,21 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createTrack(data: TrackCreateInput!): Track
-  createTracks(data: [TrackCreateInput!]!): [Track]
-  updateTrack(where: TrackWhereUniqueInput!, data: TrackUpdateInput!): Track
-  updateTracks(data: [TrackUpdateArgs!]!): [Track]
-  deleteTrack(where: TrackWhereUniqueInput!): Track
-  deleteTracks(where: [TrackWhereUniqueInput!]!): [Track]
-  createSkill(data: SkillCreateInput!): Skill
-  createSkills(data: [SkillCreateInput!]!): [Skill]
-  updateSkill(where: SkillWhereUniqueInput!, data: SkillUpdateInput!): Skill
-  updateSkills(data: [SkillUpdateArgs!]!): [Skill]
-  deleteSkill(where: SkillWhereUniqueInput!): Skill
-  deleteSkills(where: [SkillWhereUniqueInput!]!): [Skill]
-  createTier(data: TierCreateInput!): Tier
-  createTiers(data: [TierCreateInput!]!): [Tier]
-  updateTier(where: TierWhereUniqueInput!, data: TierUpdateInput!): Tier
-  updateTiers(data: [TierUpdateArgs!]!): [Tier]
-  deleteTier(where: TierWhereUniqueInput!): Tier
-  deleteTiers(where: [TierWhereUniqueInput!]!): [Tier]
-  createProgression(data: ProgressionCreateInput!): Progression
-  createProgressions(data: [ProgressionCreateInput!]!): [Progression]
-  updateProgression(
-    where: ProgressionWhereUniqueInput!
-    data: ProgressionUpdateInput!
-  ): Progression
-  updateProgressions(data: [ProgressionUpdateArgs!]!): [Progression]
-  deleteProgression(where: ProgressionWhereUniqueInput!): Progression
-  deleteProgressions(where: [ProgressionWhereUniqueInput!]!): [Progression]
   createRole(data: RoleCreateInput!): Role
   createRoles(data: [RoleCreateInput!]!): [Role]
   updateRole(where: RoleWhereUniqueInput!, data: RoleUpdateInput!): Role
   updateRoles(data: [RoleUpdateArgs!]!): [Role]
   deleteRole(where: RoleWhereUniqueInput!): Role
   deleteRoles(where: [RoleWhereUniqueInput!]!): [Role]
+  createInvitation(data: InvitationCreateInput!): Invitation
+  createInvitations(data: [InvitationCreateInput!]!): [Invitation]
+  updateInvitation(
+    where: InvitationWhereUniqueInput!
+    data: InvitationUpdateInput!
+  ): Invitation
+  updateInvitations(data: [InvitationUpdateArgs!]!): [Invitation]
+  deleteInvitation(where: InvitationWhereUniqueInput!): Invitation
+  deleteInvitations(where: [InvitationWhereUniqueInput!]!): [Invitation]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -777,38 +446,6 @@ type Query {
   ): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  tracks(
-    where: TrackWhereInput! = {}
-    orderBy: [TrackOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Track!]
-  track(where: TrackWhereUniqueInput!): Track
-  tracksCount(where: TrackWhereInput! = {}): Int
-  skills(
-    where: SkillWhereInput! = {}
-    orderBy: [SkillOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Skill!]
-  skill(where: SkillWhereUniqueInput!): Skill
-  skillsCount(where: SkillWhereInput! = {}): Int
-  tiers(
-    where: TierWhereInput! = {}
-    orderBy: [TierOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Tier!]
-  tier(where: TierWhereUniqueInput!): Tier
-  tiersCount(where: TierWhereInput! = {}): Int
-  progressions(
-    where: ProgressionWhereInput! = {}
-    orderBy: [ProgressionOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Progression!]
-  progression(where: ProgressionWhereUniqueInput!): Progression
-  progressionsCount(where: ProgressionWhereInput! = {}): Int
   roles(
     where: RoleWhereInput! = {}
     orderBy: [RoleOrderByInput!]! = []
@@ -817,6 +454,14 @@ type Query {
   ): [Role!]
   role(where: RoleWhereUniqueInput!): Role
   rolesCount(where: RoleWhereInput! = {}): Int
+  invitations(
+    where: InvitationWhereInput! = {}
+    orderBy: [InvitationOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invitation!]
+  invitation(where: InvitationWhereUniqueInput!): Invitation
+  invitationsCount(where: InvitationWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(

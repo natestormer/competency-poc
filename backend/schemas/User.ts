@@ -22,7 +22,7 @@ const User = list({
       query: isSignedIn,
       // @Todo more granular permissions based on
       // isAdmin, isManager and can manage team return filters
-      create: permissions.canManageUsers,
+      create: () => true,
       update: permissions.canManageUsers,
       delete: permissions.canManageUsers,
     },
@@ -55,10 +55,12 @@ const User = list({
     registered: timestamp({
       defaultValue: { kind: "now" },
     }),
-    assignedTracks: relationship({ ref: "Track", many: true }),
-    createdTracks: relationship({ ref: "Track", many: true }),
-    progressions: relationship({ ref: "Progression", many: true }),
     role: relationship({ ref: "Role.asignees" }),
+    invitation: relationship({ ref: "Invitation", many: false }),
+    createdInvitations: relationship({
+      ref: "Invitation.createdBy",
+      many: true,
+    }),
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {

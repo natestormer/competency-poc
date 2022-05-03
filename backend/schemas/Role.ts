@@ -18,6 +18,12 @@ const Role = list({
       },
     }),
   },
+  ui: {
+    labelField: "name",
+    listView: {
+      initialColumns: ["name", "asignees"],
+    },
+  },
 })
 
 export { Role }

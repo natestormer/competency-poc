@@ -18,11 +18,27 @@ export type Scalars = {
 
 export type AuthenticatedItem = User;
 
+export type BooleanFilter = {
+  equals?: InputMaybe<Scalars['Boolean']>;
+  not?: InputMaybe<BooleanFilter>;
+};
+
 export type CreateInitialUserInput = {
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+};
+
+export type DateTimeFilter = {
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<DateTimeFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
 export type DateTimeNullableFilter = {
@@ -45,6 +61,69 @@ export type IdFilter = {
   lte?: InputMaybe<Scalars['ID']>;
   not?: InputMaybe<IdFilter>;
   notIn?: InputMaybe<Array<Scalars['ID']>>;
+};
+
+export type Invitation = {
+  __typename?: 'Invitation';
+  accepted?: Maybe<Scalars['DateTime']>;
+  created?: Maybe<Scalars['DateTime']>;
+  email?: Maybe<Scalars['String']>;
+  expires?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+};
+
+export type InvitationCreateInput = {
+  accepted?: InputMaybe<Scalars['DateTime']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  email?: InputMaybe<Scalars['String']>;
+  expires?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type InvitationOrderByInput = {
+  accepted?: InputMaybe<OrderDirection>;
+  created?: InputMaybe<OrderDirection>;
+  email?: InputMaybe<OrderDirection>;
+  expires?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+};
+
+export type InvitationRelateToOneForCreateInput = {
+  connect?: InputMaybe<InvitationWhereUniqueInput>;
+  create?: InputMaybe<InvitationCreateInput>;
+};
+
+export type InvitationRelateToOneForUpdateInput = {
+  connect?: InputMaybe<InvitationWhereUniqueInput>;
+  create?: InputMaybe<InvitationCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type InvitationUpdateArgs = {
+  data: InvitationUpdateInput;
+  where: InvitationWhereUniqueInput;
+};
+
+export type InvitationUpdateInput = {
+  accepted?: InputMaybe<Scalars['DateTime']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  email?: InputMaybe<Scalars['String']>;
+  expires?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type InvitationWhereInput = {
+  AND?: InputMaybe<Array<InvitationWhereInput>>;
+  NOT?: InputMaybe<Array<InvitationWhereInput>>;
+  OR?: InputMaybe<Array<InvitationWhereInput>>;
+  accepted?: InputMaybe<DateTimeNullableFilter>;
+  created?: InputMaybe<DateTimeNullableFilter>;
+  email?: InputMaybe<StringFilter>;
+  expires?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<IdFilter>;
+};
+
+export type InvitationWhereUniqueInput = {
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export type KeystoneAdminMeta = {
@@ -151,37 +230,25 @@ export type Mutation = {
   __typename?: 'Mutation';
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
-  createProgression?: Maybe<Progression>;
-  createProgressions?: Maybe<Array<Maybe<Progression>>>;
-  createSkill?: Maybe<Skill>;
-  createSkills?: Maybe<Array<Maybe<Skill>>>;
-  createTier?: Maybe<Tier>;
-  createTiers?: Maybe<Array<Maybe<Tier>>>;
-  createTrack?: Maybe<Track>;
-  createTracks?: Maybe<Array<Maybe<Track>>>;
+  createInvitation?: Maybe<Invitation>;
+  createInvitations?: Maybe<Array<Maybe<Invitation>>>;
+  createRole?: Maybe<Role>;
+  createRoles?: Maybe<Array<Maybe<Role>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
-  deleteProgression?: Maybe<Progression>;
-  deleteProgressions?: Maybe<Array<Maybe<Progression>>>;
-  deleteSkill?: Maybe<Skill>;
-  deleteSkills?: Maybe<Array<Maybe<Skill>>>;
-  deleteTier?: Maybe<Tier>;
-  deleteTiers?: Maybe<Array<Maybe<Tier>>>;
-  deleteTrack?: Maybe<Track>;
-  deleteTracks?: Maybe<Array<Maybe<Track>>>;
+  deleteInvitation?: Maybe<Invitation>;
+  deleteInvitations?: Maybe<Array<Maybe<Invitation>>>;
+  deleteRole?: Maybe<Role>;
+  deleteRoles?: Maybe<Array<Maybe<Role>>>;
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
   redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
   sendUserPasswordResetLink: Scalars['Boolean'];
-  updateProgression?: Maybe<Progression>;
-  updateProgressions?: Maybe<Array<Maybe<Progression>>>;
-  updateSkill?: Maybe<Skill>;
-  updateSkills?: Maybe<Array<Maybe<Skill>>>;
-  updateTier?: Maybe<Tier>;
-  updateTiers?: Maybe<Array<Maybe<Tier>>>;
-  updateTrack?: Maybe<Track>;
-  updateTracks?: Maybe<Array<Maybe<Track>>>;
+  updateInvitation?: Maybe<Invitation>;
+  updateInvitations?: Maybe<Array<Maybe<Invitation>>>;
+  updateRole?: Maybe<Role>;
+  updateRoles?: Maybe<Array<Maybe<Role>>>;
   updateUser?: Maybe<User>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
 };
@@ -198,43 +265,23 @@ export type MutationCreateInitialUserArgs = {
 };
 
 
-export type MutationCreateProgressionArgs = {
-  data: ProgressionCreateInput;
+export type MutationCreateInvitationArgs = {
+  data: InvitationCreateInput;
 };
 
 
-export type MutationCreateProgressionsArgs = {
-  data: Array<ProgressionCreateInput>;
+export type MutationCreateInvitationsArgs = {
+  data: Array<InvitationCreateInput>;
 };
 
 
-export type MutationCreateSkillArgs = {
-  data: SkillCreateInput;
+export type MutationCreateRoleArgs = {
+  data: RoleCreateInput;
 };
 
 
-export type MutationCreateSkillsArgs = {
-  data: Array<SkillCreateInput>;
-};
-
-
-export type MutationCreateTierArgs = {
-  data: TierCreateInput;
-};
-
-
-export type MutationCreateTiersArgs = {
-  data: Array<TierCreateInput>;
-};
-
-
-export type MutationCreateTrackArgs = {
-  data: TrackCreateInput;
-};
-
-
-export type MutationCreateTracksArgs = {
-  data: Array<TrackCreateInput>;
+export type MutationCreateRolesArgs = {
+  data: Array<RoleCreateInput>;
 };
 
 
@@ -248,43 +295,23 @@ export type MutationCreateUsersArgs = {
 };
 
 
-export type MutationDeleteProgressionArgs = {
-  where: ProgressionWhereUniqueInput;
+export type MutationDeleteInvitationArgs = {
+  where: InvitationWhereUniqueInput;
 };
 
 
-export type MutationDeleteProgressionsArgs = {
-  where: Array<ProgressionWhereUniqueInput>;
+export type MutationDeleteInvitationsArgs = {
+  where: Array<InvitationWhereUniqueInput>;
 };
 
 
-export type MutationDeleteSkillArgs = {
-  where: SkillWhereUniqueInput;
+export type MutationDeleteRoleArgs = {
+  where: RoleWhereUniqueInput;
 };
 
 
-export type MutationDeleteSkillsArgs = {
-  where: Array<SkillWhereUniqueInput>;
-};
-
-
-export type MutationDeleteTierArgs = {
-  where: TierWhereUniqueInput;
-};
-
-
-export type MutationDeleteTiersArgs = {
-  where: Array<TierWhereUniqueInput>;
-};
-
-
-export type MutationDeleteTrackArgs = {
-  where: TrackWhereUniqueInput;
-};
-
-
-export type MutationDeleteTracksArgs = {
-  where: Array<TrackWhereUniqueInput>;
+export type MutationDeleteRolesArgs = {
+  where: Array<RoleWhereUniqueInput>;
 };
 
 
@@ -310,47 +337,25 @@ export type MutationSendUserPasswordResetLinkArgs = {
 };
 
 
-export type MutationUpdateProgressionArgs = {
-  data: ProgressionUpdateInput;
-  where: ProgressionWhereUniqueInput;
+export type MutationUpdateInvitationArgs = {
+  data: InvitationUpdateInput;
+  where: InvitationWhereUniqueInput;
 };
 
 
-export type MutationUpdateProgressionsArgs = {
-  data: Array<ProgressionUpdateArgs>;
+export type MutationUpdateInvitationsArgs = {
+  data: Array<InvitationUpdateArgs>;
 };
 
 
-export type MutationUpdateSkillArgs = {
-  data: SkillUpdateInput;
-  where: SkillWhereUniqueInput;
+export type MutationUpdateRoleArgs = {
+  data: RoleUpdateInput;
+  where: RoleWhereUniqueInput;
 };
 
 
-export type MutationUpdateSkillsArgs = {
-  data: Array<SkillUpdateArgs>;
-};
-
-
-export type MutationUpdateTierArgs = {
-  data: TierUpdateInput;
-  where: TierWhereUniqueInput;
-};
-
-
-export type MutationUpdateTiersArgs = {
-  data: Array<TierUpdateArgs>;
-};
-
-
-export type MutationUpdateTrackArgs = {
-  data: TrackUpdateInput;
-  where: TrackWhereUniqueInput;
-};
-
-
-export type MutationUpdateTracksArgs = {
-  data: Array<TrackUpdateArgs>;
+export type MutationUpdateRolesArgs = {
+  data: Array<RoleUpdateArgs>;
 };
 
 
@@ -378,20 +383,6 @@ export type NestedStringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
-export type NestedStringNullableFilter = {
-  contains?: InputMaybe<Scalars['String']>;
-  endsWith?: InputMaybe<Scalars['String']>;
-  equals?: InputMaybe<Scalars['String']>;
-  gt?: InputMaybe<Scalars['String']>;
-  gte?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<Scalars['String']>>;
-  lt?: InputMaybe<Scalars['String']>;
-  lte?: InputMaybe<Scalars['String']>;
-  not?: InputMaybe<NestedStringNullableFilter>;
-  notIn?: InputMaybe<Array<Scalars['String']>>;
-  startsWith?: InputMaybe<Scalars['String']>;
-};
-
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc'
@@ -412,98 +403,16 @@ export type PasswordState = {
   isSet: Scalars['Boolean'];
 };
 
-export type Progression = {
-  __typename?: 'Progression';
-  author?: Maybe<User>;
-  comment?: Maybe<Scalars['String']>;
-  created?: Maybe<Scalars['DateTime']>;
-  id: Scalars['ID'];
-  skill?: Maybe<Skill>;
-  track?: Maybe<Track>;
-  updated?: Maybe<Scalars['DateTime']>;
-};
-
-export type ProgressionCreateInput = {
-  author?: InputMaybe<UserRelateToOneForCreateInput>;
-  comment?: InputMaybe<Scalars['String']>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  skill?: InputMaybe<SkillRelateToOneForCreateInput>;
-  track?: InputMaybe<TrackRelateToOneForCreateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ProgressionManyRelationFilter = {
-  every?: InputMaybe<ProgressionWhereInput>;
-  none?: InputMaybe<ProgressionWhereInput>;
-  some?: InputMaybe<ProgressionWhereInput>;
-};
-
-export type ProgressionOrderByInput = {
-  comment?: InputMaybe<OrderDirection>;
-  created?: InputMaybe<OrderDirection>;
-  id?: InputMaybe<OrderDirection>;
-  updated?: InputMaybe<OrderDirection>;
-};
-
-export type ProgressionRelateToManyForCreateInput = {
-  connect?: InputMaybe<Array<ProgressionWhereUniqueInput>>;
-  create?: InputMaybe<Array<ProgressionCreateInput>>;
-};
-
-export type ProgressionRelateToManyForUpdateInput = {
-  connect?: InputMaybe<Array<ProgressionWhereUniqueInput>>;
-  create?: InputMaybe<Array<ProgressionCreateInput>>;
-  disconnect?: InputMaybe<Array<ProgressionWhereUniqueInput>>;
-  set?: InputMaybe<Array<ProgressionWhereUniqueInput>>;
-};
-
-export type ProgressionUpdateArgs = {
-  data: ProgressionUpdateInput;
-  where: ProgressionWhereUniqueInput;
-};
-
-export type ProgressionUpdateInput = {
-  author?: InputMaybe<UserRelateToOneForUpdateInput>;
-  comment?: InputMaybe<Scalars['String']>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  skill?: InputMaybe<SkillRelateToOneForUpdateInput>;
-  track?: InputMaybe<TrackRelateToOneForUpdateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ProgressionWhereInput = {
-  AND?: InputMaybe<Array<ProgressionWhereInput>>;
-  NOT?: InputMaybe<Array<ProgressionWhereInput>>;
-  OR?: InputMaybe<Array<ProgressionWhereInput>>;
-  author?: InputMaybe<UserWhereInput>;
-  comment?: InputMaybe<StringFilter>;
-  created?: InputMaybe<DateTimeNullableFilter>;
-  id?: InputMaybe<IdFilter>;
-  skill?: InputMaybe<SkillWhereInput>;
-  track?: InputMaybe<TrackWhereInput>;
-  updated?: InputMaybe<DateTimeNullableFilter>;
-};
-
-export type ProgressionWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   authenticatedItem?: Maybe<AuthenticatedItem>;
+  invitation?: Maybe<Invitation>;
+  invitations?: Maybe<Array<Invitation>>;
+  invitationsCount?: Maybe<Scalars['Int']>;
   keystone: KeystoneMeta;
-  progression?: Maybe<Progression>;
-  progressions?: Maybe<Array<Progression>>;
-  progressionsCount?: Maybe<Scalars['Int']>;
-  skill?: Maybe<Skill>;
-  skills?: Maybe<Array<Skill>>;
-  skillsCount?: Maybe<Scalars['Int']>;
-  tier?: Maybe<Tier>;
-  tiers?: Maybe<Array<Tier>>;
-  tiersCount?: Maybe<Scalars['Int']>;
-  track?: Maybe<Track>;
-  tracks?: Maybe<Array<Track>>;
-  tracksCount?: Maybe<Scalars['Int']>;
+  role?: Maybe<Role>;
+  roles?: Maybe<Array<Role>>;
+  rolesCount?: Maybe<Scalars['Int']>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']>;
@@ -511,75 +420,39 @@ export type Query = {
 };
 
 
-export type QueryProgressionArgs = {
-  where: ProgressionWhereUniqueInput;
+export type QueryInvitationArgs = {
+  where: InvitationWhereUniqueInput;
 };
 
 
-export type QueryProgressionsArgs = {
-  orderBy?: Array<ProgressionOrderByInput>;
+export type QueryInvitationsArgs = {
+  orderBy?: Array<InvitationOrderByInput>;
   skip?: Scalars['Int'];
   take?: InputMaybe<Scalars['Int']>;
-  where?: ProgressionWhereInput;
+  where?: InvitationWhereInput;
 };
 
 
-export type QueryProgressionsCountArgs = {
-  where?: ProgressionWhereInput;
+export type QueryInvitationsCountArgs = {
+  where?: InvitationWhereInput;
 };
 
 
-export type QuerySkillArgs = {
-  where: SkillWhereUniqueInput;
+export type QueryRoleArgs = {
+  where: RoleWhereUniqueInput;
 };
 
 
-export type QuerySkillsArgs = {
-  orderBy?: Array<SkillOrderByInput>;
+export type QueryRolesArgs = {
+  orderBy?: Array<RoleOrderByInput>;
   skip?: Scalars['Int'];
   take?: InputMaybe<Scalars['Int']>;
-  where?: SkillWhereInput;
+  where?: RoleWhereInput;
 };
 
 
-export type QuerySkillsCountArgs = {
-  where?: SkillWhereInput;
-};
-
-
-export type QueryTierArgs = {
-  where: TierWhereUniqueInput;
-};
-
-
-export type QueryTiersArgs = {
-  orderBy?: Array<TierOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: TierWhereInput;
-};
-
-
-export type QueryTiersCountArgs = {
-  where?: TierWhereInput;
-};
-
-
-export type QueryTrackArgs = {
-  where: TrackWhereUniqueInput;
-};
-
-
-export type QueryTracksArgs = {
-  orderBy?: Array<TrackOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: TrackWhereInput;
-};
-
-
-export type QueryTracksCountArgs = {
-  where?: TrackWhereInput;
+export type QueryRolesCountArgs = {
+  where?: RoleWhereInput;
 };
 
 
@@ -617,123 +490,83 @@ export type RedeemUserPasswordResetTokenResult = {
   message: Scalars['String'];
 };
 
-export type Skill = {
-  __typename?: 'Skill';
-  author?: Maybe<User>;
-  created?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
+export type Role = {
+  __typename?: 'Role';
+  asignees?: Maybe<Array<User>>;
+  asigneesCount?: Maybe<Scalars['Int']>;
+  canManageRoles?: Maybe<Scalars['Boolean']>;
+  canManageUsers?: Maybe<Scalars['Boolean']>;
+  canSeeOtherUsers?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
-  tiers?: Maybe<Array<Tier>>;
-  tiersCount?: Maybe<Scalars['Int']>;
-  tracks?: Maybe<Array<Track>>;
-  tracksCount?: Maybe<Scalars['Int']>;
-  updated?: Maybe<Scalars['DateTime']>;
 };
 
 
-export type SkillTiersArgs = {
-  orderBy?: Array<TierOrderByInput>;
+export type RoleAsigneesArgs = {
+  orderBy?: Array<UserOrderByInput>;
   skip?: Scalars['Int'];
   take?: InputMaybe<Scalars['Int']>;
-  where?: TierWhereInput;
+  where?: UserWhereInput;
 };
 
 
-export type SkillTiersCountArgs = {
-  where?: TierWhereInput;
+export type RoleAsigneesCountArgs = {
+  where?: UserWhereInput;
 };
 
-
-export type SkillTracksArgs = {
-  orderBy?: Array<TrackOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: TrackWhereInput;
-};
-
-
-export type SkillTracksCountArgs = {
-  where?: TrackWhereInput;
-};
-
-export type SkillCreateInput = {
-  author?: InputMaybe<UserRelateToOneForCreateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
+export type RoleCreateInput = {
+  asignees?: InputMaybe<UserRelateToManyForCreateInput>;
+  canManageRoles?: InputMaybe<Scalars['Boolean']>;
+  canManageUsers?: InputMaybe<Scalars['Boolean']>;
+  canSeeOtherUsers?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
-  tiers?: InputMaybe<TierRelateToManyForCreateInput>;
-  tracks?: InputMaybe<TrackRelateToManyForCreateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type SkillManyRelationFilter = {
-  every?: InputMaybe<SkillWhereInput>;
-  none?: InputMaybe<SkillWhereInput>;
-  some?: InputMaybe<SkillWhereInput>;
-};
-
-export type SkillOrderByInput = {
-  created?: InputMaybe<OrderDirection>;
-  description?: InputMaybe<OrderDirection>;
+export type RoleOrderByInput = {
+  canManageRoles?: InputMaybe<OrderDirection>;
+  canManageUsers?: InputMaybe<OrderDirection>;
+  canSeeOtherUsers?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   name?: InputMaybe<OrderDirection>;
-  updated?: InputMaybe<OrderDirection>;
 };
 
-export type SkillRelateToManyForCreateInput = {
-  connect?: InputMaybe<Array<SkillWhereUniqueInput>>;
-  create?: InputMaybe<Array<SkillCreateInput>>;
+export type RoleRelateToOneForCreateInput = {
+  connect?: InputMaybe<RoleWhereUniqueInput>;
+  create?: InputMaybe<RoleCreateInput>;
 };
 
-export type SkillRelateToManyForUpdateInput = {
-  connect?: InputMaybe<Array<SkillWhereUniqueInput>>;
-  create?: InputMaybe<Array<SkillCreateInput>>;
-  disconnect?: InputMaybe<Array<SkillWhereUniqueInput>>;
-  set?: InputMaybe<Array<SkillWhereUniqueInput>>;
-};
-
-export type SkillRelateToOneForCreateInput = {
-  connect?: InputMaybe<SkillWhereUniqueInput>;
-  create?: InputMaybe<SkillCreateInput>;
-};
-
-export type SkillRelateToOneForUpdateInput = {
-  connect?: InputMaybe<SkillWhereUniqueInput>;
-  create?: InputMaybe<SkillCreateInput>;
+export type RoleRelateToOneForUpdateInput = {
+  connect?: InputMaybe<RoleWhereUniqueInput>;
+  create?: InputMaybe<RoleCreateInput>;
   disconnect?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type SkillUpdateArgs = {
-  data: SkillUpdateInput;
-  where: SkillWhereUniqueInput;
+export type RoleUpdateArgs = {
+  data: RoleUpdateInput;
+  where: RoleWhereUniqueInput;
 };
 
-export type SkillUpdateInput = {
-  author?: InputMaybe<UserRelateToOneForUpdateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
+export type RoleUpdateInput = {
+  asignees?: InputMaybe<UserRelateToManyForUpdateInput>;
+  canManageRoles?: InputMaybe<Scalars['Boolean']>;
+  canManageUsers?: InputMaybe<Scalars['Boolean']>;
+  canSeeOtherUsers?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
-  tiers?: InputMaybe<TierRelateToManyForUpdateInput>;
-  tracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type SkillWhereInput = {
-  AND?: InputMaybe<Array<SkillWhereInput>>;
-  NOT?: InputMaybe<Array<SkillWhereInput>>;
-  OR?: InputMaybe<Array<SkillWhereInput>>;
-  author?: InputMaybe<UserWhereInput>;
-  created?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringFilter>;
+export type RoleWhereInput = {
+  AND?: InputMaybe<Array<RoleWhereInput>>;
+  NOT?: InputMaybe<Array<RoleWhereInput>>;
+  OR?: InputMaybe<Array<RoleWhereInput>>;
+  asignees?: InputMaybe<UserManyRelationFilter>;
+  canManageRoles?: InputMaybe<BooleanFilter>;
+  canManageUsers?: InputMaybe<BooleanFilter>;
+  canSeeOtherUsers?: InputMaybe<BooleanFilter>;
   id?: InputMaybe<IdFilter>;
   name?: InputMaybe<StringFilter>;
-  tiers?: InputMaybe<TierManyRelationFilter>;
-  tracks?: InputMaybe<TrackManyRelationFilter>;
-  updated?: InputMaybe<DateTimeNullableFilter>;
 };
 
-export type SkillWhereUniqueInput = {
+export type RoleWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -752,280 +585,20 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
-export type StringNullableFilter = {
-  contains?: InputMaybe<Scalars['String']>;
-  endsWith?: InputMaybe<Scalars['String']>;
-  equals?: InputMaybe<Scalars['String']>;
-  gt?: InputMaybe<Scalars['String']>;
-  gte?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<Scalars['String']>>;
-  lt?: InputMaybe<Scalars['String']>;
-  lte?: InputMaybe<Scalars['String']>;
-  mode?: InputMaybe<QueryMode>;
-  not?: InputMaybe<NestedStringNullableFilter>;
-  notIn?: InputMaybe<Array<Scalars['String']>>;
-  startsWith?: InputMaybe<Scalars['String']>;
-};
-
-export type Tier = {
-  __typename?: 'Tier';
-  author?: Maybe<User>;
-  created?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  skill?: Maybe<Skill>;
-  updated?: Maybe<Scalars['DateTime']>;
-};
-
-export type TierCreateInput = {
-  author?: InputMaybe<UserRelateToOneForCreateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  skill?: InputMaybe<SkillRelateToOneForCreateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type TierManyRelationFilter = {
-  every?: InputMaybe<TierWhereInput>;
-  none?: InputMaybe<TierWhereInput>;
-  some?: InputMaybe<TierWhereInput>;
-};
-
-export type TierOrderByInput = {
-  created?: InputMaybe<OrderDirection>;
-  description?: InputMaybe<OrderDirection>;
-  id?: InputMaybe<OrderDirection>;
-  name?: InputMaybe<OrderDirection>;
-  updated?: InputMaybe<OrderDirection>;
-};
-
-export type TierRelateToManyForCreateInput = {
-  connect?: InputMaybe<Array<TierWhereUniqueInput>>;
-  create?: InputMaybe<Array<TierCreateInput>>;
-};
-
-export type TierRelateToManyForUpdateInput = {
-  connect?: InputMaybe<Array<TierWhereUniqueInput>>;
-  create?: InputMaybe<Array<TierCreateInput>>;
-  disconnect?: InputMaybe<Array<TierWhereUniqueInput>>;
-  set?: InputMaybe<Array<TierWhereUniqueInput>>;
-};
-
-export type TierUpdateArgs = {
-  data: TierUpdateInput;
-  where: TierWhereUniqueInput;
-};
-
-export type TierUpdateInput = {
-  author?: InputMaybe<UserRelateToOneForUpdateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  skill?: InputMaybe<SkillRelateToOneForUpdateInput>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type TierWhereInput = {
-  AND?: InputMaybe<Array<TierWhereInput>>;
-  NOT?: InputMaybe<Array<TierWhereInput>>;
-  OR?: InputMaybe<Array<TierWhereInput>>;
-  author?: InputMaybe<UserWhereInput>;
-  created?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringFilter>;
-  id?: InputMaybe<IdFilter>;
-  name?: InputMaybe<StringFilter>;
-  skill?: InputMaybe<SkillWhereInput>;
-  updated?: InputMaybe<DateTimeNullableFilter>;
-};
-
-export type TierWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-export type Track = {
-  __typename?: 'Track';
-  asignees?: Maybe<Array<User>>;
-  asigneesCount?: Maybe<Scalars['Int']>;
-  author?: Maybe<User>;
-  created?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  skills?: Maybe<Array<Skill>>;
-  skillsCount?: Maybe<Scalars['Int']>;
-  status?: Maybe<Scalars['String']>;
-  updated?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type TrackAsigneesArgs = {
-  orderBy?: Array<UserOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: UserWhereInput;
-};
-
-
-export type TrackAsigneesCountArgs = {
-  where?: UserWhereInput;
-};
-
-
-export type TrackSkillsArgs = {
-  orderBy?: Array<SkillOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: SkillWhereInput;
-};
-
-
-export type TrackSkillsCountArgs = {
-  where?: SkillWhereInput;
-};
-
-export type TrackCreateInput = {
-  asignees?: InputMaybe<UserRelateToManyForCreateInput>;
-  author?: InputMaybe<UserRelateToOneForCreateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  skills?: InputMaybe<SkillRelateToManyForCreateInput>;
-  status?: InputMaybe<Scalars['String']>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type TrackManyRelationFilter = {
-  every?: InputMaybe<TrackWhereInput>;
-  none?: InputMaybe<TrackWhereInput>;
-  some?: InputMaybe<TrackWhereInput>;
-};
-
-export type TrackOrderByInput = {
-  created?: InputMaybe<OrderDirection>;
-  description?: InputMaybe<OrderDirection>;
-  id?: InputMaybe<OrderDirection>;
-  name?: InputMaybe<OrderDirection>;
-  status?: InputMaybe<OrderDirection>;
-  updated?: InputMaybe<OrderDirection>;
-};
-
-export type TrackRelateToManyForCreateInput = {
-  connect?: InputMaybe<Array<TrackWhereUniqueInput>>;
-  create?: InputMaybe<Array<TrackCreateInput>>;
-};
-
-export type TrackRelateToManyForUpdateInput = {
-  connect?: InputMaybe<Array<TrackWhereUniqueInput>>;
-  create?: InputMaybe<Array<TrackCreateInput>>;
-  disconnect?: InputMaybe<Array<TrackWhereUniqueInput>>;
-  set?: InputMaybe<Array<TrackWhereUniqueInput>>;
-};
-
-export type TrackRelateToOneForCreateInput = {
-  connect?: InputMaybe<TrackWhereUniqueInput>;
-  create?: InputMaybe<TrackCreateInput>;
-};
-
-export type TrackRelateToOneForUpdateInput = {
-  connect?: InputMaybe<TrackWhereUniqueInput>;
-  create?: InputMaybe<TrackCreateInput>;
-  disconnect?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type TrackUpdateArgs = {
-  data: TrackUpdateInput;
-  where: TrackWhereUniqueInput;
-};
-
-export type TrackUpdateInput = {
-  asignees?: InputMaybe<UserRelateToManyForUpdateInput>;
-  author?: InputMaybe<UserRelateToOneForUpdateInput>;
-  created?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  skills?: InputMaybe<SkillRelateToManyForUpdateInput>;
-  status?: InputMaybe<Scalars['String']>;
-  updated?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type TrackWhereInput = {
-  AND?: InputMaybe<Array<TrackWhereInput>>;
-  NOT?: InputMaybe<Array<TrackWhereInput>>;
-  OR?: InputMaybe<Array<TrackWhereInput>>;
-  asignees?: InputMaybe<UserManyRelationFilter>;
-  author?: InputMaybe<UserWhereInput>;
-  created?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringFilter>;
-  id?: InputMaybe<IdFilter>;
-  name?: InputMaybe<StringFilter>;
-  skills?: InputMaybe<SkillManyRelationFilter>;
-  status?: InputMaybe<StringNullableFilter>;
-  updated?: InputMaybe<DateTimeNullableFilter>;
-};
-
-export type TrackWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
-};
-
 export type User = {
   __typename?: 'User';
-  assignedTracks?: Maybe<Array<Track>>;
-  assignedTracksCount?: Maybe<Scalars['Int']>;
-  createdTracks?: Maybe<Array<Track>>;
-  createdTracksCount?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
+  fullName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  invitation?: Maybe<Invitation>;
   lastName?: Maybe<Scalars['String']>;
   password?: Maybe<PasswordState>;
   passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
   passwordResetToken?: Maybe<PasswordState>;
-  progressions?: Maybe<Array<Progression>>;
-  progressionsCount?: Maybe<Scalars['Int']>;
   registered?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type UserAssignedTracksArgs = {
-  orderBy?: Array<TrackOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: TrackWhereInput;
-};
-
-
-export type UserAssignedTracksCountArgs = {
-  where?: TrackWhereInput;
-};
-
-
-export type UserCreatedTracksArgs = {
-  orderBy?: Array<TrackOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: TrackWhereInput;
-};
-
-
-export type UserCreatedTracksCountArgs = {
-  where?: TrackWhereInput;
-};
-
-
-export type UserProgressionsArgs = {
-  orderBy?: Array<ProgressionOrderByInput>;
-  skip?: Scalars['Int'];
-  take?: InputMaybe<Scalars['Int']>;
-  where?: ProgressionWhereInput;
-};
-
-
-export type UserProgressionsCountArgs = {
-  where?: ProgressionWhereInput;
+  role?: Maybe<Role>;
 };
 
 export type UserAuthenticationWithPasswordFailure = {
@@ -1042,17 +615,16 @@ export type UserAuthenticationWithPasswordSuccess = {
 };
 
 export type UserCreateInput = {
-  assignedTracks?: InputMaybe<TrackRelateToManyForCreateInput>;
-  createdTracks?: InputMaybe<TrackRelateToManyForCreateInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  invitation?: InputMaybe<InvitationRelateToOneForCreateInput>;
   lastName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
   passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetToken?: InputMaybe<Scalars['String']>;
-  progressions?: InputMaybe<ProgressionRelateToManyForCreateInput>;
   registered?: InputMaybe<Scalars['DateTime']>;
+  role?: InputMaybe<RoleRelateToOneForCreateInput>;
 };
 
 export type UserManyRelationFilter = {
@@ -1083,51 +655,38 @@ export type UserRelateToManyForUpdateInput = {
   set?: InputMaybe<Array<UserWhereUniqueInput>>;
 };
 
-export type UserRelateToOneForCreateInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  create?: InputMaybe<UserCreateInput>;
-};
-
-export type UserRelateToOneForUpdateInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  create?: InputMaybe<UserCreateInput>;
-  disconnect?: InputMaybe<Scalars['Boolean']>;
-};
-
 export type UserUpdateArgs = {
   data: UserUpdateInput;
   where: UserWhereUniqueInput;
 };
 
 export type UserUpdateInput = {
-  assignedTracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
-  createdTracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  invitation?: InputMaybe<InvitationRelateToOneForUpdateInput>;
   lastName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
   passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetToken?: InputMaybe<Scalars['String']>;
-  progressions?: InputMaybe<ProgressionRelateToManyForUpdateInput>;
   registered?: InputMaybe<Scalars['DateTime']>;
+  role?: InputMaybe<RoleRelateToOneForUpdateInput>;
 };
 
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
-  assignedTracks?: InputMaybe<TrackManyRelationFilter>;
-  createdTracks?: InputMaybe<TrackManyRelationFilter>;
   email?: InputMaybe<StringFilter>;
   firstName?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
+  invitation?: InputMaybe<InvitationWhereInput>;
   lastName?: InputMaybe<StringFilter>;
   passwordResetIssuedAt?: InputMaybe<DateTimeNullableFilter>;
   passwordResetRedeemedAt?: InputMaybe<DateTimeNullableFilter>;
   passwordResetToken?: InputMaybe<PasswordFilter>;
-  progressions?: InputMaybe<ProgressionManyRelationFilter>;
   registered?: InputMaybe<DateTimeNullableFilter>;
+  role?: InputMaybe<RoleWhereInput>;
 };
 
 export type UserWhereUniqueInput = {
