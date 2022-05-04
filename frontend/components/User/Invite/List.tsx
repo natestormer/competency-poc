@@ -1,3 +1,6 @@
+import { UserInvitationPageDocument } from "../../../graphql/generated"
+import { UserInviteDeleteButton } from "./DeleteButton"
+
 interface UserInviteListProps {
   list: {
     id: string
@@ -55,7 +58,12 @@ const UserInviteList = ({ list }: UserInviteListProps) => {
               {!item.accepted && (
                 <>
                   {!item.expired ? (
-                    <button type="button">Delete</button>
+                    <UserInviteDeleteButton
+                      id={item.id}
+                      refreshQueries={[{ query: UserInvitationPageDocument }]}
+                    >
+                      Delete
+                    </UserInviteDeleteButton>
                   ) : (
                     <div />
                   )}
