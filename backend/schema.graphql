@@ -434,6 +434,8 @@ type Team {
     skip: Int! = 0
   ): [User!]
   membersCount(where: UserWhereInput! = {}): Int
+  currentUserIsAuthor: Boolean
+  currentUserIsManager: Boolean
 }
 
 input TeamWhereUniqueInput {
