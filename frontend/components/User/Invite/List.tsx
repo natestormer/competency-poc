@@ -47,15 +47,19 @@ const UserInviteList = ({ list }: UserInviteListProps) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 gap: "1rem",
-                flex: "1 0 25%",
+                flex: "1 0 4rem",
               }}
             >
               {!item.accepted && (
                 <>
-                  {item.expired && <button type="button">Resend</button>}
-                  {!item.expired && <button type="button">Delete</button>}
+                  {!item.expired ? (
+                    <button type="button">Delete</button>
+                  ) : (
+                    <div />
+                  )}
+                  <button type="button">Resend</button>
                 </>
               )}
             </div>

@@ -3,13 +3,13 @@ import {
   CurrentUserInvitationsDocument,
   CurrentUserInvitationsQuery,
 } from "../../../graphql/generated"
+import { FormCreateInvitation } from "../../Form/CreateInvitation"
 import { UserInviteList } from "./List"
 
 const UserInviteManage = () => {
   const { data, error } = useQuery<CurrentUserInvitationsQuery>(
     CurrentUserInvitationsDocument
   )
-  console.log(data)
 
   if (error) {
     console.warn(error)
@@ -18,8 +18,13 @@ const UserInviteManage = () => {
 
   return (
     <section>
+      <FormCreateInvitation />
       {data?.authenticatedItem?.createdInvitations?.length && (
-        <UserInviteList list={data.authenticatedItem.createdInvitations} />
+        <>
+          <br />
+          <hr />
+          <UserInviteList list={data.authenticatedItem.createdInvitations} />
+        </>
       )}
     </section>
   )

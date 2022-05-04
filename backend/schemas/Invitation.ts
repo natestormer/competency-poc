@@ -10,6 +10,34 @@ const Invitation = list({
       validation: { isRequired: true },
       isIndexed: "unique",
       isFilterable: true,
+      hooks: {
+        validateInput: async ({
+          addValidationError,
+          resolvedData,
+          fieldKey,
+          context,
+        }) => {
+          const email = resolvedData[fieldKey]
+
+          // check that email does not exist in Invitations
+          const emailMatch = await context.db.Invitation.findOne({
+            where: { email: email },
+          })
+          if (emailMatch) {
+            addValidationError(
+              "ERR: There is already an invitaiton for this email."
+            )
+          }
+
+          // check if a User exists with this email
+          const matchUser = await context.db.User.findOne({
+            where: { email: email },
+          })
+          if (matchUser) {
+            addValidationError(`ERR: ${email} is already a user.`)
+          }
+        },
+      },
     }),
     createdBy: relationship({ ref: "User.createdInvitations", many: false }),
     created: timestamp({
@@ -44,14 +72,14 @@ const Invitation = list({
     // }),
   },
   hooks: {
-    validateInput: ({ resolvedData, addValidationError }) => {
+    validateInput: async ({ resolvedData, addValidationError, context }) => {
       const { expires } = resolvedData
       const expirationDate = new Date(expires)
       const now = new Date()
 
       // check if invitation has expired
       if (now.getTime() > expirationDate.getTime()) {
-        addValidationError("Your invitation has expired.")
+        addValidationError("ERR: Your invitation has expired.")
       }
     },
     afterOperation: ({ operation, item }) => {

@@ -1,0 +1,12 @@
+mutation createInvitation($email: String!, $expires: DateTime!, $userID: ID!) {
+  createInvitation(
+    data: {
+      email: $email
+      expires: $expires
+      createdBy: { connect: { id: $userID } }
+    }
+  ) {
+    id
+    email
+  }
+}
