@@ -23,6 +23,9 @@ model User {
   invitation              Invitation?  @relation("User_invitation", fields: [invitationId], references: [id])
   invitationId            String?      @map("invitation") @postgresql.Uuid
   createdInvitations      Invitation[] @relation("Invitation_createdBy")
+  authoredTeams           Team[]       @relation("Team_author")
+  managedTeams            Team[]       @relation("Team_managers")
+  assignedTeams           Team[]       @relation("Team_members")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -51,4 +54,18 @@ model Invitation {
   from_User_invitation User[]    @relation("User_invitation")
 
   @@index([createdById])
+}
+
+model Team {
+  id          String    @id @default(uuid()) @postgresql.Uuid
+  name        String    @default("")
+  description String    @default("")
+  created     DateTime? @default(now())
+  updated     DateTime? @updatedAt
+  author      User?     @relation("Team_author", fields: [authorId], references: [id])
+  authorId    String?   @map("author") @postgresql.Uuid
+  managers    User[]    @relation("Team_managers")
+  members     User[]    @relation("Team_members")
+
+  @@index([authorId])
 }

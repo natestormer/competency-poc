@@ -61,6 +61,9 @@ const User = list({
       ref: "Invitation.createdBy",
       many: true,
     }),
+    authoredTeams: relationship({ ref: "Team.author", many: true }),
+    managedTeams: relationship({ ref: "Team.managers", many: true }),
+    assignedTeams: relationship({ ref: "Team.members", many: true }),
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {

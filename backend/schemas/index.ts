@@ -22,6 +22,7 @@ import { Lists } from ".keystone/types"
 import { User } from "./User"
 import { Role } from "./Role"
 import { Invitation } from "./Invitation"
+import { Team } from "./Team"
 
 // We have a users list, a blogs list, and tags for blog posts, so they can be filtered.
 // Each property on the exported object will become the name of a list (a.k.a. the `listKey`),
@@ -30,4 +31,5 @@ export const schemas: Lists = {
   User,
   Role,
   Invitation,
+  Team,
 }

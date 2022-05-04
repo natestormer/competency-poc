@@ -2,6 +2,10 @@
 # Modify your Keystone config when you want to change this.
 
 type User {
+  """
+   Return all teams a user is assigned to
+  """
+  allUserTeams: [Team]
   id: ID!
   firstName: String
   lastName: String
@@ -18,6 +22,27 @@ type User {
     skip: Int! = 0
   ): [Invitation!]
   createdInvitationsCount(where: InvitationWhereInput! = {}): Int
+  authoredTeams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  authoredTeamsCount(where: TeamWhereInput! = {}): Int
+  managedTeams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  managedTeamsCount(where: TeamWhereInput! = {}): Int
+  assignedTeams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  assignedTeamsCount(where: TeamWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -47,6 +72,9 @@ input UserWhereInput {
   role: RoleWhereInput
   invitation: InvitationWhereInput
   createdInvitations: InvitationManyRelationFilter
+  authoredTeams: TeamManyRelationFilter
+  managedTeams: TeamManyRelationFilter
+  assignedTeams: TeamManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -114,6 +142,12 @@ input InvitationManyRelationFilter {
   none: InvitationWhereInput
 }
 
+input TeamManyRelationFilter {
+  every: TeamWhereInput
+  some: TeamWhereInput
+  none: TeamWhereInput
+}
+
 input PasswordFilter {
   isSet: Boolean!
 }
@@ -142,6 +176,9 @@ input UserUpdateInput {
   role: RoleRelateToOneForUpdateInput
   invitation: InvitationRelateToOneForUpdateInput
   createdInvitations: InvitationRelateToManyForUpdateInput
+  authoredTeams: TeamRelateToManyForUpdateInput
+  managedTeams: TeamRelateToManyForUpdateInput
+  assignedTeams: TeamRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -166,6 +203,13 @@ input InvitationRelateToManyForUpdateInput {
   connect: [InvitationWhereUniqueInput!]
 }
 
+input TeamRelateToManyForUpdateInput {
+  disconnect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  create: [TeamCreateInput!]
+  connect: [TeamWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -180,6 +224,9 @@ input UserCreateInput {
   role: RoleRelateToOneForCreateInput
   invitation: InvitationRelateToOneForCreateInput
   createdInvitations: InvitationRelateToManyForCreateInput
+  authoredTeams: TeamRelateToManyForCreateInput
+  managedTeams: TeamRelateToManyForCreateInput
+  assignedTeams: TeamRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -198,6 +245,11 @@ input InvitationRelateToOneForCreateInput {
 input InvitationRelateToManyForCreateInput {
   create: [InvitationCreateInput!]
   connect: [InvitationWhereUniqueInput!]
+}
+
+input TeamRelateToManyForCreateInput {
+  create: [TeamCreateInput!]
+  connect: [TeamWhereUniqueInput!]
 }
 
 type Role {
@@ -361,6 +413,80 @@ input UserRelateToOneForCreateInput {
   connect: UserWhereUniqueInput
 }
 
+type Team {
+  id: ID!
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: User
+  managers(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  managersCount(where: UserWhereInput! = {}): Int
+  members(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  membersCount(where: UserWhereInput! = {}): Int
+}
+
+input TeamWhereUniqueInput {
+  id: ID
+}
+
+input TeamWhereInput {
+  AND: [TeamWhereInput!]
+  OR: [TeamWhereInput!]
+  NOT: [TeamWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  description: StringFilter
+  created: DateTimeNullableFilter
+  updated: DateTimeNullableFilter
+  author: UserWhereInput
+  managers: UserManyRelationFilter
+  members: UserManyRelationFilter
+}
+
+input TeamOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  created: OrderDirection
+  updated: OrderDirection
+}
+
+input TeamUpdateInput {
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: UserRelateToOneForUpdateInput
+  managers: UserRelateToManyForUpdateInput
+  members: UserRelateToManyForUpdateInput
+}
+
+input TeamUpdateArgs {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateInput!
+}
+
+input TeamCreateInput {
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: UserRelateToOneForCreateInput
+  managers: UserRelateToManyForCreateInput
+  members: UserRelateToManyForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -391,6 +517,12 @@ type Mutation {
   updateInvitations(data: [InvitationUpdateArgs!]!): [Invitation]
   deleteInvitation(where: InvitationWhereUniqueInput!): Invitation
   deleteInvitations(where: [InvitationWhereUniqueInput!]!): [Invitation]
+  createTeam(data: TeamCreateInput!): Team
+  createTeams(data: [TeamCreateInput!]!): [Team]
+  updateTeam(where: TeamWhereUniqueInput!, data: TeamUpdateInput!): Team
+  updateTeams(data: [TeamUpdateArgs!]!): [Team]
+  deleteTeam(where: TeamWhereUniqueInput!): Team
+  deleteTeams(where: [TeamWhereUniqueInput!]!): [Team]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -463,6 +595,14 @@ type Query {
   ): [Invitation!]
   invitation(where: InvitationWhereUniqueInput!): Invitation
   invitationsCount(where: InvitationWhereInput! = {}): Int
+  teams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  team(where: TeamWhereUniqueInput!): Team
+  teamsCount(where: TeamWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(

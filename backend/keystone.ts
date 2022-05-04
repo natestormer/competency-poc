@@ -14,6 +14,8 @@ import { schemas } from "./schemas"
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from "./auth"
 
+import { extendGraphqlSchema } from "./graphql-extensions"
+
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
   config({
@@ -43,5 +45,6 @@ export default withAuth(
     },
     lists: schemas,
     session,
+    extendGraphqlSchema,
   })
 )
