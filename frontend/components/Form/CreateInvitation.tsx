@@ -1,6 +1,7 @@
 import { ApolloError, useMutation } from "@apollo/client"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import { useState } from "react"
+import { invitationExpirationHours } from "../../config"
 import {
   CreateInvitationDocument,
   CreateInvitationMutation,
@@ -43,7 +44,9 @@ const FormCreateInvitation = () => {
       ) => {
         const now = new Date()
         // expires 24 hours from now
-        const expiryDate = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+        const expiryDate = new Date(
+          now.getTime() + invitationExpirationHours * 60 * 60 * 1000
+        )
         await createInvitation({
           variables: {
             email: values.email,

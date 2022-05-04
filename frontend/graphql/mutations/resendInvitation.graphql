@@ -1,0 +1,5 @@
+mutation resendInvitation($id: ID!, $expires: DateTime!) {
+  updateInvitation(where: { id: $id }, data: { expires: $expires }) {
+    id
+  }
+}

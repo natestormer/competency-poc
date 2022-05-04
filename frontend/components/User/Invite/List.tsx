@@ -1,5 +1,6 @@
 import { UserInvitationPageDocument } from "../../../graphql/generated"
 import { UserInviteDeleteButton } from "./DeleteButton"
+import { UserInviteResendButton } from "./ResendButton"
 
 interface UserInviteListProps {
   list: {
@@ -67,7 +68,12 @@ const UserInviteList = ({ list }: UserInviteListProps) => {
                   ) : (
                     <div />
                   )}
-                  <button type="button">Resend</button>
+                  <UserInviteResendButton
+                    id={item.id}
+                    refreshQueries={[{ query: UserInvitationPageDocument }]}
+                  >
+                    Resend
+                  </UserInviteResendButton>
                 </>
               )}
             </div>

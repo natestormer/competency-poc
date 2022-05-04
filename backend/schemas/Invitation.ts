@@ -19,22 +19,24 @@ const Invitation = list({
         }) => {
           const email = resolvedData[fieldKey]
 
-          // check that email does not exist in Invitations
-          const emailMatch = await context.db.Invitation.findOne({
-            where: { email: email },
-          })
-          if (emailMatch) {
-            addValidationError(
-              "ERR: There is already an invitaiton for this email."
-            )
-          }
+          if (email) {
+            // check that email does not exist in Invitations
+            const emailMatch = await context.db.Invitation.findOne({
+              where: { email: email },
+            })
+            if (emailMatch) {
+              addValidationError(
+                "ERR: There is already an invitaiton for this email."
+              )
+            }
 
-          // check if a User exists with this email
-          const matchUser = await context.db.User.findOne({
-            where: { email: email },
-          })
-          if (matchUser) {
-            addValidationError(`ERR: ${email} is already a user.`)
+            // check if a User exists with this email
+            const matchUser = await context.db.User.findOne({
+              where: { email: email },
+            })
+            if (matchUser) {
+              addValidationError(`ERR: ${email} is already a user.`)
+            }
           }
         },
       },
@@ -91,6 +93,7 @@ const Invitation = list({
           item?.expires as string
         )
       }
+      // @Todo: send email when invitation expiration has been updated
     },
   },
   ui: {
