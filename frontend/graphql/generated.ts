@@ -257,12 +257,16 @@ export type Mutation = {
   createInvitations?: Maybe<Array<Maybe<Invitation>>>;
   createRole?: Maybe<Role>;
   createRoles?: Maybe<Array<Maybe<Role>>>;
+  createTeam?: Maybe<Team>;
+  createTeams?: Maybe<Array<Maybe<Team>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
   deleteInvitation?: Maybe<Invitation>;
   deleteInvitations?: Maybe<Array<Maybe<Invitation>>>;
   deleteRole?: Maybe<Role>;
   deleteRoles?: Maybe<Array<Maybe<Role>>>;
+  deleteTeam?: Maybe<Team>;
+  deleteTeams?: Maybe<Array<Maybe<Team>>>;
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
@@ -272,6 +276,8 @@ export type Mutation = {
   updateInvitations?: Maybe<Array<Maybe<Invitation>>>;
   updateRole?: Maybe<Role>;
   updateRoles?: Maybe<Array<Maybe<Role>>>;
+  updateTeam?: Maybe<Team>;
+  updateTeams?: Maybe<Array<Maybe<Team>>>;
   updateUser?: Maybe<User>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
 };
@@ -308,6 +314,16 @@ export type MutationCreateRolesArgs = {
 };
 
 
+export type MutationCreateTeamArgs = {
+  data: TeamCreateInput;
+};
+
+
+export type MutationCreateTeamsArgs = {
+  data: Array<TeamCreateInput>;
+};
+
+
 export type MutationCreateUserArgs = {
   data: UserCreateInput;
 };
@@ -335,6 +351,16 @@ export type MutationDeleteRoleArgs = {
 
 export type MutationDeleteRolesArgs = {
   where: Array<RoleWhereUniqueInput>;
+};
+
+
+export type MutationDeleteTeamArgs = {
+  where: TeamWhereUniqueInput;
+};
+
+
+export type MutationDeleteTeamsArgs = {
+  where: Array<TeamWhereUniqueInput>;
 };
 
 
@@ -379,6 +405,17 @@ export type MutationUpdateRoleArgs = {
 
 export type MutationUpdateRolesArgs = {
   data: Array<RoleUpdateArgs>;
+};
+
+
+export type MutationUpdateTeamArgs = {
+  data: TeamUpdateInput;
+  where: TeamWhereUniqueInput;
+};
+
+
+export type MutationUpdateTeamsArgs = {
+  data: Array<TeamUpdateArgs>;
 };
 
 
@@ -436,6 +473,9 @@ export type Query = {
   role?: Maybe<Role>;
   roles?: Maybe<Array<Role>>;
   rolesCount?: Maybe<Scalars['Int']>;
+  team?: Maybe<Team>;
+  teams?: Maybe<Array<Team>>;
+  teamsCount?: Maybe<Scalars['Int']>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']>;
@@ -476,6 +516,24 @@ export type QueryRolesArgs = {
 
 export type QueryRolesCountArgs = {
   where?: RoleWhereInput;
+};
+
+
+export type QueryTeamArgs = {
+  where: TeamWhereUniqueInput;
+};
+
+
+export type QueryTeamsArgs = {
+  orderBy?: Array<TeamOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: TeamWhereInput;
+};
+
+
+export type QueryTeamsCountArgs = {
+  where?: TeamWhereInput;
 };
 
 
@@ -608,8 +666,125 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
+export type Team = {
+  __typename?: 'Team';
+  author?: Maybe<User>;
+  created?: Maybe<Scalars['DateTime']>;
+  currentUserIsAuthor?: Maybe<Scalars['Boolean']>;
+  currentUserIsManager?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  managers?: Maybe<Array<User>>;
+  managersCount?: Maybe<Scalars['Int']>;
+  members?: Maybe<Array<User>>;
+  membersCount?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type TeamManagersArgs = {
+  orderBy?: Array<UserOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserWhereInput;
+};
+
+
+export type TeamManagersCountArgs = {
+  where?: UserWhereInput;
+};
+
+
+export type TeamMembersArgs = {
+  orderBy?: Array<UserOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserWhereInput;
+};
+
+
+export type TeamMembersCountArgs = {
+  where?: UserWhereInput;
+};
+
+export type TeamCreateInput = {
+  author?: InputMaybe<UserRelateToOneForCreateInput>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  managers?: InputMaybe<UserRelateToManyForCreateInput>;
+  members?: InputMaybe<UserRelateToManyForCreateInput>;
+  name?: InputMaybe<Scalars['String']>;
+  updated?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type TeamManyRelationFilter = {
+  every?: InputMaybe<TeamWhereInput>;
+  none?: InputMaybe<TeamWhereInput>;
+  some?: InputMaybe<TeamWhereInput>;
+};
+
+export type TeamOrderByInput = {
+  created?: InputMaybe<OrderDirection>;
+  description?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+  name?: InputMaybe<OrderDirection>;
+  updated?: InputMaybe<OrderDirection>;
+};
+
+export type TeamRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<TeamWhereUniqueInput>>;
+  create?: InputMaybe<Array<TeamCreateInput>>;
+};
+
+export type TeamRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<TeamWhereUniqueInput>>;
+  create?: InputMaybe<Array<TeamCreateInput>>;
+  disconnect?: InputMaybe<Array<TeamWhereUniqueInput>>;
+  set?: InputMaybe<Array<TeamWhereUniqueInput>>;
+};
+
+export type TeamUpdateArgs = {
+  data: TeamUpdateInput;
+  where: TeamWhereUniqueInput;
+};
+
+export type TeamUpdateInput = {
+  author?: InputMaybe<UserRelateToOneForUpdateInput>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  managers?: InputMaybe<UserRelateToManyForUpdateInput>;
+  members?: InputMaybe<UserRelateToManyForUpdateInput>;
+  name?: InputMaybe<Scalars['String']>;
+  updated?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type TeamWhereInput = {
+  AND?: InputMaybe<Array<TeamWhereInput>>;
+  NOT?: InputMaybe<Array<TeamWhereInput>>;
+  OR?: InputMaybe<Array<TeamWhereInput>>;
+  author?: InputMaybe<UserWhereInput>;
+  created?: InputMaybe<DateTimeNullableFilter>;
+  description?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IdFilter>;
+  managers?: InputMaybe<UserManyRelationFilter>;
+  members?: InputMaybe<UserManyRelationFilter>;
+  name?: InputMaybe<StringFilter>;
+  updated?: InputMaybe<DateTimeNullableFilter>;
+};
+
+export type TeamWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type User = {
   __typename?: 'User';
+  /**  Return all teams a user is assigned to  */
+  allUserTeams?: Maybe<Array<Maybe<Team>>>;
+  assignedTeams?: Maybe<Array<Team>>;
+  assignedTeamsCount?: Maybe<Scalars['Int']>;
+  authoredTeams?: Maybe<Array<Team>>;
+  authoredTeamsCount?: Maybe<Scalars['Int']>;
   createdInvitations?: Maybe<Array<Invitation>>;
   createdInvitationsCount?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
@@ -618,12 +793,40 @@ export type User = {
   id: Scalars['ID'];
   invitation?: Maybe<Invitation>;
   lastName?: Maybe<Scalars['String']>;
+  managedTeams?: Maybe<Array<Team>>;
+  managedTeamsCount?: Maybe<Scalars['Int']>;
   password?: Maybe<PasswordState>;
   passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
   passwordResetToken?: Maybe<PasswordState>;
   registered?: Maybe<Scalars['DateTime']>;
   role?: Maybe<Role>;
+};
+
+
+export type UserAssignedTeamsArgs = {
+  orderBy?: Array<TeamOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: TeamWhereInput;
+};
+
+
+export type UserAssignedTeamsCountArgs = {
+  where?: TeamWhereInput;
+};
+
+
+export type UserAuthoredTeamsArgs = {
+  orderBy?: Array<TeamOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: TeamWhereInput;
+};
+
+
+export type UserAuthoredTeamsCountArgs = {
+  where?: TeamWhereInput;
 };
 
 
@@ -637,6 +840,19 @@ export type UserCreatedInvitationsArgs = {
 
 export type UserCreatedInvitationsCountArgs = {
   where?: InvitationWhereInput;
+};
+
+
+export type UserManagedTeamsArgs = {
+  orderBy?: Array<TeamOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: TeamWhereInput;
+};
+
+
+export type UserManagedTeamsCountArgs = {
+  where?: TeamWhereInput;
 };
 
 export type UserAuthenticationWithPasswordFailure = {
@@ -653,11 +869,14 @@ export type UserAuthenticationWithPasswordSuccess = {
 };
 
 export type UserCreateInput = {
+  assignedTeams?: InputMaybe<TeamRelateToManyForCreateInput>;
+  authoredTeams?: InputMaybe<TeamRelateToManyForCreateInput>;
   createdInvitations?: InputMaybe<InvitationRelateToManyForCreateInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   invitation?: InputMaybe<InvitationRelateToOneForCreateInput>;
   lastName?: InputMaybe<Scalars['String']>;
+  managedTeams?: InputMaybe<TeamRelateToManyForCreateInput>;
   password?: InputMaybe<Scalars['String']>;
   passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
@@ -711,11 +930,14 @@ export type UserUpdateArgs = {
 };
 
 export type UserUpdateInput = {
+  assignedTeams?: InputMaybe<TeamRelateToManyForUpdateInput>;
+  authoredTeams?: InputMaybe<TeamRelateToManyForUpdateInput>;
   createdInvitations?: InputMaybe<InvitationRelateToManyForUpdateInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   invitation?: InputMaybe<InvitationRelateToOneForUpdateInput>;
   lastName?: InputMaybe<Scalars['String']>;
+  managedTeams?: InputMaybe<TeamRelateToManyForUpdateInput>;
   password?: InputMaybe<Scalars['String']>;
   passwordResetIssuedAt?: InputMaybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: InputMaybe<Scalars['DateTime']>;
@@ -728,12 +950,15 @@ export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>;
   NOT?: InputMaybe<Array<UserWhereInput>>;
   OR?: InputMaybe<Array<UserWhereInput>>;
+  assignedTeams?: InputMaybe<TeamManyRelationFilter>;
+  authoredTeams?: InputMaybe<TeamManyRelationFilter>;
   createdInvitations?: InputMaybe<InvitationManyRelationFilter>;
   email?: InputMaybe<StringFilter>;
   firstName?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
   invitation?: InputMaybe<InvitationWhereInput>;
   lastName?: InputMaybe<StringFilter>;
+  managedTeams?: InputMaybe<TeamManyRelationFilter>;
   passwordResetIssuedAt?: InputMaybe<DateTimeNullableFilter>;
   passwordResetRedeemedAt?: InputMaybe<DateTimeNullableFilter>;
   passwordResetToken?: InputMaybe<PasswordFilter>;
@@ -756,9 +981,13 @@ export type PublicUserFieldsFragment = { __typename?: 'User', id: string, firstN
 
 export type InvitationFieldsFragment = { __typename?: 'Invitation', id: string, email?: string | null, created?: any | null, expires?: any | null, expired?: boolean | null, accepted?: any | null };
 
+export type TeamFieldsFragment = { __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null };
+
 export type CurrentUserBasicFieldsFragment = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
 
 export type CurrentUserInvitationsFieldsFragment = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', createdInvitations?: Array<{ __typename?: 'Invitation', id: string, email?: string | null, created?: any | null, expires?: any | null, expired?: boolean | null, accepted?: any | null }> | null } | null };
+
+export type CurrentUserTeamsFieldsFragment = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', allUserTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null } | null> | null, assignedTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null }> | null, authoredTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null }> | null, managedTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null }> | null } | null };
 
 export type RequiredAppDataQueryFieldsFragment = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
 
@@ -895,14 +1124,21 @@ export type UserPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UserPageQuery = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
 
+export type UserTeamsPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserTeamsPageQuery = { __typename?: 'Query', authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, allUserTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, description?: string | null, updated?: any | null, currentUserIsAuthor?: boolean | null, currentUserIsManager?: boolean | null, author?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null } | null, managers?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null, members?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null }> | null } | null> | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null, registered?: any | null }> | null };
 
-export const PublicUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"publicUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]} as unknown as DocumentNode<PublicUserFieldsFragment, unknown>;
 export const InvitationFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"invitationFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Invitation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"expires"}},{"kind":"Field","name":{"kind":"Name","value":"expired"}},{"kind":"Field","name":{"kind":"Name","value":"accepted"}}]}}]} as unknown as DocumentNode<InvitationFieldsFragment, unknown>;
 export const CurrentUserInvitationsFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"currentUserInvitationsFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Query"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticatedItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdInvitations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"invitationFields"}}]}}]}}]}}]}},...InvitationFieldsFragmentDoc.definitions]} as unknown as DocumentNode<CurrentUserInvitationsFieldsFragment, unknown>;
+export const PublicUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"publicUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]} as unknown as DocumentNode<PublicUserFieldsFragment, unknown>;
+export const TeamFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"teamFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Team"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"updated"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"publicUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"managers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"publicUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"members"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"publicUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentUserIsAuthor"}},{"kind":"Field","name":{"kind":"Name","value":"currentUserIsManager"}}]}},...PublicUserFieldsFragmentDoc.definitions]} as unknown as DocumentNode<TeamFieldsFragment, unknown>;
+export const CurrentUserTeamsFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"currentUserTeamsFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Query"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticatedItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allUserTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"assignedTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"authoredTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"managedTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}}]}}]}}]}},...TeamFieldsFragmentDoc.definitions]} as unknown as DocumentNode<CurrentUserTeamsFieldsFragment, unknown>;
 export const CurrentUserBasicFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"currentUserBasicFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Query"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticatedItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"role"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CurrentUserBasicFieldsFragment, unknown>;
 export const RequiredAppDataQueryFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"requiredAppDataQueryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Query"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"currentUserBasicFields"}}]}},...CurrentUserBasicFieldsFragmentDoc.definitions]} as unknown as DocumentNode<RequiredAppDataQueryFieldsFragment, unknown>;
 export const AcceptInvitationAndCreateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"acceptInvitationAndCreateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"accepted"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateInvitation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"accepted"},"value":{"kind":"Variable","name":{"kind":"Name","value":"accepted"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accepted"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"invitation"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AcceptInvitationAndCreateUserMutation, AcceptInvitationAndCreateUserMutationVariables>;
@@ -925,4 +1161,5 @@ export const ResetPasswordRequestPageDocument = {"kind":"Document","definitions"
 export const SignUpPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"signUpPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<SignUpPageQuery, SignUpPageQueryVariables>;
 export const UserInvitationPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userInvitationPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"currentUserInvitationsFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...CurrentUserInvitationsFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserInvitationPageQuery, UserInvitationPageQueryVariables>;
 export const UserPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserPageQuery, UserPageQueryVariables>;
+export const UserTeamsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"authenticatedItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allUserTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}}]}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...TeamFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsPageQuery, UserTeamsPageQueryVariables>;
 export const UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"registered"}}]}}]}}]} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;

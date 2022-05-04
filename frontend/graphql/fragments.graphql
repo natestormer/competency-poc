@@ -15,6 +15,24 @@ fragment invitationFields on Invitation {
   accepted
 }
 
+fragment teamFields on Team {
+  id
+  name
+  description
+  updated
+  author {
+    ...publicUserFields
+  }
+  managers {
+    ...publicUserFields
+  }
+  members {
+    ...publicUserFields
+  }
+  currentUserIsAuthor
+  currentUserIsManager
+}
+
 fragment currentUserBasicFields on Query {
   authenticatedItem {
     ... on User {
@@ -35,6 +53,25 @@ fragment currentUserInvitationsFields on Query {
     ... on User {
       createdInvitations {
         ...invitationFields
+      }
+    }
+  }
+}
+
+fragment currentUserTeamsFields on Query {
+  authenticatedItem {
+    ... on User {
+      allUserTeams {
+        ...teamFields
+      }
+      assignedTeams {
+        ...teamFields
+      }
+      authoredTeams {
+        ...teamFields
+      }
+      managedTeams {
+        ...teamFields
       }
     }
   }

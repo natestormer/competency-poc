@@ -1,0 +1,12 @@
+# Data needed for user teams page SSR
+
+query userTeamsPage {
+  ...requiredAppDataQueryFields
+  authenticatedItem {
+    ... on User {
+      allUserTeams {
+        ...teamFields
+      }
+    }
+  }
+}
