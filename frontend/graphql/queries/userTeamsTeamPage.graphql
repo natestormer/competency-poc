@@ -1,0 +1,8 @@
+# Data needed for user teams team page SSR
+
+query userTeamsTeamPage($id: ID!) {
+  ...requiredAppDataQueryFields
+  team(where: { id: $id }) {
+    ...teamFields
+  }
+}
