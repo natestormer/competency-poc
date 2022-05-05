@@ -48,16 +48,6 @@ fragment currentUserBasicFields on Query {
   }
 }
 
-fragment currentUserInvitationsFields on Query {
-  authenticatedItem {
-    ... on User {
-      createdInvitations {
-        ...invitationFields
-      }
-    }
-  }
-}
-
 fragment currentUserTeamsFields on Query {
   authenticatedItem {
     ... on User {

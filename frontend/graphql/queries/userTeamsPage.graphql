@@ -1,12 +1,10 @@
 # Data needed for user teams page SSR
 
-query userTeamsPage {
+query userTeamsPage($userId: ID!) {
   ...requiredAppDataQueryFields
-  authenticatedItem {
-    ... on User {
-      allUserTeams {
-        ...teamFields
-      }
+  user(where: { id: $userId }) {
+    allUserTeams {
+      ...teamFields
     }
   }
 }

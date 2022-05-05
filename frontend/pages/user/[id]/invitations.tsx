@@ -21,6 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { data } = await apolloClient.query({
     query: UserInvitationPageDocument,
+    variables: { userId: context.query.id as never },
   })
 
   // check if user is logged in

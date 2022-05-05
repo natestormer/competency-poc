@@ -9,9 +9,15 @@ import { unAuthRedirect } from "../../../../config"
 import { UserTeamNav } from "../../../../components/User/Team/Nav"
 import { useQuery } from "@apollo/client"
 import { UserTeamList } from "../../../../components/User/Team/List"
+import { useRouter } from "next/router"
 
 const UserTeamsPage: NextPage = () => {
-  const { data, error } = useQuery<UserTeamsPageQuery>(UserTeamsPageDocument)
+  const { query } = useRouter()
+  const { data, error } = useQuery<UserTeamsPageQuery>(UserTeamsPageDocument, {
+    variables: {
+      userId: query.id,
+    },
+  })
 
   return (
     <main role="main">
@@ -22,7 +28,7 @@ const UserTeamsPage: NextPage = () => {
         <>
           <UserTeamNav />
           <UserTeamList
-            list={data?.authenticatedItem?.allUserTeams}
+            list={data?.user?.allUserTeams}
             emptyMessage="You have no teams."
           />
         </>
@@ -38,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { data } = await apolloClient.query({
     query: UserTeamsPageDocument,
+    variables: { userId: context.query.id as never },
   })
 
   // check if user is logged in

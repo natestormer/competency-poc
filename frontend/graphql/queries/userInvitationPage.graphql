@@ -1,6 +1,10 @@
 # Data needed for user page invitation SSR
 
-query userInvitationPage {
+query userInvitationPage($userId: ID!) {
   ...requiredAppDataQueryFields
-  ...currentUserInvitationsFields
+  user(where: { id: $userId }) {
+    createdInvitations {
+      ...invitationFields
+    }
+  }
 }

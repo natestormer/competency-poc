@@ -16,7 +16,6 @@ const UserTeamsTeamPage: NextPage = () => {
     UserTeamsTeamPageDocument,
     { variables: { id: query.teamId } }
   )
-  console.log(data?.team?.members)
 
   return (
     <main role="main">

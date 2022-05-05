@@ -1,14 +1,21 @@
 import { useQuery } from "@apollo/client"
+import { useRouter } from "next/router"
 import {
-  CurrentUserInvitationsDocument,
-  CurrentUserInvitationsQuery,
+  UserInvitationsDocument,
+  UserInvitationsQuery,
 } from "../../../graphql/generated"
 import { FormCreateInvitation } from "../../Form/CreateInvitation"
 import { UserInviteList } from "./List"
 
 const UserInviteManage = () => {
-  const { data, error } = useQuery<CurrentUserInvitationsQuery>(
-    CurrentUserInvitationsDocument
+  const { query } = useRouter()
+  const { data, error } = useQuery<UserInvitationsQuery>(
+    UserInvitationsDocument,
+    {
+      variables: {
+        userId: query.id,
+      },
+    }
   )
 
   if (error) {
@@ -19,11 +26,11 @@ const UserInviteManage = () => {
   return (
     <section>
       <FormCreateInvitation />
-      {data?.authenticatedItem?.createdInvitations?.length && (
+      {data?.user?.createdInvitations?.length && (
         <>
           <br />
           <hr />
-          <UserInviteList list={data.authenticatedItem.createdInvitations} />
+          <UserInviteList list={data.user.createdInvitations} />
         </>
       )}
     </section>
