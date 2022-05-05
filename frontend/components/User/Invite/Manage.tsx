@@ -13,7 +13,7 @@ const UserInviteManage = () => {
     UserInvitationsDocument,
     {
       variables: {
-        userId: query.id,
+        userId: query.userId,
       },
     }
   )

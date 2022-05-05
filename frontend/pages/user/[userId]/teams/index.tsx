@@ -15,7 +15,7 @@ const UserTeamsPage: NextPage = () => {
   const { query } = useRouter()
   const { data, error } = useQuery<UserTeamsPageQuery>(UserTeamsPageDocument, {
     variables: {
-      userId: query.id,
+      userId: query.userId,
     },
   })
 
@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { data } = await apolloClient.query({
     query: UserTeamsPageDocument,
-    variables: { userId: context.query.id as never },
+    variables: { userId: context.query.userId as never },
   })
 
   // check if user is logged in

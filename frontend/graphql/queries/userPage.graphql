@@ -1,5 +1,8 @@
 # Data needed for user page SSR
 
-query userPage {
+query userPage($userId: ID!) {
   ...requiredAppDataQueryFields
+  user(where: { id: $userId }) {
+    ...publicUserFields
+  }
 }
