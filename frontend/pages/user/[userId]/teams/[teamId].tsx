@@ -9,6 +9,7 @@ import { unAuthRedirect } from "../../../../config"
 import { UserTeamNav } from "../../../../components/User/Team/Nav"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
+import Link from "next/link"
 
 const UserTeamsTeamPage: NextPage = () => {
   const { query } = useRouter()
@@ -39,8 +40,12 @@ const UserTeamsTeamPage: NextPage = () => {
                   borderBottom: "1px solid black",
                 }}
               >
-                <h5>{member.fullName}</h5>
-                <small>{member.email}</small>
+                <Link href={`/user/${member.id}`} passHref>
+                  <a>
+                    <h5>{member.fullName}</h5>
+                    <small>{member.email}</small>
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
