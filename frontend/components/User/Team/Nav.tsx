@@ -16,6 +16,9 @@ const UserTeamNav = () => {
         <li>
           <Link href={`/user/${user?.id}/teams/managed`}>Managed Teams</Link>
         </li>
+        <li>
+          <Link href={`/user/${user?.id}/teams/create`}>Create a Team</Link>
+        </li>
       </ul>
     </nav>
   )

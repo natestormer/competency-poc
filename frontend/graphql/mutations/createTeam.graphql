@@ -1,0 +1,11 @@
+mutation createTeam($name: String!, $description: String!, $userId: ID!) {
+  createTeam(
+    data: {
+      name: $name
+      description: $description
+      author: { connect: { id: $userId } }
+    }
+  ) {
+    id
+  }
+}

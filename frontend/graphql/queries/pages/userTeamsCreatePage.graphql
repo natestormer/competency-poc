@@ -1,0 +1,5 @@
+# Data needed for user teams create page SSR
+
+query userTeamsCreatePage {
+  ...requiredAppDataQueryFields
+}
