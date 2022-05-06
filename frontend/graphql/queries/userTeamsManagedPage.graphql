@@ -1,0 +1,10 @@
+# Data needed for user teams managed page SSR
+
+query userTeamsManagedPage($userId: ID!) {
+  ...requiredAppDataQueryFields
+  user(where: { id: $userId }) {
+    managedTeams {
+      ...teamFields
+    }
+  }
+}
