@@ -1,0 +1,7 @@
+query skillsByTeam($teamId: ID!) {
+  skills(where: { team: { id: { equals: $teamId } } }) {
+    id
+    name
+    description
+  }
+}

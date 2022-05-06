@@ -1,12 +1,15 @@
 import type { NextPage, GetServerSideProps } from "next"
 
-import { addApolloState, initializeApollo } from "../../../../lib/apolloClient"
+import {
+  addApolloState,
+  initializeApollo,
+} from "../../../../../lib/apolloClient"
 import {
   UserTeamsTeamPageDocument,
   UserTeamsTeamPageQuery,
-} from "../../../../graphql/generated"
-import { unAuthRedirect } from "../../../../config"
-import { UserTeamNav } from "../../../../components/User/Team/Nav"
+} from "../../../../../graphql/generated"
+import { unAuthRedirect } from "../../../../../config"
+import { UserTeamNav } from "../../../../../components/User/Team/Nav"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import Link from "next/link"
@@ -49,6 +52,16 @@ const UserTeamsTeamPage: NextPage = () => {
               </li>
             ))}
           </ul>
+          <h4>Skill Matrix</h4>
+          {data?.team?.skills && data.team.skills.length ? (
+            <p>List skills here...</p>
+          ) : (
+            <Link
+              href={`/user/${query.userId}/teams/${query.teamId}/skills/create`}
+            >
+              Create Skills
+            </Link>
+          )}
         </>
       )}
     </main>

@@ -1,0 +1,17 @@
+mutation createSkill(
+  $name: String!
+  $userId: ID!
+  $teamId: ID!
+  $description: String
+) {
+  createSkill(
+    data: {
+      name: $name
+      description: $description
+      author: { connect: { id: $userId } }
+      team: { connect: { id: $teamId } }
+    }
+  ) {
+    id
+  }
+}

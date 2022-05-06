@@ -1,0 +1,10 @@
+# Data needed for user teams team page SSR
+
+query userTeamsTeamSkillsCreatePage($teamId: ID!) {
+  ...requiredAppDataQueryFields
+  skills(where: { team: { id: { equals: $teamId } } }) {
+    id
+    name
+    description
+  }
+}

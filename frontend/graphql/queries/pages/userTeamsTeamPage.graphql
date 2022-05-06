@@ -4,5 +4,10 @@ query userTeamsTeamPage($id: ID!) {
   ...requiredAppDataQueryFields
   team(where: { id: $id }) {
     ...teamFields
+    skills {
+      id
+      name
+      description
+    }
   }
 }

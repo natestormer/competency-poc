@@ -1,4 +1,5 @@
 import type { NextPage, GetServerSideProps } from "next"
+import { useRouter } from "next/router"
 
 import { addApolloState, initializeApollo } from "../../../../lib/apolloClient"
 import {
@@ -9,7 +10,6 @@ import { unAuthRedirect } from "../../../../config"
 import { UserTeamNav } from "../../../../components/User/Team/Nav"
 import { useQuery } from "@apollo/client"
 import { UserTeamList } from "../../../../components/User/Team/List"
-import { useRouter } from "next/router"
 
 const UserTeamsCreatedPage: NextPage = () => {
   const { query } = useRouter()

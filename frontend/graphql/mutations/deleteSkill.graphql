@@ -1,0 +1,5 @@
+mutation deleteSkill($skillId: ID!) {
+  deleteSkill(where: { id: $skillId }) {
+    id
+  }
+}
