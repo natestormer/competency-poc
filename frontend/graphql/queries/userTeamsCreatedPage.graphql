@@ -1,0 +1,10 @@
+# Data needed for user teams created page SSR
+
+query userTeamsCreatedPage($userId: ID!) {
+  ...requiredAppDataQueryFields
+  user(where: { id: $userId }) {
+    authoredTeams {
+      ...teamFields
+    }
+  }
+}
