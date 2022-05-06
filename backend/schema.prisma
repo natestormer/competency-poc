@@ -26,6 +26,7 @@ model User {
   authoredTeams           Team[]       @relation("Team_author")
   managedTeams            Team[]       @relation("Team_managers")
   assignedTeams           Team[]       @relation("Team_members")
+  authoredSkills          Skill[]      @relation("Skill_author")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -62,10 +63,26 @@ model Team {
   description String    @default("")
   created     DateTime? @default(now())
   updated     DateTime? @updatedAt
+  skills      Skill[]   @relation("Skill_team")
   author      User?     @relation("Team_author", fields: [authorId], references: [id])
   authorId    String?   @map("author") @postgresql.Uuid
   managers    User[]    @relation("Team_managers")
   members     User[]    @relation("Team_members")
 
   @@index([authorId])
+}
+
+model Skill {
+  id          String    @id @default(uuid()) @postgresql.Uuid
+  name        String    @default("")
+  description String    @default("")
+  created     DateTime? @default(now())
+  updated     DateTime? @updatedAt
+  author      User?     @relation("Skill_author", fields: [authorId], references: [id])
+  authorId    String?   @map("author") @postgresql.Uuid
+  team        Team?     @relation("Skill_team", fields: [teamId], references: [id])
+  teamId      String?   @map("team") @postgresql.Uuid
+
+  @@index([authorId])
+  @@index([teamId])
 }

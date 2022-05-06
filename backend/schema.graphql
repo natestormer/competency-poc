@@ -43,6 +43,13 @@ type User {
     skip: Int! = 0
   ): [Team!]
   assignedTeamsCount(where: TeamWhereInput! = {}): Int
+  authoredSkills(
+    where: SkillWhereInput! = {}
+    orderBy: [SkillOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Skill!]
+  authoredSkillsCount(where: SkillWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -75,6 +82,7 @@ input UserWhereInput {
   authoredTeams: TeamManyRelationFilter
   managedTeams: TeamManyRelationFilter
   assignedTeams: TeamManyRelationFilter
+  authoredSkills: SkillManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -148,6 +156,12 @@ input TeamManyRelationFilter {
   none: TeamWhereInput
 }
 
+input SkillManyRelationFilter {
+  every: SkillWhereInput
+  some: SkillWhereInput
+  none: SkillWhereInput
+}
+
 input PasswordFilter {
   isSet: Boolean!
 }
@@ -179,6 +193,7 @@ input UserUpdateInput {
   authoredTeams: TeamRelateToManyForUpdateInput
   managedTeams: TeamRelateToManyForUpdateInput
   assignedTeams: TeamRelateToManyForUpdateInput
+  authoredSkills: SkillRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -210,6 +225,13 @@ input TeamRelateToManyForUpdateInput {
   connect: [TeamWhereUniqueInput!]
 }
 
+input SkillRelateToManyForUpdateInput {
+  disconnect: [SkillWhereUniqueInput!]
+  set: [SkillWhereUniqueInput!]
+  create: [SkillCreateInput!]
+  connect: [SkillWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -227,6 +249,7 @@ input UserCreateInput {
   authoredTeams: TeamRelateToManyForCreateInput
   managedTeams: TeamRelateToManyForCreateInput
   assignedTeams: TeamRelateToManyForCreateInput
+  authoredSkills: SkillRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -250,6 +273,11 @@ input InvitationRelateToManyForCreateInput {
 input TeamRelateToManyForCreateInput {
   create: [TeamCreateInput!]
   connect: [TeamWhereUniqueInput!]
+}
+
+input SkillRelateToManyForCreateInput {
+  create: [SkillCreateInput!]
+  connect: [SkillWhereUniqueInput!]
 }
 
 type Role {
@@ -419,6 +447,13 @@ type Team {
   description: String
   created: DateTime
   updated: DateTime
+  skills(
+    where: SkillWhereInput! = {}
+    orderBy: [SkillOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Skill!]
+  skillsCount(where: SkillWhereInput! = {}): Int
   author: User
   managers(
     where: UserWhereInput! = {}
@@ -451,6 +486,7 @@ input TeamWhereInput {
   description: StringFilter
   created: DateTimeNullableFilter
   updated: DateTimeNullableFilter
+  skills: SkillManyRelationFilter
   author: UserWhereInput
   managers: UserManyRelationFilter
   members: UserManyRelationFilter
@@ -469,6 +505,7 @@ input TeamUpdateInput {
   description: String
   created: DateTime
   updated: DateTime
+  skills: SkillRelateToManyForUpdateInput
   author: UserRelateToOneForUpdateInput
   managers: UserRelateToManyForUpdateInput
   members: UserRelateToManyForUpdateInput
@@ -484,9 +521,79 @@ input TeamCreateInput {
   description: String
   created: DateTime
   updated: DateTime
+  skills: SkillRelateToManyForCreateInput
   author: UserRelateToOneForCreateInput
   managers: UserRelateToManyForCreateInput
   members: UserRelateToManyForCreateInput
+}
+
+type Skill {
+  id: ID!
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: User
+  team: Team
+}
+
+input SkillWhereUniqueInput {
+  id: ID
+}
+
+input SkillWhereInput {
+  AND: [SkillWhereInput!]
+  OR: [SkillWhereInput!]
+  NOT: [SkillWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  description: StringFilter
+  created: DateTimeNullableFilter
+  updated: DateTimeNullableFilter
+  author: UserWhereInput
+  team: TeamWhereInput
+}
+
+input SkillOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  created: OrderDirection
+  updated: OrderDirection
+}
+
+input SkillUpdateInput {
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: UserRelateToOneForUpdateInput
+  team: TeamRelateToOneForUpdateInput
+}
+
+input TeamRelateToOneForUpdateInput {
+  create: TeamCreateInput
+  connect: TeamWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SkillUpdateArgs {
+  where: SkillWhereUniqueInput!
+  data: SkillUpdateInput!
+}
+
+input SkillCreateInput {
+  name: String
+  description: String
+  created: DateTime
+  updated: DateTime
+  author: UserRelateToOneForCreateInput
+  team: TeamRelateToOneForCreateInput
+}
+
+input TeamRelateToOneForCreateInput {
+  create: TeamCreateInput
+  connect: TeamWhereUniqueInput
 }
 
 """
@@ -525,6 +632,12 @@ type Mutation {
   updateTeams(data: [TeamUpdateArgs!]!): [Team]
   deleteTeam(where: TeamWhereUniqueInput!): Team
   deleteTeams(where: [TeamWhereUniqueInput!]!): [Team]
+  createSkill(data: SkillCreateInput!): Skill
+  createSkills(data: [SkillCreateInput!]!): [Skill]
+  updateSkill(where: SkillWhereUniqueInput!, data: SkillUpdateInput!): Skill
+  updateSkills(data: [SkillUpdateArgs!]!): [Skill]
+  deleteSkill(where: SkillWhereUniqueInput!): Skill
+  deleteSkills(where: [SkillWhereUniqueInput!]!): [Skill]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -605,6 +718,14 @@ type Query {
   ): [Team!]
   team(where: TeamWhereUniqueInput!): Team
   teamsCount(where: TeamWhereInput! = {}): Int
+  skills(
+    where: SkillWhereInput! = {}
+    orderBy: [SkillOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Skill!]
+  skill(where: SkillWhereUniqueInput!): Skill
+  skillsCount(where: SkillWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(
