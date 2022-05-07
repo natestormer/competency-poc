@@ -1,28 +1,28 @@
 import { GetServerSideProps, NextPage } from "next"
 import { FormCreateSkills } from "../../../../../../components/Form/CreateSkills"
 import { unAuthRedirect } from "../../../../../../config"
-import { UserTeamsTeamSkillsCreatePageDocument } from "../../../../../../graphql/generated"
+import { UserTeamsTeamSkillsUpdatePageDocument } from "../../../../../../graphql/generated"
 
 import {
   addApolloState,
   initializeApollo,
 } from "../../../../../../lib/apolloClient"
 
-const UserTeamSkillsCreate: NextPage = () => {
+const UserTeamSkillsEdit: NextPage = () => {
   return (
     <main role="main">
-      <h1>Create Team Skills</h1>
+      <h1>Edit Team Skills</h1>
       <FormCreateSkills />
     </main>
   )
 }
 
-export default UserTeamSkillsCreate
+export default UserTeamSkillsEdit
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo({ headers: context.req.headers })
   const { data } = await apolloClient.query({
-    query: UserTeamsTeamSkillsCreatePageDocument,
+    query: UserTeamsTeamSkillsUpdatePageDocument,
     variables: { teamId: context.query.teamId as never },
   })
 

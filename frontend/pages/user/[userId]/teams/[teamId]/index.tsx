@@ -13,6 +13,7 @@ import { UserTeamNav } from "../../../../../components/User/Team/Nav"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { UserTeamSkillsList } from "../../../../../components/User/Team/SkillsList"
 
 const UserTeamsTeamPage: NextPage = () => {
   const { query } = useRouter()
@@ -54,7 +55,14 @@ const UserTeamsTeamPage: NextPage = () => {
           </ul>
           <h4>Skill Matrix</h4>
           {data?.team?.skills && data.team.skills.length ? (
-            <p>List skills here...</p>
+            <>
+              <UserTeamSkillsList skills={data.team.skills} />
+              <Link
+                href={`/user/${query.userId}/teams/${query.teamId}/skills/update`}
+              >
+                Edit Skills
+              </Link>
+            </>
           ) : (
             <Link
               href={`/user/${query.userId}/teams/${query.teamId}/skills/create`}
