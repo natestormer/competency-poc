@@ -9,6 +9,8 @@ import {
   SkillsByTeamQuery,
   DeleteSkillDocument,
   DeleteSkillMutation,
+  UpdateSkillDocument,
+  UpdateSkillMutation,
 } from "../../graphql/generated"
 
 interface FormCreateSkillsValue {
@@ -44,6 +46,9 @@ const FormCreateSkills = () => {
       notifyOnNetworkStatusChange: true,
     })
 
+  const [updateSkill, { loading: updateSkillLoading }] =
+    useMutation<UpdateSkillMutation>(UpdateSkillDocument)
+
   const [
     createSkill,
     { loading: createdSkillLoading, error: createSkillError },
@@ -51,6 +56,18 @@ const FormCreateSkills = () => {
 
   const [deleteSkill, { loading: deleteSkillLoading }] =
     useMutation<DeleteSkillMutation>(DeleteSkillDocument)
+
+  const handleInputBlur = async (
+    input?: { [key: string]: string },
+    id?: string
+  ) => {
+    await updateSkill({
+      variables: {
+        skillId: id,
+        ...input,
+      },
+    })
+  }
 
   const handleDeleteItem = async (
     remove: (index: number) => void,
@@ -160,6 +177,17 @@ const FormCreateSkills = () => {
                       </div>
                       <button
                         type="button"
+                        onClick={() =>
+                          handleInputBlur(
+                            { ...values.skills[index] },
+                            values.skills[index]["id"]
+                          )
+                        }
+                      >
+                        Update
+                      </button>{" "}
+                      <button
+                        type="button"
                         disabled={deleteSkillLoading}
                         onClick={() =>
                           handleDeleteItem(
@@ -195,9 +223,6 @@ const FormCreateSkills = () => {
               </ol>
             )}
           </FieldArray>
-          <button type="submit" disabled={isSubmitting}>
-            Update
-          </button>
         </Form>
       )}
     </Formik>

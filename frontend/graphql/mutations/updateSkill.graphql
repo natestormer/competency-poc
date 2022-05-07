@@ -1,0 +1,8 @@
+mutation updateSkill($skillId: ID!, $name: String, $description: String) {
+  updateSkill(
+    where: { id: $skillId }
+    data: { name: $name, description: $description }
+  ) {
+    id
+  }
+}
