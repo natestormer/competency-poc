@@ -15,6 +15,7 @@ const Skill = list({
     }),
     author: relationship({ ref: "User.authoredSkills", many: false }),
     team: relationship({ ref: "Team.skills", many: false }),
+    levels: relationship({ ref: "Level.skill", many: true }),
   },
 })
 

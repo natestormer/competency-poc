@@ -27,6 +27,7 @@ model User {
   managedTeams            Team[]       @relation("Team_managers")
   assignedTeams           Team[]       @relation("Team_members")
   authoredSkills          Skill[]      @relation("Skill_author")
+  authoredLevels          Level[]      @relation("Level_author")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -64,6 +65,7 @@ model Team {
   created     DateTime? @default(now())
   updated     DateTime? @updatedAt
   skills      Skill[]   @relation("Skill_team")
+  levels      Level[]   @relation("Level_team")
   author      User?     @relation("Team_author", fields: [authorId], references: [id])
   authorId    String?   @map("author") @postgresql.Uuid
   managers    User[]    @relation("Team_managers")
@@ -82,7 +84,27 @@ model Skill {
   authorId    String?   @map("author") @postgresql.Uuid
   team        Team?     @relation("Skill_team", fields: [teamId], references: [id])
   teamId      String?   @map("team") @postgresql.Uuid
+  levels      Level[]   @relation("Level_skill")
 
   @@index([authorId])
   @@index([teamId])
+}
+
+model Level {
+  id          String    @id @default(uuid()) @postgresql.Uuid
+  name        String    @default("")
+  description String    @default("")
+  level       Int       @default(0)
+  created     DateTime? @default(now())
+  updated     DateTime? @updatedAt
+  author      User?     @relation("Level_author", fields: [authorId], references: [id])
+  authorId    String?   @map("author") @postgresql.Uuid
+  team        Team?     @relation("Level_team", fields: [teamId], references: [id])
+  teamId      String?   @map("team") @postgresql.Uuid
+  skill       Skill?    @relation("Level_skill", fields: [skillId], references: [id])
+  skillId     String?   @map("skill") @postgresql.Uuid
+
+  @@index([authorId])
+  @@index([teamId])
+  @@index([skillId])
 }

@@ -14,6 +14,7 @@ const Team = list({
       db: { updatedAt: true },
     }),
     skills: relationship({ ref: "Skill.team", many: true }),
+    levels: relationship({ ref: "Level.team", many: true }),
     author: relationship({ ref: "User.authoredTeams", many: false }),
     managers: relationship({ ref: "User.managedTeams", many: true }),
     members: relationship({ ref: "User.assignedTeams", many: true }),

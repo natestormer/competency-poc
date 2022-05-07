@@ -13,17 +13,17 @@ import {
   UpdateSkillMutation,
 } from "../../graphql/generated"
 
-interface FormCreateSkillsValue {
+interface FormCreateUpdateSkillsValue {
   id?: string
   name: string
   description?: string
 }
 
-interface FormCreateSkillsValues {
-  skills: FormCreateSkillsValue[]
+interface FormCreateUpdateSkillsValues {
+  skills: FormCreateUpdateSkillsValue[]
 }
 
-const FormCreateSkillsSchema = Yup.object().shape({
+const FormCreateUpdateSkillsSchema = Yup.object().shape({
   skills: Yup.array().of(
     Yup.object().shape({
       name: Yup.string().required("Required"),
@@ -32,7 +32,7 @@ const FormCreateSkillsSchema = Yup.object().shape({
   ),
 })
 
-const FormCreateSkills = () => {
+const FormCreateUpdateSkills = () => {
   const {
     query: { userId, teamId },
   } = useRouter()
@@ -85,7 +85,7 @@ const FormCreateSkills = () => {
   }
 
   const handleAdd = async (
-    push: (obj: FormCreateSkillsValue) => void,
+    push: (obj: FormCreateUpdateSkillsValue) => void,
     obj: any
   ) => {
     if (obj) {
@@ -118,10 +118,11 @@ const FormCreateSkills = () => {
     <Formik
       initialValues={{
         skills:
-          (savedSkills?.skills as FormCreateSkillsValue[] | undefined) || [],
+          (savedSkills?.skills as FormCreateUpdateSkillsValue[] | undefined) ||
+          [],
       }}
-      validationSchema={FormCreateSkillsSchema}
-      onSubmit={(values: FormCreateSkillsValues) => {}}
+      validationSchema={FormCreateUpdateSkillsSchema}
+      onSubmit={(values: FormCreateUpdateSkillsValues) => {}}
     >
       {({ isSubmitting, values }) => (
         <Form>
@@ -143,62 +144,65 @@ const FormCreateSkills = () => {
                         borderBottom: "1px solid gray",
                       }}
                     >
-                      <div>
-                        <label htmlFor={`skills.${index}.name`}>
-                          Name
-                          <br />
-                          <Field
-                            id={`skills.${index}.name`}
+                      <section>
+                        <div>
+                          <label htmlFor={`skills.${index}.name`}>
+                            Name
+                            <br />
+                            <Field
+                              id={`skills.${index}.name`}
+                              name={`skills.${index}.name`}
+                              placeholder="Skill Name"
+                              type="text"
+                            />
+                          </label>
+                          <ErrorMessage
                             name={`skills.${index}.name`}
-                            placeholder="Skill Name"
-                            type="text"
+                            component="div"
                           />
-                        </label>
-                        <ErrorMessage
-                          name={`skills.${index}.name`}
-                          component="div"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor={`skills.${index}.description`}>
-                          Description
-                          <br />
-                          <Field
-                            as="textarea"
-                            id={`skills.${index}.description`}
+                        </div>
+                        <div>
+                          <label htmlFor={`skills.${index}.description`}>
+                            Description
+                            <br />
+                            <Field
+                              as="textarea"
+                              id={`skills.${index}.description`}
+                              name={`skills.${index}.description`}
+                              placeholder="Describe this skill"
+                            />
+                          </label>
+                          <ErrorMessage
                             name={`skills.${index}.description`}
-                            placeholder="Describe this skill"
+                            component="div"
                           />
-                        </label>
-                        <ErrorMessage
-                          name={`skills.${index}.description`}
-                          component="div"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleInputBlur(
-                            { ...values.skills[index] },
-                            values.skills[index]["id"]
-                          )
-                        }
-                      >
-                        Update
-                      </button>{" "}
-                      <button
-                        type="button"
-                        disabled={deleteSkillLoading}
-                        onClick={() =>
-                          handleDeleteItem(
-                            remove,
-                            values.skills[index]["id"],
-                            index
-                          )
-                        }
-                      >
-                        Remove
-                      </button>
+                        </div>
+                        <button
+                          type="button"
+                          disabled={updateSkillLoading}
+                          onClick={() =>
+                            handleInputBlur(
+                              { ...values.skills[index] },
+                              values.skills[index]["id"]
+                            )
+                          }
+                        >
+                          Update
+                        </button>{" "}
+                        <button
+                          type="button"
+                          disabled={deleteSkillLoading}
+                          onClick={() =>
+                            handleDeleteItem(
+                              remove,
+                              values.skills[index]["id"],
+                              index
+                            )
+                          }
+                        >
+                          Remove
+                        </button>
+                      </section>
                     </li>
                   ))}
                 <div
@@ -229,4 +233,4 @@ const FormCreateSkills = () => {
   )
 }
 
-export { FormCreateSkills }
+export { FormCreateUpdateSkills }

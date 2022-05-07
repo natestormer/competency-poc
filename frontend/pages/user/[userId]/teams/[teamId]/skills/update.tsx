@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from "next"
-import { FormCreateSkills } from "../../../../../../components/Form/CreateSkills"
+import { FormCreateUpdateSkills } from "../../../../../../components/Form/CreateUpdateSkills"
 import { unAuthRedirect } from "../../../../../../config"
 import { UserTeamsTeamSkillsUpdatePageDocument } from "../../../../../../graphql/generated"
 
@@ -12,7 +12,7 @@ const UserTeamSkillsEdit: NextPage = () => {
   return (
     <main role="main">
       <h1>Edit Team Skills</h1>
-      <FormCreateSkills />
+      <FormCreateUpdateSkills />
     </main>
   )
 }

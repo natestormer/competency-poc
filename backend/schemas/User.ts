@@ -65,6 +65,7 @@ const User = list({
     managedTeams: relationship({ ref: "Team.managers", many: true }),
     assignedTeams: relationship({ ref: "Team.members", many: true }),
     authoredSkills: relationship({ ref: "Skill.author", many: true }),
+    authoredLevels: relationship({ ref: "Level.author", many: true }),
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {
