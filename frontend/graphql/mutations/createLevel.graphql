@@ -1,0 +1,21 @@
+mutation createLevel(
+  $name: String!
+  $description: String
+  $userId: ID!
+  $teamId: ID!
+  $skillId: ID!
+  $level: Int!
+) {
+  createLevel(
+    data: {
+      name: $name
+      description: $description
+      level: 0
+      author: { connect: { id: $userId } }
+      team: { connect: { id: $teamId } }
+      skill: { connect: { id: $skillId } }
+    }
+  ) {
+    id
+  }
+}
