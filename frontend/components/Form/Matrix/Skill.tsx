@@ -1,9 +1,4 @@
-import { TypedDocumentNode, useMutation } from "@apollo/client"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import {
-  UpdateSkillDocument,
-  UpdateSkillMutation,
-} from "../../../graphql/generated"
 import * as Yup from "yup"
 
 interface FormCreateUpdateSkillValue {
@@ -16,12 +11,9 @@ interface FormMatrixSkillProps {
   userId?: string
   teamId?: string
   initialValues: FormCreateUpdateSkillValue
-  refetchQueryOnOperation?: {
-    query: TypedDocumentNode
-    variables: { [key: string]: any }
-  }[]
   onDelete: (id?: string | null) => void
   isDeleting?: boolean
+  onUpdate: (data: FormCreateUpdateSkillValue) => void
 }
 
 const FormMatrixSkillSchema = Yup.object().shape({
@@ -31,27 +23,11 @@ const FormMatrixSkillSchema = Yup.object().shape({
 
 const FormMatrixSkill = ({
   initialValues,
-  refetchQueryOnOperation,
   onDelete,
   isDeleting = false,
+  onUpdate,
 }: FormMatrixSkillProps) => {
-  const [updateSkill] = useMutation<UpdateSkillMutation>(UpdateSkillDocument)
-
   if (!initialValues || !initialValues.id) return null
-
-  // on form submit, update the fields of current field by ID
-  // then refresh queries passed to component
-  const handleSubmit = async (values: FormCreateUpdateSkillValue) => {
-    await updateSkill({
-      variables: {
-        name: values.name,
-        description: values.description,
-        skillId: initialValues.id,
-      },
-      notifyOnNetworkStatusChange: true,
-      refetchQueries: refetchQueryOnOperation,
-    })
-  }
 
   return (
     <Formik
@@ -60,7 +36,13 @@ const FormMatrixSkill = ({
         description: initialValues?.description || "",
       }}
       validationSchema={FormMatrixSkillSchema}
-      onSubmit={(values: FormCreateUpdateSkillValue) => handleSubmit(values)}
+      onSubmit={(values: FormCreateUpdateSkillValue) =>
+        onUpdate({
+          id: initialValues.id,
+          name: values.name,
+          description: values.description,
+        })
+      }
     >
       {({ isSubmitting }) => (
         <Form>
@@ -101,3 +83,4 @@ const FormMatrixSkill = ({
 }
 
 export { FormMatrixSkill }
+export type { FormCreateUpdateSkillValue }

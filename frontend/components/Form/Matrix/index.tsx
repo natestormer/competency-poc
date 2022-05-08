@@ -7,8 +7,10 @@ import {
   DeleteSkillMutation,
   SkillsByTeamDocument,
   SkillsByTeamQuery,
+  UpdateSkillDocument,
+  UpdateSkillMutation,
 } from "../../../graphql/generated"
-import { FormMatrixSkill } from "./Skill"
+import { FormCreateUpdateSkillValue, FormMatrixSkill } from "./Skill"
 
 const FormMatrix = () => {
   const { query } = useRouter()
@@ -27,6 +29,8 @@ const FormMatrix = () => {
     { loading: createdSkillLoading, error: createSkillError },
   ] = useMutation<CreateSkillMutation>(CreateSkillDocument)
 
+  const [updateSkill] = useMutation<UpdateSkillMutation>(UpdateSkillDocument)
+
   const [deleteSkill, { loading: deleteSkillLoading }] =
     useMutation<DeleteSkillMutation>(DeleteSkillDocument)
 
@@ -39,6 +43,18 @@ const FormMatrix = () => {
         description: "",
         teamId: query.teamId,
         userId: query.userId,
+      },
+      notifyOnNetworkStatusChange: true,
+      refetchQueries: refreshQueriesOnOperation,
+    })
+  }
+
+  const handleUpdateSkill = async (data: FormCreateUpdateSkillValue) => {
+    await updateSkill({
+      variables: {
+        name: data.name,
+        description: data.description,
+        skillId: data.id,
       },
       notifyOnNetworkStatusChange: true,
       refetchQueries: refreshQueriesOnOperation,
@@ -80,6 +96,7 @@ const FormMatrix = () => {
             >
               <FormMatrixSkill
                 initialValues={skill}
+                onUpdate={handleUpdateSkill}
                 onDelete={handleSkillDelete}
                 isDeleting={deleteSkillLoading}
               />
