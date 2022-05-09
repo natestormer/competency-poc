@@ -6,5 +6,11 @@ query skillsByTeam($teamId: ID!) {
     id
     name
     description
+    levels(orderBy: { level: desc }) {
+      id
+      name
+      description
+      level
+    }
   }
 }

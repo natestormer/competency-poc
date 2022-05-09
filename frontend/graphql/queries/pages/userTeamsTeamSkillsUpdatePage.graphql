@@ -2,9 +2,18 @@
 
 query userTeamsTeamSkillsUpdatePage($teamId: ID!) {
   ...requiredAppDataQueryFields
-  skills(where: { team: { id: { equals: $teamId } } }) {
+  skills(
+    where: { team: { id: { equals: $teamId } } }
+    orderBy: { created: asc }
+  ) {
     id
     name
     description
+    levels(orderBy: { level: desc }) {
+      id
+      name
+      description
+      level
+    }
   }
 }
