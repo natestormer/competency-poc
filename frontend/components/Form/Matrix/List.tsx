@@ -104,11 +104,27 @@ const FormMatrixList = () => {
                   isDeleting={deleteSkillLoading}
                 />
               </div>
-              <ol>
+              <ol
+                style={{
+                  display: "flex",
+                  margin: 0,
+                  padding: 0,
+                  listStyleType: "none",
+                }}
+              >
                 {skill.levels &&
                   skill.levels.length > 0 &&
                   skill.levels.map((level) => (
-                    <li key={level.id}>{level.name}</li>
+                    <li
+                      key={level.id}
+                      style={{
+                        flex: "0 0 200px",
+                        padding: "1rem",
+                        borderRight: "1px solid lightGray",
+                      }}
+                    >
+                      {level.name}
+                    </li>
                   ))}
               </ol>
             </li>

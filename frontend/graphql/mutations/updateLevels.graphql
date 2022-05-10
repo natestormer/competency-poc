@@ -1,0 +1,5 @@
+mutation updateLevels($data: [LevelUpdateArgs!]!) {
+  updateLevels(data: $data) {
+    id
+  }
+}

@@ -16,4 +16,13 @@ query userTeamsTeamSkillsUpdatePage($teamId: ID!) {
       level
     }
   }
+  levels(
+    where: { team: { id: { equals: $teamId } } }
+    orderBy: { level: desc }
+  ) {
+    id
+    name
+    description
+    level
+  }
 }

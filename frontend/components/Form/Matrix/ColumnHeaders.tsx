@@ -1,27 +1,72 @@
-import { useMutation, useQuery } from "@apollo/client"
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import { useContext } from "react"
 import {
   CreateLevelsDocument,
   CreateLevelsMutation,
+  LevelsByTeamAndLevelDocument,
+  LevelsByTeamAndLevelQuery,
   SkillsByTeamDocument,
+  UpdateLevelsDocument,
+  UpdateLevelsMutation,
 } from "../../../graphql/generated"
 import { FormMatrixProviderCtx } from "./Provider"
 
 const FormMatrixColumnHeaders = () => {
   const { query } = useRouter()
   const { columns, setColumns, skillsQuery } = useContext(FormMatrixProviderCtx)
+  const [fetchLevelsByTeamAndLevel] = useLazyQuery<LevelsByTeamAndLevelQuery>(
+    LevelsByTeamAndLevelDocument
+  )
   const [createLevels] = useMutation<CreateLevelsMutation>(CreateLevelsDocument)
+  const [updateLevels] = useMutation<UpdateLevelsMutation>(UpdateLevelsDocument)
 
   const refreshQueriesOnOperation = [
     { query: SkillsByTeamDocument, variables: { teamId: query.teamId } },
   ]
 
+  const skills = skillsQuery.data?.skills
+
+  const handleSaveColumn = async (colIndex: number) => {
+    if (!skills) return false
+
+    const newName = columns[colIndex]
+
+    // get all skills in team that have corrosponding level
+    const { data } = await fetchLevelsByTeamAndLevel({
+      variables: {
+        teamId: query.teamId,
+        level: colIndex,
+      },
+    })
+
+    // mutate skills to update name
+    if (data?.levels && data.levels.length > 0) {
+      const levelUpdateArgs = data.levels.map((level) => ({
+        where: {
+          id: level.id,
+        },
+        data: {
+          name: newName,
+        },
+      }))
+      await updateLevels({
+        variables: {
+          data: levelUpdateArgs,
+        },
+        notifyOnNetworkStatusChange: true,
+        refetchQueries: refreshQueriesOnOperation,
+      })
+    }
+  }
+
   const handleAddColumn = async (newCol: string) => {
+    // set column state in Provider
     setColumns([...columns, newCol])
 
-    if (skillsQuery.data && skillsQuery.data?.skills) {
-      const newLevels = skillsQuery.data.skills.map((skill) => ({
+    // if skills exist, create new levels associated with columns
+    if (skills) {
+      const newLevels = skills.map((skill) => ({
         name: newCol,
         level: columns.length,
         author: {
@@ -88,7 +133,9 @@ const FormMatrixColumnHeaders = () => {
               setColumns(newCols)
             }}
           />
-          <button type="button">✓</button>
+          <button type="button" onClick={() => handleSaveColumn(index)}>
+            ✓
+          </button>
           <button
             type="button"
             onClick={() => {

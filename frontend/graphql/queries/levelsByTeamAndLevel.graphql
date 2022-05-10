@@ -1,0 +1,10 @@
+query levelsByTeamAndLevel($teamId: ID!, $level: Int!) {
+  levels(
+    where: {
+      team: { id: { equals: $teamId } }
+      AND: { level: { equals: $level } }
+    }
+  ) {
+    id
+  }
+}
