@@ -18,7 +18,6 @@ import { FormCreateUpdateSkillValue, FormMatrixSkill } from "./Skill"
 const FormMatrixList = () => {
   const { skillsQuery } = useContext(FormMatrixProviderCtx)
   const { query } = useRouter()
-  console.log(skillsQuery)
 
   const refreshQueriesOnOperation = [
     { query: SkillsByTeamDocument, variables: { teamId: query.teamId } },

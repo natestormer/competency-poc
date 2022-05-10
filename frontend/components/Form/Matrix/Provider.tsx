@@ -10,6 +10,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState,
 } from "react"
 import {
@@ -49,6 +50,21 @@ const FormMatrixProvider = ({ children }: FormMatrixProviderProps) => {
     variables: { teamId: query.teamId },
     notifyOnNetworkStatusChange: true,
   })
+
+  // get levels from first skill and sets columns to their name values
+  useEffect(() => {
+    if (
+      savedSkills &&
+      savedSkills.skills?.[0] &&
+      savedSkills.skills[0].levels &&
+      savedSkills.skills[0].levels.length > 0
+    ) {
+      const savedColumns = savedSkills.skills[0].levels.map(
+        (level, index) => level.name?.toString() || `Level ${index}`
+      )
+      setColumns(savedColumns)
+    }
+  }, [savedSkills])
 
   return (
     <FormMatrixProviderCtx.Provider
