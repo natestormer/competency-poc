@@ -3,6 +3,7 @@ mutation createSkill(
   $userId: ID!
   $teamId: ID!
   $description: String
+  $levels: [LevelCreateInput!]
 ) {
   createSkill(
     data: {
@@ -10,6 +11,7 @@ mutation createSkill(
       description: $description
       author: { connect: { id: $userId } }
       team: { connect: { id: $teamId } }
+      levels: { create: $levels }
     }
   ) {
     id

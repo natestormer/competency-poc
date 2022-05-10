@@ -4,6 +4,8 @@ import { useContext } from "react"
 import {
   CreateSkillDocument,
   CreateSkillMutation,
+  DeleteLevelsDocument,
+  DeleteLevelsMutation,
   DeleteSkillDocument,
   DeleteSkillMutation,
   SkillsByTeamDocument,
@@ -16,35 +18,18 @@ import { FormCreateUpdateSkillValue, FormMatrixSkill } from "./Skill"
 const FormMatrixList = () => {
   const { skillsQuery } = useContext(FormMatrixProviderCtx)
   const { query } = useRouter()
+  console.log(skillsQuery)
 
   const refreshQueriesOnOperation = [
     { query: SkillsByTeamDocument, variables: { teamId: query.teamId } },
   ]
-
-  const [
-    createSkill,
-    { loading: createdSkillLoading, error: createSkillError },
-  ] = useMutation<CreateSkillMutation>(CreateSkillDocument)
 
   const [updateSkill] = useMutation<UpdateSkillMutation>(UpdateSkillDocument)
 
   const [deleteSkill, { loading: deleteSkillLoading }] =
     useMutation<DeleteSkillMutation>(DeleteSkillDocument)
 
-  const handleSkillAdd = async () => {
-    await createSkill({
-      variables: {
-        name: `New Skill ${
-          skillsQuery.data?.skills ? skillsQuery.data?.skills?.length + 1 : "0"
-        }`,
-        description: "",
-        teamId: query.teamId,
-        userId: query.userId,
-      },
-      notifyOnNetworkStatusChange: true,
-      refetchQueries: refreshQueriesOnOperation,
-    })
-  }
+  const [deleteLevels] = useMutation<DeleteLevelsMutation>(DeleteLevelsDocument)
 
   const handleUpdateSkill = async (data: FormCreateUpdateSkillValue) => {
     await updateSkill({
@@ -58,7 +43,10 @@ const FormMatrixList = () => {
     })
   }
 
-  const handleSkillDelete = async (id?: string | null) => {
+  const handleSkillDelete = async (
+    id?: string | null,
+    levelIds?: string[] | null
+  ) => {
     if (!id) return false
 
     await deleteSkill({
@@ -69,6 +57,15 @@ const FormMatrixList = () => {
       refetchQueries: refreshQueriesOnOperation,
       awaitRefetchQueries: true,
     })
+
+    if (levelIds && levelIds.length > 0) {
+      const levelIdArgs = levelIds.map((id) => ({ id }))
+      deleteLevels({
+        variables: {
+          wereSkillIds: levelIdArgs,
+        },
+      })
+    }
   }
   return (
     <>
@@ -99,27 +96,25 @@ const FormMatrixList = () => {
                 <FormMatrixSkill
                   initialValues={skill}
                   onUpdate={handleUpdateSkill}
-                  onDelete={handleSkillDelete}
+                  onDelete={() =>
+                    handleSkillDelete(
+                      skill.id,
+                      skill.levels?.map((level) => level.id)
+                    )
+                  }
                   isDeleting={deleteSkillLoading}
                 />
               </div>
+              <ol>
+                {skill.levels &&
+                  skill.levels.length > 0 &&
+                  skill.levels.map((level) => (
+                    <li key={level.id}>{level.name}</li>
+                  ))}
+              </ol>
             </li>
           ))}
       </ol>
-      <div
-        style={{
-          padding: "1rem",
-          background: "lightGray",
-        }}
-      >
-        <button
-          type="button"
-          disabled={createdSkillLoading}
-          onClick={handleSkillAdd}
-        >
-          Add a skill
-        </button>
-      </div>
     </>
   )
 }

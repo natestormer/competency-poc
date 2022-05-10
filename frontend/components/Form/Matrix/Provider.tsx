@@ -38,8 +38,9 @@ interface FormMatrixProviderProps {
 }
 
 const FormMatrixProvider = ({ children }: FormMatrixProviderProps) => {
-  const [columns, setColumns] = useState<string[]>([])
+  const [columns, setColumns] = useState<string[]>(["Level 0"])
   const { query } = useRouter()
+
   const {
     data: savedSkills,
     loading: savedSkillsLoading,

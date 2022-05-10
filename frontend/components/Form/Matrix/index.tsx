@@ -1,6 +1,7 @@
 import { FormMatrixColumnHeaders } from "./ColumnHeaders"
 import { FormMatrixProvider } from "./Provider"
 import { FormMatrixList } from "./List"
+import { FormMatrixAdd } from "./Add"
 
 const FormMatrix = () => {
   return (
@@ -15,6 +16,7 @@ const FormMatrix = () => {
         <h3>Team Matrix</h3>
         <FormMatrixColumnHeaders />
         <FormMatrixList />
+        <FormMatrixAdd />
       </section>
     </FormMatrixProvider>
   )

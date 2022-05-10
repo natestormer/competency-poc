@@ -62,7 +62,7 @@ const FormMatrixColumnHeaders = () => {
           type="button"
           onClick={() => setColumns([...columns, `Level ${columns.length}`])}
         >
-          Add Column
+          Add Level
         </button>
       </li>
     </ol>
