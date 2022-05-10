@@ -6,7 +6,7 @@ query skillsByTeam($teamId: ID!) {
     id
     name
     description
-    levels(orderBy: { level: desc }) {
+    levels(orderBy: { level: asc }) {
       id
       name
       description

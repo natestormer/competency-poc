@@ -1,0 +1,5 @@
+mutation createLevels($levels: [LevelCreateInput!]!) {
+  createLevels(data: $levels) {
+    id
+  }
+}

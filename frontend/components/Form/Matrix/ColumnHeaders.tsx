@@ -1,8 +1,56 @@
+import { useMutation, useQuery } from "@apollo/client"
+import { useRouter } from "next/router"
 import { useContext } from "react"
+import {
+  CreateLevelsDocument,
+  CreateLevelsMutation,
+  SkillsByTeamDocument,
+} from "../../../graphql/generated"
 import { FormMatrixProviderCtx } from "./Provider"
 
 const FormMatrixColumnHeaders = () => {
-  const { columns, setColumns } = useContext(FormMatrixProviderCtx)
+  const { query } = useRouter()
+  const { columns, setColumns, skillsQuery } = useContext(FormMatrixProviderCtx)
+  const [createLevels] = useMutation<CreateLevelsMutation>(CreateLevelsDocument)
+
+  const refreshQueriesOnOperation = [
+    { query: SkillsByTeamDocument, variables: { teamId: query.teamId } },
+  ]
+
+  const handleAddColumn = async (newCol: string) => {
+    setColumns([...columns, newCol])
+
+    if (skillsQuery.data && skillsQuery.data?.skills) {
+      const newLevels = skillsQuery.data.skills.map((skill) => ({
+        name: newCol,
+        level: columns.length,
+        author: {
+          connect: {
+            id: query.userId,
+          },
+        },
+        team: {
+          connect: {
+            id: query.teamId,
+          },
+        },
+        skill: {
+          connect: {
+            id: skill.id,
+          },
+        },
+      }))
+
+      await createLevels({
+        variables: {
+          levels: newLevels,
+        },
+        notifyOnNetworkStatusChange: true,
+        refetchQueries: refreshQueriesOnOperation,
+      })
+    }
+  }
+
   return (
     <ol
       style={{
@@ -60,7 +108,7 @@ const FormMatrixColumnHeaders = () => {
       >
         <button
           type="button"
-          onClick={() => setColumns([...columns, `Level ${columns.length}`])}
+          onClick={() => handleAddColumn(`Level ${columns.length}`)}
         >
           Add Level
         </button>
