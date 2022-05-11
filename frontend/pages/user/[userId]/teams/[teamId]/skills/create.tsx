@@ -1,8 +1,8 @@
 import { GetServerSideProps, NextPage } from "next"
-import { FormCreateUpdateSkills } from "../../../../../../components/Form/CreateUpdateSkills"
+
+import { FormMatrix } from "../../../../../../components/Form/Matrix"
 import { unAuthRedirect } from "../../../../../../config"
 import { UserTeamsTeamSkillsCreatePageDocument } from "../../../../../../graphql/generated"
-
 import {
   addApolloState,
   initializeApollo,
@@ -12,7 +12,7 @@ const UserTeamSkillsCreate: NextPage = () => {
   return (
     <main role="main">
       <h1>Create Team Skills</h1>
-      <FormCreateUpdateSkills />
+      <FormMatrix />
     </main>
   )
 }
