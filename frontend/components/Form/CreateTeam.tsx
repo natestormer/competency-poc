@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client"
 import { ErrorMessage, Field, Form, Formik } from "formik"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import * as Yup from "yup"
 
@@ -21,20 +23,19 @@ const FormCreateTeamSchema = Yup.object().shape({
 })
 
 const FormCreateTeam = () => {
+  const { query } = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
   const { user } = useUser()
   const [success, setSuccess] = useState<boolean>(false)
-  const [createTeam, { error }] = useMutation<CreateTeamMutation>(
-    CreateTeamDocument,
-    {
+  const [createTeam, { error, data: creatTeamData }] =
+    useMutation<CreateTeamMutation>(CreateTeamDocument, {
       refetchQueries: [{ query: UserTeamsCreatePageDocument }], // @Todo: figure out why we have to refetch the entire page
       onError: (error) => {
         const message = error.message.split("ERR: ")
         console.log(message)
         setServerError(message[message.length - 1])
       },
-    }
-  )
+    })
 
   if (!user) {
     return <p>Not allowed</p>
@@ -44,6 +45,7 @@ const FormCreateTeam = () => {
     <Formik
       initialValues={{
         name: "",
+        description: "",
       }}
       validationSchema={FormCreateTeamSchema}
       onSubmit={async (
@@ -71,7 +73,17 @@ const FormCreateTeam = () => {
           <h2>Create a Team</h2>
           {error && <div>{error.message}</div>}
           {serverError && <div>{serverError}</div>}
-          {success && !serverError && <p>Team Created!</p>}
+          {success && !serverError && (
+            <div>
+              <p>Team Created!</p>
+              <Link
+                href={`/user/${query.userId}/teams/${creatTeamData?.createTeam?.id}`}
+              >
+                View it here
+              </Link>
+              <br />
+            </div>
+          )}
           <div>
             <label htmlFor="name">
               Team Name <br />

@@ -2,6 +2,11 @@
 
 query userTeamsTeamSkillsCreatePage($teamId: ID!) {
   ...requiredAppDataQueryFields
+  team(where: { id: $teamId }) {
+    id
+    name
+    description
+  }
   skills(where: { team: { id: { equals: $teamId } } }) {
     id
     name

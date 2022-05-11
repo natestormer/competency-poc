@@ -1,17 +1,34 @@
+import { useQuery } from "@apollo/client"
 import { GetServerSideProps, NextPage } from "next"
+import { useRouter } from "next/router"
 
 import { FormMatrix } from "../../../../../../components/Form/Matrix"
 import { unAuthRedirect } from "../../../../../../config"
-import { UserTeamsTeamSkillsUpdatePageDocument } from "../../../../../../graphql/generated"
+import {
+  UserTeamsTeamSkillsCreatePageDocument,
+  UserTeamsTeamSkillsCreatePageQuery,
+  UserTeamsTeamSkillsUpdatePageDocument,
+} from "../../../../../../graphql/generated"
 import {
   addApolloState,
   initializeApollo,
 } from "../../../../../../lib/apolloClient"
 
 const UserTeamSkillsEdit: NextPage = () => {
+  const { query } = useRouter()
+  const { data } = useQuery<UserTeamsTeamSkillsCreatePageQuery>(
+    UserTeamsTeamSkillsCreatePageDocument,
+    {
+      variables: {
+        teamId: query.teamId,
+      },
+    }
+  )
+
   return (
     <main role="main">
-      <h1>Edit Team Skills</h1>
+      <h1>{data?.team?.name}</h1>
+      <h2>Edit Team Skills</h2>
       <FormMatrix />
     </main>
   )

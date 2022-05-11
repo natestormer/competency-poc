@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { ReactNode } from "react"
 import { useUser } from "../../../hooks"
 
@@ -18,8 +19,17 @@ const UserTeamList = ({
   list,
   emptyMessage = "No items found",
 }: UserTeamListProps) => {
+  const { query } = useRouter()
   const { user } = useUser()
-  if (!list) return <p>{emptyMessage}</p>
+
+  if (!list || list.length === 0) {
+    return (
+      <>
+        <p>{emptyMessage} </p>
+        <Link href={`/user/${query.userId}/teams/create`}>Create a Team</Link>
+      </>
+    )
+  }
 
   return (
     <div>

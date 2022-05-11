@@ -2,6 +2,11 @@
 
 query userTeamsTeamSkillsUpdatePage($teamId: ID!) {
   ...requiredAppDataQueryFields
+  team(where: { id: $teamId }) {
+    id
+    name
+    description
+  }
   skills(
     where: { team: { id: { equals: $teamId } } }
     orderBy: { created: asc }

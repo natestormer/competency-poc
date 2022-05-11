@@ -14,8 +14,10 @@ import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { UserTeamSkillsList } from "../../../../../components/User/Team/SkillsList"
+import { useUser } from "../../../../../hooks"
 
 const UserTeamsTeamPage: NextPage = () => {
+  const { user } = useUser()
   const { query } = useRouter()
   const { data, error } = useQuery<UserTeamsTeamPageQuery>(
     UserTeamsTeamPageDocument,
@@ -33,26 +35,34 @@ const UserTeamsTeamPage: NextPage = () => {
           <h3>{data?.team?.name}</h3>
           <p>{data?.team?.description}</p>
           <h4>Members</h4>
-          <ul style={{ padding: "0" }}>
-            {data?.team?.members?.map((member) => (
-              <li
-                key={member.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "2rem",
-                  borderBottom: "1px solid black",
-                }}
-              >
-                <Link href={`/user/${member.id}`} passHref>
-                  <a>
-                    <h5>{member.fullName}</h5>
-                    <small>{member.email}</small>
-                  </a>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {data?.team?.members && data?.team?.members?.length > 0 ? (
+            <ul style={{ padding: "0" }}>
+              {data?.team?.members?.map((member) => (
+                <li
+                  key={member.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2rem",
+                    borderBottom: "1px solid black",
+                  }}
+                >
+                  <Link href={`/user/${member.id}`} passHref>
+                    <a>
+                      <h5>{member.fullName}</h5>
+                      <small>{member.email}</small>
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>
+              <p>No team members</p>
+              {/* @Todo: add link to invite users to team */}
+            </div>
+          )}
+
           <h4>Skill Matrix</h4>
           {data?.team?.skills && data.team.skills.length ? (
             <>
