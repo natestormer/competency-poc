@@ -1,0 +1,13 @@
+mutation updateLevel(
+  $levelId: ID!
+  $name: String
+  $description: String
+  $level: Int
+) {
+  updateLevel(
+    where: { id: $levelId }
+    data: { name: $name, description: $description, level: $level }
+  ) {
+    id
+  }
+}

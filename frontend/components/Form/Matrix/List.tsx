@@ -12,6 +12,7 @@ import {
   UpdateSkillDocument,
   UpdateSkillMutation,
 } from "../../../graphql/generated"
+import { FormMatrixLevel } from "./Level"
 import { FormMatrixProviderCtx } from "./Provider"
 import { FormCreateUpdateSkillValue, FormMatrixSkill } from "./Skill"
 
@@ -123,7 +124,12 @@ const FormMatrixList = () => {
                         borderRight: "1px solid lightGray",
                       }}
                     >
-                      {level.name}
+                      <small>{level.name}</small>
+                      <br />
+                      <FormMatrixLevel
+                        levelId={level.id}
+                        initialDescription={level.description}
+                      />
                     </li>
                   ))}
               </ol>
