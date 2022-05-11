@@ -4,6 +4,8 @@ import { useContext } from "react"
 import {
   CreateLevelsDocument,
   CreateLevelsMutation,
+  DeleteLevelsDocument,
+  DeleteLevelsMutation,
   LevelsByTeamAndLevelDocument,
   LevelsByTeamAndLevelQuery,
   SkillsByTeamDocument,
@@ -20,6 +22,7 @@ const FormMatrixColumnHeaders = () => {
   )
   const [createLevels] = useMutation<CreateLevelsMutation>(CreateLevelsDocument)
   const [updateLevels] = useMutation<UpdateLevelsMutation>(UpdateLevelsDocument)
+  const [deleteLevels] = useMutation<DeleteLevelsMutation>(DeleteLevelsDocument)
 
   const refreshQueriesOnOperation = [
     { query: SkillsByTeamDocument, variables: { teamId: query.teamId } },
@@ -96,6 +99,28 @@ const FormMatrixColumnHeaders = () => {
     }
   }
 
+  const handleDeleteColumn = async (level: number) => {
+    // get all skills in team that have corrosponding level
+    const { data } = await fetchLevelsByTeamAndLevel({
+      variables: {
+        teamId: query.teamId,
+        level,
+      },
+    })
+    const levelIds = data?.levels?.map((level) => ({ id: level.id }))
+
+    await deleteLevels({
+      variables: {
+        whereLevelIds: levelIds,
+      },
+      notifyOnNetworkStatusChange: true,
+      refetchQueries: refreshQueriesOnOperation,
+    })
+
+    const newCols = columns.filter((_item, idx) => idx !== level)
+    setColumns(newCols)
+  }
+
   return (
     <ol
       style={{
@@ -136,14 +161,7 @@ const FormMatrixColumnHeaders = () => {
           <button type="button" onClick={() => handleSaveColumn(index)}>
             ✓
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              console.log("clicked")
-              const newCols = columns.filter((_item, idx) => idx !== index)
-              setColumns(newCols)
-            }}
-          >
+          <button type="button" onClick={() => handleDeleteColumn(index)}>
             X
           </button>
         </li>

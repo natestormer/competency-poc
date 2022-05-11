@@ -1,5 +1,5 @@
-mutation deleteLevels($wereSkillIds: [LevelWhereUniqueInput!]!) {
-  deleteLevels(where: $wereSkillIds) {
+mutation deleteLevels($whereLevelIds: [LevelWhereUniqueInput!]!) {
+  deleteLevels(where: $whereLevelIds) {
     id
   }
 }

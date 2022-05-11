@@ -62,7 +62,7 @@ const FormMatrixList = () => {
       const levelIdArgs = levelIds.map((id) => ({ id }))
       deleteLevels({
         variables: {
-          wereSkillIds: levelIdArgs,
+          whereLevelIds: levelIdArgs,
         },
       })
     }
