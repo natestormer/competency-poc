@@ -8,7 +8,7 @@ import {
 
 interface UserInviteDeleteButtonProps {
   id: string
-  refreshQueries?: { query: any }[]
+  refreshQueries?: { query: any; variables?: any }[]
   children?: ReactNode
 }
 

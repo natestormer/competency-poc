@@ -1,4 +1,8 @@
-import { UserInvitationPageDocument } from "../../../graphql/generated"
+import { useRouter } from "next/router"
+import {
+  UserInvitationPageDocument,
+  UserInvitationsDocument,
+} from "../../../graphql/generated"
 import { UserInviteDeleteButton } from "./DeleteButton"
 import { UserInviteResendButton } from "./ResendButton"
 
@@ -14,7 +18,9 @@ interface UserInviteListProps {
 }
 
 const UserInviteList = ({ list }: UserInviteListProps) => {
+  const { query } = useRouter()
   if (!list) return <p>No invitations</p>
+  console.log(query.userId)
 
   return (
     <div>
@@ -61,7 +67,13 @@ const UserInviteList = ({ list }: UserInviteListProps) => {
                   {!item.expired ? (
                     <UserInviteDeleteButton
                       id={item.id}
-                      refreshQueries={[{ query: UserInvitationPageDocument }]}
+                      refreshQueries={[
+                        { query: UserInvitationPageDocument },
+                        {
+                          query: UserInvitationsDocument,
+                          variables: { userId: query.userId as string },
+                        },
+                      ]}
                     >
                       Delete
                     </UserInviteDeleteButton>
@@ -70,7 +82,13 @@ const UserInviteList = ({ list }: UserInviteListProps) => {
                   )}
                   <UserInviteResendButton
                     id={item.id}
-                    refreshQueries={[{ query: UserInvitationPageDocument }]}
+                    refreshQueries={[
+                      { query: UserInvitationPageDocument },
+                      {
+                        query: UserInvitationsDocument,
+                        variables: { userId: query.userId as string },
+                      },
+                    ]}
                   >
                     Resend
                   </UserInviteResendButton>

@@ -2,7 +2,7 @@ import { graphql, list } from "@keystone-6/core"
 import { relationship, text, timestamp, virtual } from "@keystone-6/core/fields"
 // const crypto = require("crypto")
 
-import { sendUserInvitationEmail } from "../lib/mail"
+import { sendUserInvitationEmail, sendUserReInvitationEmail } from "../lib/mail"
 
 const Invitation = list({
   fields: {
@@ -84,16 +84,26 @@ const Invitation = list({
         addValidationError("ERR: Your invitation has expired.")
       }
     },
-    afterOperation: ({ operation, item }) => {
+    afterOperation: async ({ operation, item }) => {
+      console.log(item)
       if (operation === "create") {
         // send invitation email
-        sendUserInvitationEmail(
+        await sendUserInvitationEmail(
           item?.id as string,
           item?.email as string,
           item?.expires as string
         )
       }
-      // @Todo: send email when invitation expiration has been updated
+      if (operation === "update") {
+        // send re-invitation email
+        if (!item.accepted) {
+          await sendUserReInvitationEmail(
+            item?.id as string,
+            item?.email as string,
+            item?.expires as string
+          )
+        }
+      }
     },
   },
   ui: {
