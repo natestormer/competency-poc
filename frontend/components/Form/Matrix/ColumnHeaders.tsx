@@ -32,7 +32,6 @@ const FormMatrixColumnHeaders = () => {
 
   const handleSaveColumn = async (colIndex: number) => {
     if (!skills) return false
-
     const newName = columns[colIndex]
 
     // get all skills in team that have corrosponding level
@@ -42,6 +41,8 @@ const FormMatrixColumnHeaders = () => {
         level: colIndex,
       },
     })
+
+    console.log(data)
 
     // mutate skills to update name
     if (data?.levels && data.levels.length > 0) {
