@@ -57,6 +57,13 @@ type User {
     skip: Int! = 0
   ): [Level!]
   authoredLevelsCount(where: LevelWhereInput! = {}): Int
+  userLevels(
+    where: UserLevelWhereInput! = {}
+    orderBy: [UserLevelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [UserLevel!]
+  userLevelsCount(where: UserLevelWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -91,6 +98,7 @@ input UserWhereInput {
   assignedTeams: TeamManyRelationFilter
   authoredSkills: SkillManyRelationFilter
   authoredLevels: LevelManyRelationFilter
+  userLevels: UserLevelManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -176,6 +184,12 @@ input LevelManyRelationFilter {
   none: LevelWhereInput
 }
 
+input UserLevelManyRelationFilter {
+  every: UserLevelWhereInput
+  some: UserLevelWhereInput
+  none: UserLevelWhereInput
+}
+
 input PasswordFilter {
   isSet: Boolean!
 }
@@ -209,6 +223,7 @@ input UserUpdateInput {
   assignedTeams: TeamRelateToManyForUpdateInput
   authoredSkills: SkillRelateToManyForUpdateInput
   authoredLevels: LevelRelateToManyForUpdateInput
+  userLevels: UserLevelRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -254,6 +269,13 @@ input LevelRelateToManyForUpdateInput {
   connect: [LevelWhereUniqueInput!]
 }
 
+input UserLevelRelateToManyForUpdateInput {
+  disconnect: [UserLevelWhereUniqueInput!]
+  set: [UserLevelWhereUniqueInput!]
+  create: [UserLevelCreateInput!]
+  connect: [UserLevelWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -273,6 +295,7 @@ input UserCreateInput {
   assignedTeams: TeamRelateToManyForCreateInput
   authoredSkills: SkillRelateToManyForCreateInput
   authoredLevels: LevelRelateToManyForCreateInput
+  userLevels: UserLevelRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -306,6 +329,11 @@ input SkillRelateToManyForCreateInput {
 input LevelRelateToManyForCreateInput {
   create: [LevelCreateInput!]
   connect: [LevelWhereUniqueInput!]
+}
+
+input UserLevelRelateToManyForCreateInput {
+  create: [UserLevelCreateInput!]
+  connect: [UserLevelWhereUniqueInput!]
 }
 
 type Role {
@@ -504,6 +532,13 @@ type Team {
     skip: Int! = 0
   ): [User!]
   membersCount(where: UserWhereInput! = {}): Int
+  userLevels(
+    where: UserLevelWhereInput! = {}
+    orderBy: [UserLevelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [UserLevel!]
+  userLevelsCount(where: UserLevelWhereInput! = {}): Int
   currentUserIsAuthor: Boolean
   currentUserIsManager: Boolean
 }
@@ -526,6 +561,7 @@ input TeamWhereInput {
   author: UserWhereInput
   managers: UserManyRelationFilter
   members: UserManyRelationFilter
+  userLevels: UserLevelManyRelationFilter
 }
 
 input TeamOrderByInput {
@@ -546,6 +582,7 @@ input TeamUpdateInput {
   author: UserRelateToOneForUpdateInput
   managers: UserRelateToManyForUpdateInput
   members: UserRelateToManyForUpdateInput
+  userLevels: UserLevelRelateToManyForUpdateInput
 }
 
 input TeamUpdateArgs {
@@ -563,6 +600,7 @@ input TeamCreateInput {
   author: UserRelateToOneForCreateInput
   managers: UserRelateToManyForCreateInput
   members: UserRelateToManyForCreateInput
+  userLevels: UserLevelRelateToManyForCreateInput
 }
 
 type Skill {
@@ -580,6 +618,13 @@ type Skill {
     skip: Int! = 0
   ): [Level!]
   levelsCount(where: LevelWhereInput! = {}): Int
+  userLevels(
+    where: UserLevelWhereInput! = {}
+    orderBy: [UserLevelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [UserLevel!]
+  userLevelsCount(where: UserLevelWhereInput! = {}): Int
 }
 
 input SkillWhereUniqueInput {
@@ -598,6 +643,7 @@ input SkillWhereInput {
   author: UserWhereInput
   team: TeamWhereInput
   levels: LevelManyRelationFilter
+  userLevels: UserLevelManyRelationFilter
 }
 
 input SkillOrderByInput {
@@ -616,6 +662,7 @@ input SkillUpdateInput {
   author: UserRelateToOneForUpdateInput
   team: TeamRelateToOneForUpdateInput
   levels: LevelRelateToManyForUpdateInput
+  userLevels: UserLevelRelateToManyForUpdateInput
 }
 
 input TeamRelateToOneForUpdateInput {
@@ -637,6 +684,7 @@ input SkillCreateInput {
   author: UserRelateToOneForCreateInput
   team: TeamRelateToOneForCreateInput
   levels: LevelRelateToManyForCreateInput
+  userLevels: UserLevelRelateToManyForCreateInput
 }
 
 input TeamRelateToOneForCreateInput {
@@ -654,6 +702,13 @@ type Level {
   author: User
   team: Team
   skill: Skill
+  userLevels(
+    where: UserLevelWhereInput! = {}
+    orderBy: [UserLevelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [UserLevel!]
+  userLevelsCount(where: UserLevelWhereInput! = {}): Int
 }
 
 input LevelWhereUniqueInput {
@@ -673,6 +728,7 @@ input LevelWhereInput {
   author: UserWhereInput
   team: TeamWhereInput
   skill: SkillWhereInput
+  userLevels: UserLevelManyRelationFilter
 }
 
 input IntFilter {
@@ -704,6 +760,7 @@ input LevelUpdateInput {
   author: UserRelateToOneForUpdateInput
   team: TeamRelateToOneForUpdateInput
   skill: SkillRelateToOneForUpdateInput
+  userLevels: UserLevelRelateToManyForUpdateInput
 }
 
 input SkillRelateToOneForUpdateInput {
@@ -726,11 +783,79 @@ input LevelCreateInput {
   author: UserRelateToOneForCreateInput
   team: TeamRelateToOneForCreateInput
   skill: SkillRelateToOneForCreateInput
+  userLevels: UserLevelRelateToManyForCreateInput
 }
 
 input SkillRelateToOneForCreateInput {
   create: SkillCreateInput
   connect: SkillWhereUniqueInput
+}
+
+type UserLevel {
+  id: ID!
+  user: User
+  level: Level
+  team: Team
+  skill: Skill
+  created: DateTime
+  updated: DateTime
+}
+
+input UserLevelWhereUniqueInput {
+  id: ID
+}
+
+input UserLevelWhereInput {
+  AND: [UserLevelWhereInput!]
+  OR: [UserLevelWhereInput!]
+  NOT: [UserLevelWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  level: LevelWhereInput
+  team: TeamWhereInput
+  skill: SkillWhereInput
+  created: DateTimeNullableFilter
+  updated: DateTimeNullableFilter
+}
+
+input UserLevelOrderByInput {
+  id: OrderDirection
+  created: OrderDirection
+  updated: OrderDirection
+}
+
+input UserLevelUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  level: LevelRelateToOneForUpdateInput
+  team: TeamRelateToOneForUpdateInput
+  skill: SkillRelateToOneForUpdateInput
+  created: DateTime
+  updated: DateTime
+}
+
+input LevelRelateToOneForUpdateInput {
+  create: LevelCreateInput
+  connect: LevelWhereUniqueInput
+  disconnect: Boolean
+}
+
+input UserLevelUpdateArgs {
+  where: UserLevelWhereUniqueInput!
+  data: UserLevelUpdateInput!
+}
+
+input UserLevelCreateInput {
+  user: UserRelateToOneForCreateInput
+  level: LevelRelateToOneForCreateInput
+  team: TeamRelateToOneForCreateInput
+  skill: SkillRelateToOneForCreateInput
+  created: DateTime
+  updated: DateTime
+}
+
+input LevelRelateToOneForCreateInput {
+  create: LevelCreateInput
+  connect: LevelWhereUniqueInput
 }
 
 """
@@ -781,6 +906,15 @@ type Mutation {
   updateLevels(data: [LevelUpdateArgs!]!): [Level]
   deleteLevel(where: LevelWhereUniqueInput!): Level
   deleteLevels(where: [LevelWhereUniqueInput!]!): [Level]
+  createUserLevel(data: UserLevelCreateInput!): UserLevel
+  createUserLevels(data: [UserLevelCreateInput!]!): [UserLevel]
+  updateUserLevel(
+    where: UserLevelWhereUniqueInput!
+    data: UserLevelUpdateInput!
+  ): UserLevel
+  updateUserLevels(data: [UserLevelUpdateArgs!]!): [UserLevel]
+  deleteUserLevel(where: UserLevelWhereUniqueInput!): UserLevel
+  deleteUserLevels(where: [UserLevelWhereUniqueInput!]!): [UserLevel]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -877,6 +1011,14 @@ type Query {
   ): [Level!]
   level(where: LevelWhereUniqueInput!): Level
   levelsCount(where: LevelWhereInput! = {}): Int
+  userLevels(
+    where: UserLevelWhereInput! = {}
+    orderBy: [UserLevelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [UserLevel!]
+  userLevel(where: UserLevelWhereUniqueInput!): UserLevel
+  userLevelsCount(where: UserLevelWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(

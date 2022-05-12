@@ -18,6 +18,7 @@ const Team = list({
     author: relationship({ ref: "User.authoredTeams", many: false }),
     managers: relationship({ ref: "User.managedTeams", many: true }),
     members: relationship({ ref: "User.assignedTeams", many: true }),
+    userLevels: relationship({ ref: "UserLevel.team", many: true }),
     currentUserIsAuthor: virtual({
       field: graphql.field({
         type: graphql.Boolean,
