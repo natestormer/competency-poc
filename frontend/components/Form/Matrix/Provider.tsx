@@ -1,9 +1,4 @@
-import {
-  ApolloError,
-  OperationVariables,
-  QueryResult,
-  useQuery,
-} from "@apollo/client"
+import { ApolloError, useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import {
   createContext,
@@ -39,7 +34,7 @@ interface FormMatrixProviderProps {
 }
 
 const FormMatrixProvider = ({ children }: FormMatrixProviderProps) => {
-  const [columns, setColumns] = useState<string[]>(["Level 0"])
+  const [columns, setColumns] = useState<string[]>([])
   const { query } = useRouter()
 
   const {
