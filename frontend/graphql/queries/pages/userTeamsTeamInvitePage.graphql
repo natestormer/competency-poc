@@ -1,0 +1,15 @@
+# Data needed for user teams team invite page SSR
+
+query userTeamsTeamInvitePage($teamId: ID!) {
+  ...requiredAppDataQueryFields
+  team(where: { id: $teamId }) {
+    ...teamFields
+  }
+  # get all users NOT assigned to team
+  users(
+    where: { NOT: { assignedTeams: { some: { id: { equals: $teamId } } } } }
+  ) {
+    id
+    fullName
+  }
+}

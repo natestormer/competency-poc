@@ -1,0 +1,10 @@
+# gets all users that are not assigned as members of team
+
+query usersNotInTeam($teamId: ID!) {
+  users(
+    where: { NOT: { assignedTeams: { some: { id: { equals: $teamId } } } } }
+  ) {
+    id
+    fullName
+  }
+}

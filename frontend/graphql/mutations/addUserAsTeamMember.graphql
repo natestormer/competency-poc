@@ -1,0 +1,13 @@
+mutation addUserAsTeamMember($userId: ID!, $teamId: ID!) {
+  updateUser(
+    where: { id: $userId }
+    data: { assignedTeams: { connect: { id: $teamId } } }
+  ) {
+    id
+    fullName
+    assignedTeams(where: { id: { equals: $teamId } }) {
+      id
+      name
+    }
+  }
+}

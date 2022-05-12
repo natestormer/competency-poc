@@ -62,6 +62,9 @@ const UserTeamsTeamPage: NextPage = () => {
               {/* @Todo: add link to invite users to team */}
             </div>
           )}
+          <Link href={`/user/${query.userId}/teams/${query.teamId}/invite`}>
+            Invite
+          </Link>
 
           <h4>Skill Matrix</h4>
           {data?.team?.skills && data.team.skills.length ? (
