@@ -12,23 +12,24 @@ generator client {
 }
 
 model User {
-  id                      String       @id @default(uuid()) @postgresql.Uuid
-  firstName               String       @default("") @map("first_name")
-  lastName                String       @default("") @map("last_name")
-  email                   String       @unique @default("")
+  id                      String             @id @default(uuid()) @postgresql.Uuid
+  firstName               String             @default("") @map("first_name")
+  lastName                String             @default("") @map("last_name")
+  email                   String             @unique @default("")
   password                String
-  registered              DateTime?    @default(now())
-  role                    Role?        @relation("User_role", fields: [roleId], references: [id])
-  roleId                  String?      @map("role") @postgresql.Uuid
-  invitation              Invitation?  @relation("User_invitation", fields: [invitationId], references: [id])
-  invitationId            String?      @map("invitation") @postgresql.Uuid
-  createdInvitations      Invitation[] @relation("Invitation_createdBy")
-  authoredTeams           Team[]       @relation("Team_author")
-  managedTeams            Team[]       @relation("Team_managers")
-  assignedTeams           Team[]       @relation("Team_members")
-  authoredSkills          Skill[]      @relation("Skill_author")
-  authoredLevels          Level[]      @relation("Level_author")
-  userLevels              UserLevel[]  @relation("UserLevel_user")
+  registered              DateTime?          @default(now())
+  role                    Role?              @relation("User_role", fields: [roleId], references: [id])
+  roleId                  String?            @map("role") @postgresql.Uuid
+  invitation              Invitation?        @relation("User_invitation", fields: [invitationId], references: [id])
+  invitationId            String?            @map("invitation") @postgresql.Uuid
+  createdInvitations      Invitation[]       @relation("Invitation_createdBy")
+  authoredTeams           Team[]             @relation("Team_author")
+  managedTeams            Team[]             @relation("Team_managers")
+  assignedTeams           Team[]             @relation("Team_members")
+  authoredSkills          Skill[]            @relation("Skill_author")
+  authoredLevels          Level[]            @relation("Level_author")
+  userLevels              UserLevel[]        @relation("UserLevel_user")
+  userLevelsHistory       UserLevelHistory[] @relation("UserLevelHistory_user")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -60,18 +61,20 @@ model Invitation {
 }
 
 model Team {
-  id          String      @id @default(uuid()) @postgresql.Uuid
-  name        String      @default("")
-  description String      @default("")
-  created     DateTime?   @default(now())
-  updated     DateTime?   @updatedAt
-  skills      Skill[]     @relation("Skill_team")
-  levels      Level[]     @relation("Level_team")
-  author      User?       @relation("Team_author", fields: [authorId], references: [id])
-  authorId    String?     @map("author") @postgresql.Uuid
-  managers    User[]      @relation("Team_managers")
-  members     User[]      @relation("Team_members")
-  userLevels  UserLevel[] @relation("UserLevel_team")
+  id                 String      @id @default(uuid()) @postgresql.Uuid
+  name               String      @default("")
+  description        String      @default("")
+  created            DateTime?   @default(now())
+  updated            DateTime?   @updatedAt
+  skills             Skill[]     @relation("Skill_team")
+  levelCount         Int?        @default(0)
+  levelScaleModifier Float?      @default(2)
+  levels             Level[]     @relation("Level_team")
+  author             User?       @relation("Team_author", fields: [authorId], references: [id])
+  authorId           String?     @map("author") @postgresql.Uuid
+  managers           User[]      @relation("Team_managers")
+  members            User[]      @relation("Team_members")
+  userLevels         UserLevel[] @relation("UserLevel_team")
 
   @@index([authorId])
 }
@@ -114,20 +117,37 @@ model Level {
 }
 
 model UserLevel {
-  id      String    @id @default(uuid()) @postgresql.Uuid
-  user    User?     @relation("UserLevel_user", fields: [userId], references: [id])
-  userId  String?   @map("user") @postgresql.Uuid
-  level   Level?    @relation("UserLevel_level", fields: [levelId], references: [id])
-  levelId String?   @map("level") @postgresql.Uuid
-  team    Team?     @relation("UserLevel_team", fields: [teamId], references: [id])
-  teamId  String?   @map("team") @postgresql.Uuid
-  skill   Skill?    @relation("UserLevel_skill", fields: [skillId], references: [id])
-  skillId String?   @map("skill") @postgresql.Uuid
-  created DateTime? @default(now())
-  updated DateTime? @updatedAt
+  id           String             @id @default(uuid()) @postgresql.Uuid
+  user         User?              @relation("UserLevel_user", fields: [userId], references: [id])
+  userId       String?            @map("user") @postgresql.Uuid
+  comment      String             @default("")
+  currentLevel Float?
+  history      UserLevelHistory[] @relation("UserLevelHistory_userLevel")
+  level        Level?             @relation("UserLevel_level", fields: [levelId], references: [id])
+  levelId      String?            @map("level") @postgresql.Uuid
+  team         Team?              @relation("UserLevel_team", fields: [teamId], references: [id])
+  teamId       String?            @map("team") @postgresql.Uuid
+  skill        Skill?             @relation("UserLevel_skill", fields: [skillId], references: [id])
+  skillId      String?            @map("skill") @postgresql.Uuid
+  created      DateTime?          @default(now())
+  updated      DateTime?          @updatedAt
 
   @@index([userId])
   @@index([levelId])
   @@index([teamId])
   @@index([skillId])
+}
+
+model UserLevelHistory {
+  id           String     @id @default(uuid()) @postgresql.Uuid
+  currentLevel Float
+  comment      String     @default("")
+  user         User?      @relation("UserLevelHistory_user", fields: [userId], references: [id])
+  userId       String?    @map("user") @postgresql.Uuid
+  userLevel    UserLevel? @relation("UserLevelHistory_userLevel", fields: [userLevelId], references: [id])
+  userLevelId  String?    @map("userLevel") @postgresql.Uuid
+  created      DateTime?  @default(now())
+
+  @@index([userId])
+  @@index([userLevelId])
 }

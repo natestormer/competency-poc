@@ -1,5 +1,12 @@
 import { graphql, list } from "@keystone-6/core"
-import { relationship, text, timestamp, virtual } from "@keystone-6/core/fields"
+import {
+  float,
+  integer,
+  relationship,
+  text,
+  timestamp,
+  virtual,
+} from "@keystone-6/core/fields"
 
 const Team = list({
   fields: {
@@ -14,6 +21,10 @@ const Team = list({
       db: { updatedAt: true },
     }),
     skills: relationship({ ref: "Skill.team", many: true }),
+    // how many levels of skill will this team have?
+    levelCount: integer({ defaultValue: 0 }),
+    // modifier used to calculate graph levels
+    levelScaleModifier: float({ defaultValue: 2 }),
     levels: relationship({ ref: "Level.team", many: true }),
     author: relationship({ ref: "User.authoredTeams", many: false }),
     managers: relationship({ ref: "User.managedTeams", many: true }),

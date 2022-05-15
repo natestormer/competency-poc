@@ -22,6 +22,12 @@ const Level = list({
     skill: relationship({ ref: "Skill.levels", many: false }),
     userLevels: relationship({ ref: "UserLevel.level", many: true }),
   },
+  ui: {
+    labelField: "name",
+    listView: {
+      initialColumns: ["name", "skill", "team", "level"],
+    },
+  },
 })
 
 export { Level }
