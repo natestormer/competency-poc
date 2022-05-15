@@ -1,0 +1,13 @@
+# query to fetch data needed for FormSetLevels component
+
+query setLevelsData($teamId: ID!) {
+  team(where: { id: $teamId }) {
+    levelCount
+    levelScaleModifier
+  }
+  skills(where: { team: { id: { equals: $teamId } } }) {
+    id
+    name
+    description
+  }
+}

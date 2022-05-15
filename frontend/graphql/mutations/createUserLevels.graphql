@@ -1,0 +1,22 @@
+mutation createUserLevels($userLevels: [UserLevelCreateInput!]!) {
+  createUserLevels(data: $userLevels) {
+    id
+    currentLevel
+    history {
+      id
+      currentLevel
+    }
+    team {
+      id
+      name
+    }
+    skill {
+      id
+      name
+    }
+    level {
+      id
+      name
+    }
+  }
+}

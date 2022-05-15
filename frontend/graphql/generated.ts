@@ -52,6 +52,28 @@ export type DateTimeNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
+export type FloatFilter = {
+  equals?: InputMaybe<Scalars['Float']>;
+  gt?: InputMaybe<Scalars['Float']>;
+  gte?: InputMaybe<Scalars['Float']>;
+  in?: InputMaybe<Array<Scalars['Float']>>;
+  lt?: InputMaybe<Scalars['Float']>;
+  lte?: InputMaybe<Scalars['Float']>;
+  not?: InputMaybe<FloatFilter>;
+  notIn?: InputMaybe<Array<Scalars['Float']>>;
+};
+
+export type FloatNullableFilter = {
+  equals?: InputMaybe<Scalars['Float']>;
+  gt?: InputMaybe<Scalars['Float']>;
+  gte?: InputMaybe<Scalars['Float']>;
+  in?: InputMaybe<Array<Scalars['Float']>>;
+  lt?: InputMaybe<Scalars['Float']>;
+  lte?: InputMaybe<Scalars['Float']>;
+  not?: InputMaybe<FloatNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['Float']>>;
+};
+
 export type IdFilter = {
   equals?: InputMaybe<Scalars['ID']>;
   gt?: InputMaybe<Scalars['ID']>;
@@ -71,6 +93,17 @@ export type IntFilter = {
   lt?: InputMaybe<Scalars['Int']>;
   lte?: InputMaybe<Scalars['Int']>;
   not?: InputMaybe<IntFilter>;
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
+};
+
+export type IntNullableFilter = {
+  equals?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  gte?: InputMaybe<Scalars['Int']>;
+  in?: InputMaybe<Array<Scalars['Int']>>;
+  lt?: InputMaybe<Scalars['Int']>;
+  lte?: InputMaybe<Scalars['Int']>;
+  not?: InputMaybe<IntNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
@@ -271,6 +304,21 @@ export type Level = {
   skill?: Maybe<Skill>;
   team?: Maybe<Team>;
   updated?: Maybe<Scalars['DateTime']>;
+  userLevels?: Maybe<Array<UserLevel>>;
+  userLevelsCount?: Maybe<Scalars['Int']>;
+};
+
+
+export type LevelUserLevelsArgs = {
+  orderBy?: Array<UserLevelOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelWhereInput;
+};
+
+
+export type LevelUserLevelsCountArgs = {
+  where?: UserLevelWhereInput;
 };
 
 export type LevelCreateInput = {
@@ -282,6 +330,7 @@ export type LevelCreateInput = {
   skill?: InputMaybe<SkillRelateToOneForCreateInput>;
   team?: InputMaybe<TeamRelateToOneForCreateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForCreateInput>;
 };
 
 export type LevelManyRelationFilter = {
@@ -311,6 +360,17 @@ export type LevelRelateToManyForUpdateInput = {
   set?: InputMaybe<Array<LevelWhereUniqueInput>>;
 };
 
+export type LevelRelateToOneForCreateInput = {
+  connect?: InputMaybe<LevelWhereUniqueInput>;
+  create?: InputMaybe<LevelCreateInput>;
+};
+
+export type LevelRelateToOneForUpdateInput = {
+  connect?: InputMaybe<LevelWhereUniqueInput>;
+  create?: InputMaybe<LevelCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type LevelUpdateArgs = {
   data: LevelUpdateInput;
   where: LevelWhereUniqueInput;
@@ -325,6 +385,7 @@ export type LevelUpdateInput = {
   skill?: InputMaybe<SkillRelateToOneForUpdateInput>;
   team?: InputMaybe<TeamRelateToOneForUpdateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForUpdateInput>;
 };
 
 export type LevelWhereInput = {
@@ -340,6 +401,7 @@ export type LevelWhereInput = {
   skill?: InputMaybe<SkillWhereInput>;
   team?: InputMaybe<TeamWhereInput>;
   updated?: InputMaybe<DateTimeNullableFilter>;
+  userLevels?: InputMaybe<UserLevelManyRelationFilter>;
 };
 
 export type LevelWhereUniqueInput = {
@@ -361,6 +423,10 @@ export type Mutation = {
   createTeam?: Maybe<Team>;
   createTeams?: Maybe<Array<Maybe<Team>>>;
   createUser?: Maybe<User>;
+  createUserLevel?: Maybe<UserLevel>;
+  createUserLevelHistories?: Maybe<Array<Maybe<UserLevelHistory>>>;
+  createUserLevelHistory?: Maybe<UserLevelHistory>;
+  createUserLevels?: Maybe<Array<Maybe<UserLevel>>>;
   createUsers?: Maybe<Array<Maybe<User>>>;
   deleteInvitation?: Maybe<Invitation>;
   deleteInvitations?: Maybe<Array<Maybe<Invitation>>>;
@@ -373,6 +439,10 @@ export type Mutation = {
   deleteTeam?: Maybe<Team>;
   deleteTeams?: Maybe<Array<Maybe<Team>>>;
   deleteUser?: Maybe<User>;
+  deleteUserLevel?: Maybe<UserLevel>;
+  deleteUserLevelHistories?: Maybe<Array<Maybe<UserLevelHistory>>>;
+  deleteUserLevelHistory?: Maybe<UserLevelHistory>;
+  deleteUserLevels?: Maybe<Array<Maybe<UserLevel>>>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
   redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
@@ -388,6 +458,10 @@ export type Mutation = {
   updateTeam?: Maybe<Team>;
   updateTeams?: Maybe<Array<Maybe<Team>>>;
   updateUser?: Maybe<User>;
+  updateUserLevel?: Maybe<UserLevel>;
+  updateUserLevelHistories?: Maybe<Array<Maybe<UserLevelHistory>>>;
+  updateUserLevelHistory?: Maybe<UserLevelHistory>;
+  updateUserLevels?: Maybe<Array<Maybe<UserLevel>>>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
 };
 
@@ -458,6 +532,26 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationCreateUserLevelArgs = {
+  data: UserLevelCreateInput;
+};
+
+
+export type MutationCreateUserLevelHistoriesArgs = {
+  data: Array<UserLevelHistoryCreateInput>;
+};
+
+
+export type MutationCreateUserLevelHistoryArgs = {
+  data: UserLevelHistoryCreateInput;
+};
+
+
+export type MutationCreateUserLevelsArgs = {
+  data: Array<UserLevelCreateInput>;
+};
+
+
 export type MutationCreateUsersArgs = {
   data: Array<UserCreateInput>;
 };
@@ -515,6 +609,26 @@ export type MutationDeleteTeamsArgs = {
 
 export type MutationDeleteUserArgs = {
   where: UserWhereUniqueInput;
+};
+
+
+export type MutationDeleteUserLevelArgs = {
+  where: UserLevelWhereUniqueInput;
+};
+
+
+export type MutationDeleteUserLevelHistoriesArgs = {
+  where: Array<UserLevelHistoryWhereUniqueInput>;
+};
+
+
+export type MutationDeleteUserLevelHistoryArgs = {
+  where: UserLevelHistoryWhereUniqueInput;
+};
+
+
+export type MutationDeleteUserLevelsArgs = {
+  where: Array<UserLevelWhereUniqueInput>;
 };
 
 
@@ -596,6 +710,28 @@ export type MutationUpdateUserArgs = {
 };
 
 
+export type MutationUpdateUserLevelArgs = {
+  data: UserLevelUpdateInput;
+  where: UserLevelWhereUniqueInput;
+};
+
+
+export type MutationUpdateUserLevelHistoriesArgs = {
+  data: Array<UserLevelHistoryUpdateArgs>;
+};
+
+
+export type MutationUpdateUserLevelHistoryArgs = {
+  data: UserLevelHistoryUpdateInput;
+  where: UserLevelHistoryWhereUniqueInput;
+};
+
+
+export type MutationUpdateUserLevelsArgs = {
+  data: Array<UserLevelUpdateArgs>;
+};
+
+
 export type MutationUpdateUsersArgs = {
   data: Array<UserUpdateArgs>;
 };
@@ -654,6 +790,12 @@ export type Query = {
   teams?: Maybe<Array<Team>>;
   teamsCount?: Maybe<Scalars['Int']>;
   user?: Maybe<User>;
+  userLevel?: Maybe<UserLevel>;
+  userLevelHistories?: Maybe<Array<UserLevelHistory>>;
+  userLevelHistoriesCount?: Maybe<Scalars['Int']>;
+  userLevelHistory?: Maybe<UserLevelHistory>;
+  userLevels?: Maybe<Array<UserLevel>>;
+  userLevelsCount?: Maybe<Scalars['Int']>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']>;
   validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
@@ -752,6 +894,42 @@ export type QueryTeamsCountArgs = {
 
 export type QueryUserArgs = {
   where: UserWhereUniqueInput;
+};
+
+
+export type QueryUserLevelArgs = {
+  where: UserLevelWhereUniqueInput;
+};
+
+
+export type QueryUserLevelHistoriesArgs = {
+  orderBy?: Array<UserLevelHistoryOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelHistoryWhereInput;
+};
+
+
+export type QueryUserLevelHistoriesCountArgs = {
+  where?: UserLevelHistoryWhereInput;
+};
+
+
+export type QueryUserLevelHistoryArgs = {
+  where: UserLevelHistoryWhereUniqueInput;
+};
+
+
+export type QueryUserLevelsArgs = {
+  orderBy?: Array<UserLevelOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelWhereInput;
+};
+
+
+export type QueryUserLevelsCountArgs = {
+  where?: UserLevelWhereInput;
 };
 
 
@@ -875,6 +1053,8 @@ export type Skill = {
   name?: Maybe<Scalars['String']>;
   team?: Maybe<Team>;
   updated?: Maybe<Scalars['DateTime']>;
+  userLevels?: Maybe<Array<UserLevel>>;
+  userLevelsCount?: Maybe<Scalars['Int']>;
 };
 
 
@@ -890,6 +1070,19 @@ export type SkillLevelsCountArgs = {
   where?: LevelWhereInput;
 };
 
+
+export type SkillUserLevelsArgs = {
+  orderBy?: Array<UserLevelOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelWhereInput;
+};
+
+
+export type SkillUserLevelsCountArgs = {
+  where?: UserLevelWhereInput;
+};
+
 export type SkillCreateInput = {
   author?: InputMaybe<UserRelateToOneForCreateInput>;
   created?: InputMaybe<Scalars['DateTime']>;
@@ -898,6 +1091,7 @@ export type SkillCreateInput = {
   name?: InputMaybe<Scalars['String']>;
   team?: InputMaybe<TeamRelateToOneForCreateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForCreateInput>;
 };
 
 export type SkillManyRelationFilter = {
@@ -950,6 +1144,7 @@ export type SkillUpdateInput = {
   name?: InputMaybe<Scalars['String']>;
   team?: InputMaybe<TeamRelateToOneForUpdateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForUpdateInput>;
 };
 
 export type SkillWhereInput = {
@@ -964,6 +1159,7 @@ export type SkillWhereInput = {
   name?: InputMaybe<StringFilter>;
   team?: InputMaybe<TeamWhereInput>;
   updated?: InputMaybe<DateTimeNullableFilter>;
+  userLevels?: InputMaybe<UserLevelManyRelationFilter>;
 };
 
 export type SkillWhereUniqueInput = {
@@ -993,6 +1189,8 @@ export type Team = {
   currentUserIsManager?: Maybe<Scalars['Boolean']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  levelCount?: Maybe<Scalars['Int']>;
+  levelScaleModifier?: Maybe<Scalars['Float']>;
   levels?: Maybe<Array<Level>>;
   levelsCount?: Maybe<Scalars['Int']>;
   managers?: Maybe<Array<User>>;
@@ -1003,6 +1201,8 @@ export type Team = {
   skills?: Maybe<Array<Skill>>;
   skillsCount?: Maybe<Scalars['Int']>;
   updated?: Maybe<Scalars['DateTime']>;
+  userLevels?: Maybe<Array<UserLevel>>;
+  userLevelsCount?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1057,16 +1257,32 @@ export type TeamSkillsCountArgs = {
   where?: SkillWhereInput;
 };
 
+
+export type TeamUserLevelsArgs = {
+  orderBy?: Array<UserLevelOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelWhereInput;
+};
+
+
+export type TeamUserLevelsCountArgs = {
+  where?: UserLevelWhereInput;
+};
+
 export type TeamCreateInput = {
   author?: InputMaybe<UserRelateToOneForCreateInput>;
   created?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
+  levelCount?: InputMaybe<Scalars['Int']>;
+  levelScaleModifier?: InputMaybe<Scalars['Float']>;
   levels?: InputMaybe<LevelRelateToManyForCreateInput>;
   managers?: InputMaybe<UserRelateToManyForCreateInput>;
   members?: InputMaybe<UserRelateToManyForCreateInput>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<SkillRelateToManyForCreateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForCreateInput>;
 };
 
 export type TeamManyRelationFilter = {
@@ -1079,6 +1295,8 @@ export type TeamOrderByInput = {
   created?: InputMaybe<OrderDirection>;
   description?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
+  levelCount?: InputMaybe<OrderDirection>;
+  levelScaleModifier?: InputMaybe<OrderDirection>;
   name?: InputMaybe<OrderDirection>;
   updated?: InputMaybe<OrderDirection>;
 };
@@ -1115,12 +1333,15 @@ export type TeamUpdateInput = {
   author?: InputMaybe<UserRelateToOneForUpdateInput>;
   created?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
+  levelCount?: InputMaybe<Scalars['Int']>;
+  levelScaleModifier?: InputMaybe<Scalars['Float']>;
   levels?: InputMaybe<LevelRelateToManyForUpdateInput>;
   managers?: InputMaybe<UserRelateToManyForUpdateInput>;
   members?: InputMaybe<UserRelateToManyForUpdateInput>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<SkillRelateToManyForUpdateInput>;
   updated?: InputMaybe<Scalars['DateTime']>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForUpdateInput>;
 };
 
 export type TeamWhereInput = {
@@ -1131,12 +1352,15 @@ export type TeamWhereInput = {
   created?: InputMaybe<DateTimeNullableFilter>;
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
+  levelCount?: InputMaybe<IntNullableFilter>;
+  levelScaleModifier?: InputMaybe<FloatNullableFilter>;
   levels?: InputMaybe<LevelManyRelationFilter>;
   managers?: InputMaybe<UserManyRelationFilter>;
   members?: InputMaybe<UserManyRelationFilter>;
   name?: InputMaybe<StringFilter>;
   skills?: InputMaybe<SkillManyRelationFilter>;
   updated?: InputMaybe<DateTimeNullableFilter>;
+  userLevels?: InputMaybe<UserLevelManyRelationFilter>;
 };
 
 export type TeamWhereUniqueInput = {
@@ -1171,6 +1395,10 @@ export type User = {
   passwordResetToken?: Maybe<PasswordState>;
   registered?: Maybe<Scalars['DateTime']>;
   role?: Maybe<Role>;
+  userLevels?: Maybe<Array<UserLevel>>;
+  userLevelsCount?: Maybe<Scalars['Int']>;
+  userLevelsHistory?: Maybe<Array<UserLevelHistory>>;
+  userLevelsHistoryCount?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1251,6 +1479,32 @@ export type UserManagedTeamsCountArgs = {
   where?: TeamWhereInput;
 };
 
+
+export type UserUserLevelsArgs = {
+  orderBy?: Array<UserLevelOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelWhereInput;
+};
+
+
+export type UserUserLevelsCountArgs = {
+  where?: UserLevelWhereInput;
+};
+
+
+export type UserUserLevelsHistoryArgs = {
+  orderBy?: Array<UserLevelHistoryOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelHistoryWhereInput;
+};
+
+
+export type UserUserLevelsHistoryCountArgs = {
+  where?: UserLevelHistoryWhereInput;
+};
+
 export type UserAuthenticationWithPasswordFailure = {
   __typename?: 'UserAuthenticationWithPasswordFailure';
   message: Scalars['String'];
@@ -1281,6 +1535,194 @@ export type UserCreateInput = {
   passwordResetToken?: InputMaybe<Scalars['String']>;
   registered?: InputMaybe<Scalars['DateTime']>;
   role?: InputMaybe<RoleRelateToOneForCreateInput>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForCreateInput>;
+  userLevelsHistory?: InputMaybe<UserLevelHistoryRelateToManyForCreateInput>;
+};
+
+export type UserLevel = {
+  __typename?: 'UserLevel';
+  comment?: Maybe<Scalars['String']>;
+  created?: Maybe<Scalars['DateTime']>;
+  currentLevel?: Maybe<Scalars['Float']>;
+  history?: Maybe<Array<UserLevelHistory>>;
+  historyCount?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  level?: Maybe<Level>;
+  skill?: Maybe<Skill>;
+  team?: Maybe<Team>;
+  updated?: Maybe<Scalars['DateTime']>;
+  user?: Maybe<User>;
+};
+
+
+export type UserLevelHistoryArgs = {
+  orderBy?: Array<UserLevelHistoryOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  where?: UserLevelHistoryWhereInput;
+};
+
+
+export type UserLevelHistoryCountArgs = {
+  where?: UserLevelHistoryWhereInput;
+};
+
+export type UserLevelCreateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  currentLevel?: InputMaybe<Scalars['Float']>;
+  history?: InputMaybe<UserLevelHistoryRelateToManyForCreateInput>;
+  level?: InputMaybe<LevelRelateToOneForCreateInput>;
+  skill?: InputMaybe<SkillRelateToOneForCreateInput>;
+  team?: InputMaybe<TeamRelateToOneForCreateInput>;
+  updated?: InputMaybe<Scalars['DateTime']>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+};
+
+export type UserLevelHistory = {
+  __typename?: 'UserLevelHistory';
+  comment?: Maybe<Scalars['String']>;
+  created?: Maybe<Scalars['DateTime']>;
+  currentLevel?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  user?: Maybe<User>;
+  userLevel?: Maybe<UserLevel>;
+};
+
+export type UserLevelHistoryCreateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  currentLevel?: InputMaybe<Scalars['Float']>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+  userLevel?: InputMaybe<UserLevelRelateToOneForCreateInput>;
+};
+
+export type UserLevelHistoryManyRelationFilter = {
+  every?: InputMaybe<UserLevelHistoryWhereInput>;
+  none?: InputMaybe<UserLevelHistoryWhereInput>;
+  some?: InputMaybe<UserLevelHistoryWhereInput>;
+};
+
+export type UserLevelHistoryOrderByInput = {
+  comment?: InputMaybe<OrderDirection>;
+  created?: InputMaybe<OrderDirection>;
+  currentLevel?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+};
+
+export type UserLevelHistoryRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<UserLevelHistoryWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserLevelHistoryCreateInput>>;
+};
+
+export type UserLevelHistoryRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<UserLevelHistoryWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserLevelHistoryCreateInput>>;
+  disconnect?: InputMaybe<Array<UserLevelHistoryWhereUniqueInput>>;
+  set?: InputMaybe<Array<UserLevelHistoryWhereUniqueInput>>;
+};
+
+export type UserLevelHistoryUpdateArgs = {
+  data: UserLevelHistoryUpdateInput;
+  where: UserLevelHistoryWhereUniqueInput;
+};
+
+export type UserLevelHistoryUpdateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  currentLevel?: InputMaybe<Scalars['Float']>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
+  userLevel?: InputMaybe<UserLevelRelateToOneForUpdateInput>;
+};
+
+export type UserLevelHistoryWhereInput = {
+  AND?: InputMaybe<Array<UserLevelHistoryWhereInput>>;
+  NOT?: InputMaybe<Array<UserLevelHistoryWhereInput>>;
+  OR?: InputMaybe<Array<UserLevelHistoryWhereInput>>;
+  comment?: InputMaybe<StringFilter>;
+  created?: InputMaybe<DateTimeNullableFilter>;
+  currentLevel?: InputMaybe<FloatFilter>;
+  id?: InputMaybe<IdFilter>;
+  user?: InputMaybe<UserWhereInput>;
+  userLevel?: InputMaybe<UserLevelWhereInput>;
+};
+
+export type UserLevelHistoryWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type UserLevelManyRelationFilter = {
+  every?: InputMaybe<UserLevelWhereInput>;
+  none?: InputMaybe<UserLevelWhereInput>;
+  some?: InputMaybe<UserLevelWhereInput>;
+};
+
+export type UserLevelOrderByInput = {
+  comment?: InputMaybe<OrderDirection>;
+  created?: InputMaybe<OrderDirection>;
+  currentLevel?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+  updated?: InputMaybe<OrderDirection>;
+};
+
+export type UserLevelRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<UserLevelWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserLevelCreateInput>>;
+};
+
+export type UserLevelRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<UserLevelWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserLevelCreateInput>>;
+  disconnect?: InputMaybe<Array<UserLevelWhereUniqueInput>>;
+  set?: InputMaybe<Array<UserLevelWhereUniqueInput>>;
+};
+
+export type UserLevelRelateToOneForCreateInput = {
+  connect?: InputMaybe<UserLevelWhereUniqueInput>;
+  create?: InputMaybe<UserLevelCreateInput>;
+};
+
+export type UserLevelRelateToOneForUpdateInput = {
+  connect?: InputMaybe<UserLevelWhereUniqueInput>;
+  create?: InputMaybe<UserLevelCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserLevelUpdateArgs = {
+  data: UserLevelUpdateInput;
+  where: UserLevelWhereUniqueInput;
+};
+
+export type UserLevelUpdateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  created?: InputMaybe<Scalars['DateTime']>;
+  currentLevel?: InputMaybe<Scalars['Float']>;
+  history?: InputMaybe<UserLevelHistoryRelateToManyForUpdateInput>;
+  level?: InputMaybe<LevelRelateToOneForUpdateInput>;
+  skill?: InputMaybe<SkillRelateToOneForUpdateInput>;
+  team?: InputMaybe<TeamRelateToOneForUpdateInput>;
+  updated?: InputMaybe<Scalars['DateTime']>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
+};
+
+export type UserLevelWhereInput = {
+  AND?: InputMaybe<Array<UserLevelWhereInput>>;
+  NOT?: InputMaybe<Array<UserLevelWhereInput>>;
+  OR?: InputMaybe<Array<UserLevelWhereInput>>;
+  comment?: InputMaybe<StringFilter>;
+  created?: InputMaybe<DateTimeNullableFilter>;
+  currentLevel?: InputMaybe<FloatNullableFilter>;
+  history?: InputMaybe<UserLevelHistoryManyRelationFilter>;
+  id?: InputMaybe<IdFilter>;
+  level?: InputMaybe<LevelWhereInput>;
+  skill?: InputMaybe<SkillWhereInput>;
+  team?: InputMaybe<TeamWhereInput>;
+  updated?: InputMaybe<DateTimeNullableFilter>;
+  user?: InputMaybe<UserWhereInput>;
+};
+
+export type UserLevelWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export type UserManyRelationFilter = {
@@ -1344,6 +1786,8 @@ export type UserUpdateInput = {
   passwordResetToken?: InputMaybe<Scalars['String']>;
   registered?: InputMaybe<Scalars['DateTime']>;
   role?: InputMaybe<RoleRelateToOneForUpdateInput>;
+  userLevels?: InputMaybe<UserLevelRelateToManyForUpdateInput>;
+  userLevelsHistory?: InputMaybe<UserLevelHistoryRelateToManyForUpdateInput>;
 };
 
 export type UserWhereInput = {
@@ -1366,6 +1810,8 @@ export type UserWhereInput = {
   passwordResetToken?: InputMaybe<PasswordFilter>;
   registered?: InputMaybe<DateTimeNullableFilter>;
   role?: InputMaybe<RoleWhereInput>;
+  userLevels?: InputMaybe<UserLevelManyRelationFilter>;
+  userLevelsHistory?: InputMaybe<UserLevelHistoryManyRelationFilter>;
 };
 
 export type UserWhereUniqueInput = {
@@ -1457,6 +1903,13 @@ export type CreateTeamMutationVariables = Exact<{
 
 
 export type CreateTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'Team', id: string } | null };
+
+export type CreateUserLevelsMutationVariables = Exact<{
+  userLevels: Array<UserLevelCreateInput> | UserLevelCreateInput;
+}>;
+
+
+export type CreateUserLevelsMutation = { __typename?: 'Mutation', createUserLevels?: Array<{ __typename?: 'UserLevel', id: string, currentLevel?: number | null, history?: Array<{ __typename?: 'UserLevelHistory', id: string, currentLevel?: number | null }> | null, team?: { __typename?: 'Team', id: string, name?: string | null } | null, skill?: { __typename?: 'Skill', id: string, name?: string | null } | null, level?: { __typename?: 'Level', id: string, name?: string | null } | null } | null> | null };
 
 export type DeleteInvitationMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1611,6 +2064,13 @@ export type UserInvitationPageQueryVariables = Exact<{
 
 export type UserInvitationPageQuery = { __typename?: 'Query', user?: { __typename?: 'User', createdInvitations?: Array<{ __typename?: 'Invitation', id: string, email?: string | null, created?: any | null, expires?: any | null, expired?: boolean | null, accepted?: any | null }> | null } | null, authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
 
+export type UserLevelsPageQueryVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type UserLevelsPageQuery = { __typename?: 'Query', user?: { __typename?: 'User', assignedTeams?: Array<{ __typename?: 'Team', id: string, name?: string | null, userLevels?: Array<{ __typename?: 'UserLevel', level?: { __typename?: 'Level', team?: { __typename?: 'Team', name?: string | null } | null } | null }> | null }> | null } | null, authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
+
 export type UserPageQueryVariables = Exact<{
   userId: Scalars['ID'];
 }>;
@@ -1672,6 +2132,13 @@ export type UserTeamsTeamSkillsUpdatePageQueryVariables = Exact<{
 
 export type UserTeamsTeamSkillsUpdatePageQuery = { __typename?: 'Query', team?: { __typename?: 'Team', id: string, name?: string | null, description?: string | null } | null, skills?: Array<{ __typename?: 'Skill', id: string, name?: string | null, description?: string | null, levels?: Array<{ __typename?: 'Level', id: string, name?: string | null, description?: string | null, level?: number | null }> | null }> | null, levels?: Array<{ __typename?: 'Level', id: string, name?: string | null, description?: string | null, level?: number | null }> | null, authenticatedItem?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, fullName?: string | null, email?: string | null, role?: { __typename?: 'Role', name?: string | null } | null } | null };
 
+export type SetLevelsDataQueryVariables = Exact<{
+  teamId: Scalars['ID'];
+}>;
+
+
+export type SetLevelsDataQuery = { __typename?: 'Query', team?: { __typename?: 'Team', levelCount?: number | null, levelScaleModifier?: number | null } | null, skills?: Array<{ __typename?: 'Skill', id: string, name?: string | null, description?: string | null }> | null };
+
 export type SkillsByTeamQueryVariables = Exact<{
   teamId: Scalars['ID'];
 }>;
@@ -1711,6 +2178,7 @@ export const CreateLevelDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const CreateLevelsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createLevels"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"levels"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LevelCreateInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createLevels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"levels"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateLevelsMutation, CreateLevelsMutationVariables>;
 export const CreateSkillDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createSkill"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"levels"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LevelCreateInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSkill"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"author"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"levels"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"levels"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateSkillMutation, CreateSkillMutationVariables>;
 export const CreateTeamDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createTeam"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTeam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"author"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateTeamMutation, CreateTeamMutationVariables>;
+export const CreateUserLevelsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createUserLevels"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userLevels"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserLevelCreateInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUserLevels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userLevels"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"currentLevel"}},{"kind":"Field","name":{"kind":"Name","value":"history"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"currentLevel"}}]}},{"kind":"Field","name":{"kind":"Name","value":"team"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"skill"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"level"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<CreateUserLevelsMutation, CreateUserLevelsMutationVariables>;
 export const DeleteInvitationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteInvitation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteInvitation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteInvitationMutation, DeleteInvitationMutationVariables>;
 export const DeleteLevelsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteLevels"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"whereLevelIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LevelWhereUniqueInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteLevels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"whereLevelIds"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteLevelsMutation, DeleteLevelsMutationVariables>;
 export const DeleteSkillDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteSkill"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skillId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteSkill"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skillId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteSkillMutation, DeleteSkillMutationVariables>;
@@ -1733,6 +2201,7 @@ export const ResetPasswordPageDocument = {"kind":"Document","definitions":[{"kin
 export const ResetPasswordRequestPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"resetPasswordRequestPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<ResetPasswordRequestPageQuery, ResetPasswordRequestPageQueryVariables>;
 export const SignUpPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"signUpPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<SignUpPageQuery, SignUpPageQueryVariables>;
 export const UserInvitationPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userInvitationPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdInvitations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"invitationFields"}}]}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...InvitationFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserInvitationPageQuery, UserInvitationPageQueryVariables>;
+export const UserLevelsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userLevelsPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assignedTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"userLevels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"level"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"team"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserLevelsPageQuery, UserLevelsPageQueryVariables>;
 export const UserPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"publicUserFields"}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...PublicUserFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserPageQuery, UserPageQueryVariables>;
 export const UserTeamsCreatePageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsCreatePage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsCreatePageQuery, UserTeamsCreatePageQueryVariables>;
 export const UserTeamsCreatedPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsCreatedPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authoredTeams"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}}]}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...TeamFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsCreatedPageQuery, UserTeamsCreatedPageQueryVariables>;
@@ -1742,6 +2211,7 @@ export const UserTeamsTeamInvitePageDocument = {"kind":"Document","definitions":
 export const UserTeamsTeamPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsTeamPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"team"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"teamFields"}},{"kind":"Field","name":{"kind":"Name","value":"skills"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions,...TeamFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsTeamPageQuery, UserTeamsTeamPageQueryVariables>;
 export const UserTeamsTeamSkillsCreatePageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsTeamSkillsCreatePage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"team"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"skills"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equals"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsTeamSkillsCreatePageQuery, UserTeamsTeamSkillsCreatePageQueryVariables>;
 export const UserTeamsTeamSkillsUpdatePageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userTeamsTeamSkillsUpdatePage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"requiredAppDataQueryFields"}},{"kind":"Field","name":{"kind":"Name","value":"team"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"skills"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equals"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"created"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"levels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"EnumValue","value":"desc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"level"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"levels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equals"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"EnumValue","value":"desc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"level"}}]}}]}},...RequiredAppDataQueryFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserTeamsTeamSkillsUpdatePageQuery, UserTeamsTeamSkillsUpdatePageQueryVariables>;
+export const SetLevelsDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"setLevelsData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"team"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"levelCount"}},{"kind":"Field","name":{"kind":"Name","value":"levelScaleModifier"}}]}},{"kind":"Field","name":{"kind":"Name","value":"skills"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equals"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<SetLevelsDataQuery, SetLevelsDataQueryVariables>;
 export const SkillsByTeamDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"skillsByTeam"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"skills"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"team"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equals"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"created"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"levels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"level"}}]}}]}}]}}]} as unknown as DocumentNode<SkillsByTeamQuery, SkillsByTeamQueryVariables>;
 export const UserInvitationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userInvitations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdInvitations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"invitationFields"}}]}}]}}]}},...InvitationFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UserInvitationsQuery, UserInvitationsQueryVariables>;
 export const UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"registered"}}]}}]}}]} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;

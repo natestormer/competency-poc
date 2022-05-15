@@ -1,0 +1,18 @@
+# Data needed for user levels page SSR
+
+query userLevelsPage($userId: ID!) {
+  ...requiredAppDataQueryFields
+  user(where: { id: $userId }) {
+    assignedTeams {
+      id
+      name
+      userLevels {
+        level {
+          team {
+            name
+          }
+        }
+      }
+    }
+  }
+}
