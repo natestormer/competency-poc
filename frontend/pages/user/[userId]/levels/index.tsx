@@ -9,6 +9,7 @@ import { unAuthRedirect } from "../../../../config"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 import { FormSetLevels } from "../../../../components/Form/SetLevels"
+import { UserLevelsGraph } from "../../../../components/User/Levels/Graph"
 
 const UserLevelsPage: NextPage = () => {
   const { query } = useRouter()
@@ -25,7 +26,7 @@ const UserLevelsPage: NextPage = () => {
             <div key={team.id}>
               <h2>{team.name}</h2>
               {team.userLevels && team.userLevels.length > 0 ? (
-                <div>Level graph</div>
+                <UserLevelsGraph teamId={team.id} />
               ) : (
                 <FormSetLevels teamId={team.id} />
               )}

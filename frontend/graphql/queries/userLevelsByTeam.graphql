@@ -1,0 +1,18 @@
+query userLevelsByTeam($userId: ID!, $teamId: ID!) {
+  team(where: { id: $teamId }) {
+    levelCount
+    levelScaleModifier
+  }
+  userLevels(
+    where: {
+      team: { id: { equals: $teamId } }
+      AND: { user: { id: { equals: $userId } } }
+    }
+  ) {
+    id
+    currentLevel
+    skill {
+      name
+    }
+  }
+}
