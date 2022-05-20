@@ -1,6 +1,6 @@
 # Competency Mapping Project
 
-Repo for competency mapping built with React + NextJS, Apollo Client, KeystoneJS, and GraphQL.
+Proof of concept repo for competency mapping built with React + NextJS, Apollo Client, KeystoneJS, and GraphQL.
 
 ## Repo Structure
 
@@ -38,6 +38,12 @@ Note: we use yarn for both frontend and backend apps
 ```sh
    yarn dev
 ```
+
+## 🚀 GraphQL Codegen
+
+GraphQL codegen will happen every time a dev or prod build is initiated.
+
+Note: If you are updating `.graphql` files, you will need to restart your dev server for codegen schema and types to be generated
 
 ### Backend
 
